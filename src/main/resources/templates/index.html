@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1>Welcome,</h1>
+<h1 sec:authorize="isAuthenticated()" sec:authentication="name"></h1>
+<p th:if="${dto != null}" th:text="${dto.getName()}"></p>
+<p th:if="${dto != null}" th:text="${dto.getId()}"></p>
+<a th:href="@{/login}">Login</a>
+<a th:href="@{/register}">Register</a>
+
+<h4 th:if="${user != null}" th:text="'Welcome, ' + ${user}"></h4>
+<a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
+</body>
+</html>
