@@ -5,7 +5,35 @@
     <title>Title</title>
 </head>
 <body>
+
 <h2 th:if="${username != null}" th:text="'Welcome, ' + ${username}"></h2>
+<img th:if="${userImage == null}" th:src="@{'/defaultImages/defaultProfileImage.png'}" th:height="52"
+     th:width="52">
+<h1>Profile details</h1>
+<form>
+    <tr th:each="profile : ${profiles}">
+        <th><b>Email:</b></th>
+        <td th:text="${profile.email}">
+        </td>
+        <br/>
+        <th><b>Full name:</b></th>
+        <td th:text="${profile.fullName}">
+        </td>
+        <br/>
+        <th><b>Address:</b></th>
+        <td th:text="${profile.address}">
+        </td>
+        <br/>
+        <th><b>Age:</b></th>
+        <td th:text="${profile.age}">
+        </td>
+<!--        <td th:text="${profile.inStock}? #{true} : #{false}">yes</td>-->
+    </tr>
+</form>
+<form method="post" action="/image/upload" enctype="multipart/form-data">
+    <input type="file" name="image"/>
+    <input type="submit" value="Upload">
+</form>
 <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
 </body>
 </html>

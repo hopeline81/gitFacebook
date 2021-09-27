@@ -9,10 +9,11 @@
 <h1 sec:authorize="isAuthenticated()" sec:authentication="name"></h1>
 <p th:if="${dto != null}" th:text="${dto.getName()}"></p>
 <p th:if="${dto != null}" th:text="${dto.getId()}"></p>
-<a th:href="@{/login}">Login</a>
-<a th:href="@{/register}">Register</a>
+<a sec:authorize="!isAuthenticated()" th:href="@{/login}">Login</a>
+<a sec:authorize="!isAuthenticated()" th:href="@{/register}">Register</a>
 
 <h4 th:if="${user != null}" th:text="'Welcome, ' + ${user}"></h4>
+<a sec:authorize="isAuthenticated()" th:href="@{/profile}">Profile</a>
 <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
 </body>
 </html>
