@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" action="/posts">
+    <tr th:each="post : ${posts}">
+        <td th:text="${post.textPost}">
+        </td>
+        <br/>
+        <th><b>Post date</b></th>
+        <td th:text="${post.postDate}">
+        </td>
+        <br/>
+        <!--        <td th:text="${profile.inStock}? #{true} : #{false}">yes</td>-->
+    </tr>
+</form>
+
+</body>
+</html>

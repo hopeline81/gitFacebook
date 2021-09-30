@@ -9,6 +9,11 @@
 <h2 th:if="${username != null}" th:text="'Welcome, ' + ${username}"></h2>
 <img th:if="${userImage == null}" th:src="@{'/defaultImages/defaultProfileImage.png'}" th:height="52"
      th:width="52">
+</form>
+<form method="post" action="/image/upload" enctype="multipart/form-data">
+    <input type="file" name="image"/>
+    <input type="submit" value="Upload">
+</form>
 <h1>Profile details</h1>
 <form>
     <tr th:each="profile : ${profiles}">
@@ -30,10 +35,12 @@
 <!--        <td th:text="${profile.inStock}? #{true} : #{false}">yes</td>-->
     </tr>
 </form>
-<form method="post" action="/image/upload" enctype="multipart/form-data">
-    <input type="file" name="image"/>
-    <input type="submit" value="Upload">
-</form>
+<div>
+    <a th:href="@{post/add}">Add post</a>
+</div>
+<div>
+    <a th:href="@{posts}">All post</a>
+</div>
 <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
 </body>
 </html>

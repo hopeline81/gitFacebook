@@ -3,21 +3,19 @@ package com.example.facebookdemo.dto;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 public class RegisterDTO {
 
-    @NotBlank(message = "Username must not be blank")
+    @NotBlank
     private  String username;
 
-    @NotBlank(message = "Email must not be blank")
+    @NotBlank
     private  String email;
 
     @NotBlank
     private String address;
 
-    @NotBlank(message = "Password must not be blank")
-    @Size(min = 2, max = 6, message = "Must be at least two, no more than six options")
+    @NotBlank
     private String password;
 
     @NotBlank

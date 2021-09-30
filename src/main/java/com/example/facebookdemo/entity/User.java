@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -39,6 +40,9 @@ public class User implements UserDetails {
 
     @OneToOne(targetEntity = Profile.class, fetch = FetchType.EAGER)
     private Profile profile;
+
+    @OneToMany(targetEntity = Post.class, mappedBy = "user")
+    private List<Post> posts;
 
     public User() {
     }
@@ -112,6 +116,14 @@ public class User implements UserDetails {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 
     @Override

@@ -1,6 +1,9 @@
 package com.example.facebookdemo.dto;
 
+import com.example.facebookdemo.entity.Post;
+
 import java.awt.*;
+import java.util.List;
 
 public class ProfileDTO {
 

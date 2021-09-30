@@ -1,5 +1,4 @@
 package com.example.facebookdemo.controller;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 

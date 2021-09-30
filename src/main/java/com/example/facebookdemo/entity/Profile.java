@@ -2,7 +2,7 @@ package com.example.facebookdemo.entity;
 
 import javax.persistence.*;
 import java.awt.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "user_profile")
@@ -23,6 +23,8 @@ public class Profile {
 
     @Column(name = "age")
     private String age;
+
+
 
 //    @OneToOne(targetEntity = Image.class, optional = false)
 //    private Image userImage;
@@ -70,7 +72,8 @@ public class Profile {
         this.age = age;
     }
 
-//    public Image getUserImage() {
+
+    //    public Image getUserImage() {
 //        return userImage;
 //    }
 //
