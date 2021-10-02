@@ -9,7 +9,9 @@
 <h1 sec:authorize="isAuthenticated()" sec:authentication="name"></h1>
 <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Login</a>
 <a sec:authorize="!isAuthenticated()" th:href="@{/register}">Register</a>
-
+<p>
+<a sec:authorize="!isAuthenticated()" th:href="@{/forgot_password}">Forgot your password?</a>
+</p>
 <h4 th:if="${user != null}" th:text="'Welcome, ' + ${user}"></h4>
 <a sec:authorize="isAuthenticated()" th:href="@{/profile}">Profile</a>
 <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>

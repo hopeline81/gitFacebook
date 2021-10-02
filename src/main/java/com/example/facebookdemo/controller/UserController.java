@@ -41,7 +41,7 @@ public class UserController extends BaseController implements WebMvcConfigurer {
             , RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("user", registerDTO);
-            return redirect("register");
+            return redirect("forgot_password");
         }
         userService.register(registerDTO, postDTO);
         return redirect("profile");

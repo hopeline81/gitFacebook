@@ -1,17 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
     <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<form method="post" action="/login">
-    <input type="email" name="email">
-    <input type="password" name="password">
-    <input type="submit" value="login">
-    <input name="remember" type="checkbox"/>
-    <h5>Remember Me</h5>
-</form>
+<!--<div class="container text-center">-->
+<!--    <div th:replace="fragments ::topnav">Top Navigation Menu</div>-->
+<!--    <div>-->
+<!--        <h2>Customer login</h2>-->
+<!--    </div>-->
 
+<!--    <div th:if="${param.error}">-->
+<!--        <p class="text-danger">Invalid username or password</p>-->
+<!--    </div>-->
+<!--    <div th:if="${param.logout}">-->
+<!--        <p class="text-warning">You have been logged out</p>-->
+<!--    </div>-->
+
+<form method="post" action="/login">
+    <div class="border border-secondary rounded p-3">
+        <div>
+            <p>
+                <input type="email" name="email">
+            </p>
+            <p>
+                <input type="password" name="password">
+            </p>
+            <p>
+                <input type="checkbox" name="remember" />Remember Me
+            </p>
+            <p>
+                <a th:href="@{forgot_password}">Forgot your password?</a>
+            </p>
+            <p class="text-center" >
+                <input type="submit" value="login" class="btn btn-primary">
+            </p>
+        </div>
+    </div>
+</form>
+<!--    <div th:replace="fragments :: footer">Static footer</div>-->
+<!--</div>-->
 </body>
 </html>

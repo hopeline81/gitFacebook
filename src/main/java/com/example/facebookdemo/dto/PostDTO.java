@@ -1,8 +1,10 @@
 package com.example.facebookdemo.dto;
 
+import com.example.facebookdemo.entity.Image;
 import com.example.facebookdemo.entity.User;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public class PostDTO {
 
@@ -11,6 +13,8 @@ public class PostDTO {
     private LocalDateTime postDate;
 
     private User user;
+
+    private Set<Image> images;
 
     public PostDTO(String text) {
     }
