@@ -14,14 +14,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 
 @Controller
-public class ForgotPasswordController extends BaseController{
+public class ForgotPasswordController extends BaseController {
 
     private JavaMailSender mailSender;
     private UserService userService;
@@ -52,7 +51,6 @@ public class ForgotPasswordController extends BaseController{
         } catch (UnsupportedEncodingException | MessagingException e) {
             model.addAttribute("error", "Error while sending email");
         }
-
         return "forgot-password-form";
     }
 
@@ -75,39 +73,36 @@ public class ForgotPasswordController extends BaseController{
                 + "or you have not made the request.</p>";
 
         helper.setSubject(subject);
-
         helper.setText(content, true);
-
         mailSender.send(message);
     }
 
-
     @GetMapping("/reset_password")
     public String showResetPasswordForm(@Param(value = "token") String token, Model model) {
-            User user = userService.getByResetPasswordToken(token);
-            model.addAttribute("token", token);
+        User user = userService.getByResetPasswordToken(token);
 
-            if (user == null) {
-                model.addAttribute("message", "Invalid Token");
-                return "message";
-            }
-            return "reset-password-form";
+        if (user == null) {
+            model.addAttribute("title", "Reset your password");
+            model.addAttribute("message", "Invalid Token");
+            return "message";
+        }
+        model.addAttribute("token", token);
+        model.addAttribute("pageTitle", "Reset your password");
+        return "reset-password-form";
     }
 
     @PostMapping("/reset_password")
     public String processResetPassword(HttpServletRequest request, Model model) {
         String token = request.getParameter("token");
         String password = request.getParameter("password");
-
         User user = userService.getByResetPasswordToken(token);
-        model.addAttribute("title", "Reset your password");
 
         if (user == null) {
+            model.addAttribute("title", "Reset your password");
             model.addAttribute("message", "Invalid Token");
             return "message";
         } else {
             userService.updatePassword(user, password);
-
             model.addAttribute("message", "You have successfully changed your password.");
         }
         return "message";
