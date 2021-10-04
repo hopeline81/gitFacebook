@@ -1,5 +1,6 @@
 package com.example.facebookdemo.controller;
 import com.example.facebookdemo.dto.PostDTO;
+import com.example.facebookdemo.entity.Image;
 import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.service.contrack.PostService;
@@ -34,11 +35,11 @@ public class PostController extends BaseController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/post/add")
-    public ModelAndView createdPost(@Validated @ModelAttribute PostDTO postDTO, BindingResult result, @AuthenticationPrincipal User user){
+    public ModelAndView createdPost(@Validated @ModelAttribute PostDTO postDTO, BindingResult result, @AuthenticationPrincipal User user, Image image){
         if(result.hasErrors()){
             return send("new-post");
         }
-        postService.save(postDTO, user);
+        postService.save(postDTO, user, image);
         return redirect("/posts");
     }
 
