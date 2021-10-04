@@ -1,19 +1,17 @@
 package com.example.facebookdemo.controller;
 
 import com.example.facebookdemo.entity.User;
-import com.example.facebookdemo.service.contrack.UserService;
+import com.example.facebookdemo.service.contrack.ForgotPasswordService;
 import com.example.facebookdemo.service.implementation.Utility;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -23,12 +21,12 @@ import java.io.UnsupportedEncodingException;
 public class ForgotPasswordController extends BaseController {
 
     private JavaMailSender mailSender;
-    private UserService userService;
+    private ForgotPasswordService forgotPasswordService;
 
     @Autowired
-    public ForgotPasswordController(JavaMailSender mailSender, UserService userService) {
+    public ForgotPasswordController(JavaMailSender mailSender, ForgotPasswordService forgotPasswordService) {
         this.mailSender = mailSender;
-        this.userService = userService;
+        this.forgotPasswordService = forgotPasswordService;
     }
 
     @GetMapping("/forgot_password")
@@ -43,7 +41,7 @@ public class ForgotPasswordController extends BaseController {
         String token = RandomString.make(30);
 
         try {
-            userService.updateResetPasswordToken(token, email);
+            forgotPasswordService.updateResetPasswordToken(token, email);
             String resetPasswordLink = Utility.getSiteURL(request) + "/reset_password?token=" + token;
             sendEmail(email, resetPasswordLink);
             model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
@@ -79,7 +77,7 @@ public class ForgotPasswordController extends BaseController {
 
     @GetMapping("/reset_password")
     public String showResetPasswordForm(@Param(value = "token") String token, Model model) {
-        User user = userService.getByResetPasswordToken(token);
+        User user = forgotPasswordService.getByResetPasswordToken(token);
 
         if (user == null) {
             model.addAttribute("title", "Reset your password");
@@ -95,14 +93,14 @@ public class ForgotPasswordController extends BaseController {
     public String processResetPassword(HttpServletRequest request, Model model) {
         String token = request.getParameter("token");
         String password = request.getParameter("password");
-        User user = userService.getByResetPasswordToken(token);
+        User user = forgotPasswordService.getByResetPasswordToken(token);
 
         if (user == null) {
             model.addAttribute("title", "Reset your password");
             model.addAttribute("message", "Invalid Token");
             return "message";
         } else {
-            userService.updatePassword(user, password);
+            forgotPasswordService.updatePassword(user, password);
             model.addAttribute("message", "You have successfully changed your password.");
         }
         return "message";
