@@ -14,7 +14,7 @@ public class PostDTO {
 
     private User user;
 
-    private Set<Image> images;
+    private Image images;
 
     public PostDTO(String text) {
     }

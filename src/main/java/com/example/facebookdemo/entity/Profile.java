@@ -25,9 +25,7 @@ public class Profile {
     private String age;
 
     @OneToOne(targetEntity = Image.class)
-    private Image userImage;
-
-
+    private Image image;
 
 //    @OneToOne(targetEntity = Image.class, optional = false)
 //    private Image userImage;
@@ -75,11 +73,11 @@ public class Profile {
         this.age = age;
     }
 
-    public Image getUserImage() {
-        return userImage;
+    public Image getImage() {
+        return image;
     }
 
-    public void setUserImage(Image userImage) {
-        this.userImage = userImage;
+    public void setImage(Image userImage) {
+        this.image = image;
     }
 }

@@ -1,14 +1,14 @@
 package com.example.facebookdemo.controller;
 
-import com.example.facebookdemo.dto.ImageUploadDTO;
+import com.example.facebookdemo.dto.ImageDTO;
 import com.example.facebookdemo.service.implementation.ImageUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 
@@ -28,10 +28,24 @@ public class ImageController extends BaseController {
     }
 
     @PostMapping("/image/upload")
-    public ModelAndView imageUpload(@ModelAttribute ImageUploadDTO imageUploadDTO) throws IOException {
-        imageUploadService.uploadImage(imageUploadDTO.getImage());
+    public ModelAndView imageUpload(@ModelAttribute ImageDTO imageDTO) throws IOException {
+      //  imageUploadService.uploadImage();
         String debug = "";
         return redirect("/");
     }
 
+    @PostMapping("/avatar/upload")
+    public Object avatarUpload(@RequestParam("file") Long profileId, @RequestParam("file") MultipartFile multipartFile) throws IOException {
+        return imageUploadService.uploadAvatar(profileId, multipartFile);
+    }
+
+    @PostMapping("/profile/pic")
+    public Object upload(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+        return imageUploadService.uploadImage(multipartFile);
+    }
+
+//    @PostMapping("/profile/pic/{fileName}")
+//    public Object download(@PathVariable String fileName, HttpServletRequest request) throws Exception {
+//        return imageUploadService.downloadFile(fileName, request);
+//    }
 }
