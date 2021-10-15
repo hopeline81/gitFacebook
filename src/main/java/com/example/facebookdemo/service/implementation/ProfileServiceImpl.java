@@ -25,7 +25,7 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setEmail(registerDTO.getEmail());
         profile.setAddress(registerDTO.getAddress());
         profile.setAge(String.valueOf(registerDTO.getAge()));
-//        profile.setUserImage(imageUploadService.uploadImage());
+     //   profile.setPhoto(imageUploadService.uploadImage());
         profileRepository.save(profile);
         return profile;
     }
@@ -33,5 +33,10 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public Profile getProfile(String email) {
         return profileRepository.findFirstByEmail(email);
+    }
+
+    @Override
+    public Profile updateProfile(Profile profile) {
+        return null;
     }
 }

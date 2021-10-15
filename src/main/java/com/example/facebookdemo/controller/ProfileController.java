@@ -3,10 +3,12 @@ package com.example.facebookdemo.controller;
 import com.example.facebookdemo.dto.PostDTO;
 import com.example.facebookdemo.dto.RegisterDTO;
 import com.example.facebookdemo.entity.Profile;
+import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.ProfileRepository;
 import com.example.facebookdemo.service.implementation.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import java.util.List;
 
 @Controller
 public class ProfileController extends BaseController {
@@ -31,8 +32,8 @@ public class ProfileController extends BaseController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
-    public ModelAndView userProfile(){
-        List<Profile> profiles = profileRepository.findAll();
+    public ModelAndView userProfile(@AuthenticationPrincipal User user){
+       Profile profiles = profileRepository.findFirstByEmail(user.getEmail());
         return send("profile", "profiles", profiles);
     }
 
@@ -49,4 +50,5 @@ public class ProfileController extends BaseController {
         userService.register(registerDTO, postDTO);
         return redirect("post");
     }
+
 }
