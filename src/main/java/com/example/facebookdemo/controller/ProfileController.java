@@ -1,7 +1,6 @@
 package com.example.facebookdemo.controller;
 
-import com.example.facebookdemo.dto.PostDTO;
-import com.example.facebookdemo.dto.RegisterDTO;
+import com.example.facebookdemo.dto.UserDTO;
 import com.example.facebookdemo.entity.Profile;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.ProfileRepository;
@@ -39,15 +38,14 @@ public class ProfileController extends BaseController {
 
     @PreAuthorize("!isAuthenticated()")
     @PostMapping("/profile")
-    public ModelAndView profile(@Validated @ModelAttribute("user") RegisterDTO registerDTO,
-                              PostDTO postDTO
+    public ModelAndView profile(@Validated @ModelAttribute("user") UserDTO userDTO
             , BindingResult result
             , RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("user", registerDTO);
+            redirectAttributes.addFlashAttribute("user", userDTO);
             return redirect("profile");
         }
-        userService.register(registerDTO, postDTO);
+        userService.register(userDTO);
         return redirect("post");
     }
 

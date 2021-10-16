@@ -35,7 +35,8 @@ public class PostController extends BaseController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/post/add")
-    public ModelAndView createdPost(@Validated @ModelAttribute PostDTO postDTO, BindingResult result, @AuthenticationPrincipal User user, Image image){
+    public ModelAndView createdPost(@Validated @ModelAttribute PostDTO postDTO,
+                                    BindingResult result, @AuthenticationPrincipal User user, Image image){
         if(result.hasErrors()){
             return send("new-post");
         }

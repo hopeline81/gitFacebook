@@ -1,10 +1,5 @@
 package com.example.facebookdemo.dto;
 
-import com.example.facebookdemo.entity.Post;
-
-import java.awt.*;
-import java.util.List;
-
 public class ProfileDTO {
 
     private  String fullName;
@@ -16,6 +11,10 @@ public class ProfileDTO {
     private String address;
 
     private boolean isFullNamePublic;
+
+    private String password;
+
+    private String repeatPassword;
 
 //    private Image userImage;
 
@@ -60,6 +59,22 @@ public class ProfileDTO {
 
     public void setFullNamePublic(boolean fullNamePublic) {
         isFullNamePublic = fullNamePublic;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRepeatPassword() {
+        return repeatPassword;
+    }
+
+    public void setRepeatPassword(String repeatPassword) {
+        this.repeatPassword = repeatPassword;
     }
 
     //    public Image getUserImage() {

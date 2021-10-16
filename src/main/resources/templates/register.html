@@ -6,11 +6,11 @@
 </head>
 <body>
 <div class="container">
-    <form name="registration" class="registration-form" onsubmit="return formValidation()">
+    <form method="post" action="/register" class="registration-form" >
         <table>
             <tr>
-                <td><label for="name">Name:</label></td>
-                <td><input type="text" name="name" id="name" placeholder="your name" required></td>
+                <td><label for="username">Name:</label></td>
+                <td><input type="text" name="username" id="username" placeholder="your name" required></td>
             </tr>
             <tr>
                 <td><label for="email">Email:</label></td>
@@ -34,44 +34,46 @@
         </table>
     </form>
 </div>
-<script>
-    const name = document.getElementById("username");
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
-    const repeatPassword = document.getElementById("repeatPassword")
-    const age = document.getElementById("age");
-    function formValidation() {
-
-        if (name.value.length < 2 || name.value.length > 20) {
-            alert("Name length should be more than 2 and less than 21");
-            name.focus();
-            return false;
-        }
-
-        if (email.value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-            alert("Please enter a valid email!");
-            email.focus();
-            return false;
-        }
-        if (!password.value.match(/^.{5,15}$/)) {
-            alert("Password length must be between 5-15 characters!");
-            password.focus();
-            return false;
-        }
-        if (password.value === repeatPassword.value) {
-                document.getElementById('message').style.color = 'green';
-                document.getElementById('message').innerHTML = 'matching';
-        } else {
-                document.getElementById('message').style.color = 'red';
-                document.getElementById('message').innerHTML = 'not matching';
-        }
-
-        if(!age.value < 14){
-            alert("Age must be 14 or over");
-            age.focus();
-            return false;
-        }
-        return true;
-    }
-</script>
 </body>
+<!--<script>-->
+<!--    const name = document.getElementById("username");-->
+<!--    const email = document.getElementById("email");-->
+<!--    const password = document.getElementById("password");-->
+<!--    const repeatPassword = document.getElementById("repeatPassword")-->
+<!--    const age = document.getElementById("age");-->
+<!--    function formValidation() {-->
+
+<!--        if (name.value.length < 2 || name.value.length > 20) {-->
+<!--            alert("Name length should be more than 2 and less than 21");-->
+<!--            name.focus();-->
+<!--            return false;-->
+<!--        }-->
+
+<!--        if (email.value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {-->
+<!--            alert("Please enter a valid email!");-->
+<!--            email.focus();-->
+<!--            return false;-->
+<!--        }-->
+<!--        if (!password.value.match(/^.{5,15}$/)) {-->
+<!--            alert("Password length must be between 5-15 characters!");-->
+<!--            password.focus();-->
+<!--            return false;-->
+<!--        }-->
+<!--        if (password.value === repeatPassword.value) {-->
+<!--                document.getElementById('message').style.color = 'green';-->
+<!--                document.getElementById('message').innerHTML = 'matching';-->
+<!--        } else {-->
+<!--                document.getElementById('message').style.color = 'red';-->
+<!--                document.getElementById('message').innerHTML = 'not matching';-->
+<!--        }-->
+
+<!--        if(!age.value < 14){-->
+<!--            alert("Age must be 14 or over");-->
+<!--            age.focus();-->
+<!--            return false;-->
+<!--        }-->
+<!--        return true;-->
+<!--    }-->
+<!--</script>-->
+
+</html>

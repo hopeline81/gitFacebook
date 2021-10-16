@@ -5,7 +5,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class RegisterDTO {
+public class UserDTO {
 
     @NotBlank
     private  String username;
@@ -13,7 +13,8 @@ public class RegisterDTO {
     @NotBlank
     private  String email;
 
-    @NotBlank
+    private  String emailRepeat;
+
     private String address;
 
     @NotBlank
@@ -26,7 +27,7 @@ public class RegisterDTO {
     @Min(14)
     private Integer age;
 
-    public RegisterDTO() {
+    public UserDTO() {
     }
 
     public String getEmail() {
@@ -35,6 +36,14 @@ public class RegisterDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getEmailRepeat() {
+        return emailRepeat;
+    }
+
+    public void setEmailRepeat(String emailRepeat) {
+        this.emailRepeat = emailRepeat;
     }
 
     public String getAddress() {

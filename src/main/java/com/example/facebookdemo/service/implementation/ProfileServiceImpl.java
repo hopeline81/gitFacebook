@@ -1,15 +1,18 @@
 package com.example.facebookdemo.service.implementation;
 
-import com.example.facebookdemo.dto.RegisterDTO;
+import com.example.facebookdemo.dto.ProfileDTO;
+import com.example.facebookdemo.dto.UserDTO;
 import com.example.facebookdemo.entity.Profile;
-import com.example.facebookdemo.repository.PostRepository;
 import com.example.facebookdemo.repository.ProfileRepository;
 import com.example.facebookdemo.service.contrack.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProfileServiceImpl implements ProfileService {
+public class ProfileServiceImpl implements ProfileService  {
 
     private final ProfileRepository profileRepository;
 
@@ -19,12 +22,12 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Profile createProfile(RegisterDTO registerDTO) {
+    public Profile createProfile(UserDTO userDTO) {
         Profile profile = new Profile();
-        profile.setFullName(registerDTO.getUsername());
-        profile.setEmail(registerDTO.getEmail());
-        profile.setAddress(registerDTO.getAddress());
-        profile.setAge(String.valueOf(registerDTO.getAge()));
+        profile.setFullName(userDTO.getUsername());
+        profile.setEmail(userDTO.getEmail());
+        profile.setAddress(userDTO.getAddress());
+        profile.setAge(String.valueOf(userDTO.getAge()));
      //   profile.setPhoto(imageUploadService.uploadImage());
         profileRepository.save(profile);
         return profile;
@@ -35,8 +38,4 @@ public class ProfileServiceImpl implements ProfileService {
         return profileRepository.findFirstByEmail(email);
     }
 
-    @Override
-    public Profile updateProfile(Profile profile) {
-        return null;
-    }
 }
