@@ -6,23 +6,27 @@
 </head>
 <body>
 <div class="container">
-    <form name="registration" class="registration-form" onsubmit="return formValidation()">
+    <form method="post" action="/register" th:object="${user}" onsubmit="return formValidation()">
         <table>
             <tr>
-                <td><label for="name">Name:</label></td>
-                <td><input type="text" name="name" id="name" placeholder="your name" required></td>
+                <td><label for="username">Name:</label></td>
+                <td><input type="text" name="username" id="username" placeholder="your name" required></td>
             </tr>
             <tr>
                 <td><label for="email">Email:</label></td>
-                <td><input type="text" name="email" id="email" placeholder="your email" required></td>
+                <td><input type="email" name="email" id="email" placeholder="your email" required></td>
+            </tr>
+            <tr>
+                <td><label for="address">Address:</label></td>
+                <td><input type="text" name="address" id="address" placeholder="your address" required></td>
             </tr>
             <tr>
                 <td><label for="password">Password:</label></td>
                 <td><input type="password" name="password" id="password" required></td>
             </tr>
             <tr>
-                <td><label for="repeatPassword">Repeat Password:</label></td>
-                <td><input type="password" name="repeatPassword" id="repeatPassword" required></td>
+                <td><label for="passwordRepeat">Repeat Password:</label></td>
+                <td><input type="password" name="passwordRepeat" id="passwordRepeat" required></td>
             </tr>
             <tr>
                 <td><label for="age">Age:</label></td>
@@ -35,22 +39,27 @@
     </form>
 </div>
 <script>
-    const name = document.getElementById("username");
+    const username = document.getElementById("username");
     const email = document.getElementById("email");
+    const address = document.getElementById("address");
     const password = document.getElementById("password");
     const repeatPassword = document.getElementById("repeatPassword")
     const age = document.getElementById("age");
     function formValidation() {
 
-        if (name.value.length < 2 || name.value.length > 20) {
+        if (username.value.length < 2 || username.value.length > 20) {
             alert("Name length should be more than 2 and less than 21");
-            name.focus();
+            username.focus();
             return false;
         }
-
         if (email.value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
             alert("Please enter a valid email!");
             email.focus();
+            return false;
+        }
+        if (address.value.length < 2 || address.value.length > 20) {
+            alert("Address length should be more than 2 and less than 21");
+            address.focus();
             return false;
         }
         if (!password.value.match(/^.{5,15}$/)) {
@@ -75,3 +84,4 @@
     }
 </script>
 </body>
+</html>
