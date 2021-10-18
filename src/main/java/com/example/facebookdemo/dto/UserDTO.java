@@ -13,8 +13,10 @@ public class UserDTO {
     @NotBlank
     private  String email;
 
+    @NotBlank
     private  String emailRepeat;
 
+    @NotBlank
     private String address;
 
     @NotBlank

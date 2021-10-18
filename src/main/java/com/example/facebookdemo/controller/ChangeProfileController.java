@@ -33,12 +33,14 @@ public class ChangeProfileController extends BaseController{
         this.profileService = profileService;
     }
 
-        @GetMapping("/profile/update")
-    public ModelAndView viewDetails(@AuthenticationPrincipal User user, Model model) {
+        @GetMapping("/profileUpdate")
+    public ModelAndView viewDetails(@AuthenticationPrincipal User user,
+                                    @ModelAttribute("profile") UserDTO userDTO,
+                                    Model model) {
         return send("profile-update");
     }
 
-    @PostMapping("/profile/update")
+    @PostMapping("/profileUpdate")
     public ModelAndView saveDetails(@AuthenticationPrincipal User user,
                                     @ModelAttribute("profile") UserDTO userDTO,
                                     RedirectAttributes redirectAttributes) throws IOException{
@@ -53,8 +55,9 @@ public class ChangeProfileController extends BaseController{
 //        }
 //        profileService.updateProfile(user.getProfile());
         user.setProfile(changeProfileService.updateProfileDetails(user,user.getProfile(), userDTO));
+
         redirectAttributes.addFlashAttribute("message", "Your profile details is updated.");
-        return send("profile");
+        return redirect("profile");
     }
 
 }

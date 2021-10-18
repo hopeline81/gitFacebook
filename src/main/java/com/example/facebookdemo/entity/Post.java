@@ -14,7 +14,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "text_post")
+    @Column(name = "text_post" )
     private String textPost;
 
     @Column(name = "post_date")
@@ -26,8 +26,8 @@ public class Post {
     @OneToMany(targetEntity = Post.class)
     private List<Post> comments;
 
-    @OneToOne(targetEntity = Image.class)
-    private Image images;
+//    @OneToOne(targetEntity = Image.class)
+//    private Image images;
 
     public Post() {
     }
@@ -72,11 +72,11 @@ public class Post {
         this.comments = comments;
     }
 
-    public Image getImages() {
-        return images;
-    }
-
-    public void setImages(Image images) {
-        this.images = images;
-    }
+//    public Image getImages() {
+//        return images;
+//    }
+//
+//    public void setImages(Image images) {
+//        this.images = images;
+//    }
 }

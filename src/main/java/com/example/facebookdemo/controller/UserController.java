@@ -18,12 +18,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class UserController extends BaseController implements WebMvcConfigurer {
     private final UserService userService;
-    private final ProfileRepository profileRepository;
 
     @Autowired
-    public UserController(UserService userService, ProfileRepository profileRepository) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.profileRepository = profileRepository;
     }
 
     @PreAuthorize("!isAuthenticated()")
