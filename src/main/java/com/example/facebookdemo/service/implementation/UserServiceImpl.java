@@ -5,6 +5,7 @@ import com.example.facebookdemo.entity.Role;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.UserRepository;
 import com.example.facebookdemo.service.contrack.UserService;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -46,6 +47,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setAge(userDTO.getAge());
         user.setRegisterDate(LocalDateTime.now());
         user.setProfile(profileService.createProfile(userDTO));
+
+        String randomCode = RandomString.make(32);
+        user.setVerificationCode(randomCode);
 
         Set<Role> roles = new HashSet<>();
         roles.add(roleService.getUserRole());

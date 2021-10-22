@@ -17,7 +17,7 @@
 </form>
 <h1>Profile details</h1>
 <form method="post" action="/profile"  >
-    <tr th:each="profile : ${profiles}">
+    <tr th:each="profile : ${profileDTO}">
         <th><b>Email:</b></th>
         <td th:text="${profile.email}">
         </td>
@@ -36,7 +36,7 @@
     </tr>
 </form>
 <div>
-    <a th:href="@{profileUpdate}">Update profile details</a>
+    <a th:href="@{profile-update}">Update profile details</a>
 </div>
 <div>
     <a th:href="@{post/add}">Add post</a>

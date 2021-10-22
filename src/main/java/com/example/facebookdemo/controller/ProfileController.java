@@ -1,5 +1,6 @@
 package com.example.facebookdemo.controller;
 
+import com.example.facebookdemo.dto.ProfileDTO;
 import com.example.facebookdemo.dto.UserDTO;
 import com.example.facebookdemo.entity.Profile;
 import com.example.facebookdemo.entity.User;
@@ -32,8 +33,15 @@ public class ProfileController extends BaseController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
     public ModelAndView userProfile(@AuthenticationPrincipal User user){
-       Profile profiles = profileRepository.findFirstByEmail(user.getEmail());
-        return send("profile", "profiles", profiles);
+        User user1 = userService.loadUserByUsername(user.getEmail());
+        Profile profile = profileRepository.findFirstByEmail(user.getEmail());
+        ProfileDTO profileDTO = new ProfileDTO();
+        profileDTO.setEmail(user.getEmail());
+        profileDTO.setFullName(profile.getFullName());
+        profileDTO.setAge(Integer.parseInt(profile.getAge()));
+        profileDTO.setAddress(profile.getAddress());
+
+        return send("profile", "profileDTO", profileDTO);
     }
 
     @PreAuthorize("!isAuthenticated()")

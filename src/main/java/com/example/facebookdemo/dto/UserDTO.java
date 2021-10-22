@@ -14,9 +14,6 @@ public class UserDTO {
     private  String email;
 
     @NotBlank
-    private  String emailRepeat;
-
-    @NotBlank
     private String address;
 
     @NotBlank
@@ -38,14 +35,6 @@ public class UserDTO {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getEmailRepeat() {
-        return emailRepeat;
-    }
-
-    public void setEmailRepeat(String emailRepeat) {
-        this.emailRepeat = emailRepeat;
     }
 
     public String getAddress() {
