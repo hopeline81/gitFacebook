@@ -43,6 +43,7 @@ public class ProfileServiceImpl implements ProfileService  {
         Profile updatedProfile;
         if(profile.isPresent()){
             profile.get().setPhoto(avatarUrl);
+//            TODO fix
             updatedProfile = profileRepository.save(profile.get());
         }else {
             throw new IllegalArgumentException();

@@ -24,16 +24,16 @@ public class ImageController extends BaseController {
         this.imageUploadService = imageUploadService;
     }
 
-    @GetMapping("/image/upload")
-    public ModelAndView imageUpload() {
-        return send("upload");
-    }
-
-    @PostMapping("/image/upload")
-    public ModelAndView imageUpload(@ModelAttribute ImageDTO imageDTO) throws IOException {
-      //  imageUploadService.uploadImage();
-        return redirect("/");
-    }
+//    @GetMapping("/image/upload")
+//    public ModelAndView imageUpload() {
+//        return send("upload");
+//    }
+//
+//    @PostMapping("/image/upload")
+//    public ModelAndView imageUpload(@ModelAttribute ImageDTO imageDTO) throws IOException {
+//      //  imageUploadService.uploadImage();
+//        return redirect("/");
+//    }
 
     @PostMapping("/avatar/upload")
     public Object avatarUpload(@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile multipartFile) throws IOException {
@@ -41,10 +41,10 @@ public class ImageController extends BaseController {
         return imageUploadService.uploadAvatar(profileId, multipartFile);
     }
 
-    @PostMapping("/profile/pic")
-    public Object upload(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-        return imageUploadService.uploadImage(multipartFile);
-    }
+//    @PostMapping("/profile/pic")
+//    public Object upload(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+//        return imageUploadService.uploadImage(multipartFile);
+//    }
 
 //    @PostMapping("/profile/pic/{fileName}")
 //    public Object download(@PathVariable String fileName, HttpServletRequest request) throws Exception {

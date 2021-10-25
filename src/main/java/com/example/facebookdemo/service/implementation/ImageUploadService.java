@@ -20,7 +20,7 @@ import java.util.*;
 public class ImageUploadService implements ImageService {
 
     private FirebaseStrategy firebaseStrategy;
-    String bucketName = "images";
+    String bucketName = "facebook-nadezhda.appspot.com";
     private final ImageRepository imageRepository;
     private final ProfileServiceImpl profileService;
 
