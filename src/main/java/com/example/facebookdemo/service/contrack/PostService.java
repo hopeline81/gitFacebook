@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface PostService {
 
-    Post save(PostDTO postDTO, User user);
+    Post save(PostDTO postDTO, User user, Image image);
     List<Post> getPosts();
 }

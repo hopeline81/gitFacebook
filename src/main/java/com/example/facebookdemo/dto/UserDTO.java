@@ -5,7 +5,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class RegisterDTO {
+public class UserDTO {
 
     @NotBlank
     private  String username;
@@ -26,7 +26,7 @@ public class RegisterDTO {
     @Min(14)
     private Integer age;
 
-    public RegisterDTO() {
+    public UserDTO() {
     }
 
     public String getUsername() {

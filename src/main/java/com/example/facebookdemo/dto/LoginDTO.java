@@ -1,6 +1,7 @@
 package com.example.facebookdemo.dto;
 
 public class LoginDTO {
+
     private String email;
     private String password;
 

@@ -59,7 +59,11 @@
             <artifactId>firebase-admin</artifactId>
             <version>8.1.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok.ast</artifactId>
+            <version>0.2</version>
+        </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
@@ -70,6 +74,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.4</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>

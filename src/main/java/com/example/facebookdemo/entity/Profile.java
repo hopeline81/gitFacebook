@@ -1,8 +1,6 @@
 package com.example.facebookdemo.entity;
 
 import javax.persistence.*;
-import java.awt.*;
-import java.util.List;
 
 @Entity
 @Table(name = "user_profile")
@@ -25,10 +23,14 @@ public class Profile {
     private String age;
 
     @OneToOne(targetEntity = Image.class)
-    private Image image;
+    private String photo;
 
-//    @OneToOne(targetEntity = Image.class, optional = false)
-//    private Image userImage;
+    @Transient
+    public String getPhotoImagePath() {
+        if (photo == null || id == null) return null;
+
+        return "profile-photo/" + id + "/" + photo;
+    }
 
     public Profile() {
     }
@@ -73,11 +75,12 @@ public class Profile {
         this.age = age;
     }
 
-    public Image getImage() {
-        return image;
+
+    public String getPhoto() {
+        return photo;
     }
 
-    public void setImage(Image userImage) {
-        this.image = image;
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

@@ -20,11 +20,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post save (PostDTO postDTO, User user) {
+    public Post save(PostDTO postDTO, User user, Image image) {
         Post post = new Post();
         post.setTextPost(postDTO.getText());
         post.setPostDate(LocalDateTime.now(ZoneOffset.UTC));
         post.setUser(user);
+
+//        post.setImages(image);
+
         return postRepository.save(post);
     }
 

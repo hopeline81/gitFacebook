@@ -20,7 +20,7 @@ import java.util.*;
 public class ImageUploadService implements ImageService {
 
     private FirebaseStrategy firebaseStrategy;
-    String bucketName = "Facebook-Nadezhda";
+    String bucketName = "images";
     private final ImageRepository imageRepository;
     private final ProfileServiceImpl profileService;
 
@@ -56,7 +56,7 @@ public class ImageUploadService implements ImageService {
         Image image = new Image();
         image.setImageUrl(avatarUrl);
         Image storedImage = imageRepository.save(image);
-        profileService.updateAvatar(profileId,storedImage);
+        profileService.updateAvatar(profileId, storedImage.getImageUrl());
 
         return avatarUrl;
     }

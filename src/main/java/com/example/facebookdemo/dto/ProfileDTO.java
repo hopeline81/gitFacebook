@@ -1,11 +1,6 @@
 package com.example.facebookdemo.dto;
 
-import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.User;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.awt.*;
-import java.util.List;
 
 public class ProfileDTO {
 
