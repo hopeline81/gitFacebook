@@ -2,9 +2,9 @@ package com.example.facebookdemo.controller;
 
 import com.example.facebookdemo.dto.ProfileDTO;
 import com.example.facebookdemo.dto.UserDTO;
-import com.example.facebookdemo.entity.Profile;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.ProfileRepository;
+import com.example.facebookdemo.service.contrack.ProfileService;
 import com.example.facebookdemo.service.implementation.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,25 +21,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class ProfileController extends BaseController {
 
-    private ProfileRepository profileRepository;
     private UserServiceImpl userService;
+    private final ProfileService profileService;
 
     @Autowired
-    public ProfileController(ProfileRepository profileRepository, UserServiceImpl userService) {
-        this.profileRepository = profileRepository;
+    public ProfileController(UserServiceImpl userService, ProfileService profileService) {
         this.userService = userService;
+        this.profileService = profileService;
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
-    public ModelAndView userProfile(@AuthenticationPrincipal User user){
-        User user1 = userService.loadUserByUsername(user.getEmail());
-        Profile profile = profileRepository.findFirstByEmail(user.getEmail());
-        ProfileDTO profileDTO = new ProfileDTO();
-        profileDTO.setEmail(user.getEmail());
-        profileDTO.setFullName(profile.getFullName());
-        profileDTO.setAge(Integer.parseInt(profile.getAge()));
-        profileDTO.setAddress(profile.getAddress());
+    public ModelAndView userProfile(@AuthenticationPrincipal User user) {
+
+        ProfileDTO profileDTO = profileService.createNewProfileDTO(user.getEmail());
 
         return send("profile", "profileDTO", profileDTO);
     }

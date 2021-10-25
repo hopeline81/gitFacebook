@@ -41,9 +41,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
     }
 
     public void updatePassword(User user, String newPassword) {
-        String encodedPassword = bCryptPasswordEncoder.encode(newPassword);
-        user.setPassword(encodedPassword);
-
+        user.setPassword(newPassword);
         user.setResetPasswordToken(null);
         userRepository.save(user);
     }
@@ -76,5 +74,10 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
         helper.setSubject(subject);
         helper.setText(content, true);
         mailSender.send(message);
+    }
+
+    @Override
+    public String hashPassword(String password) {
+        return bCryptPasswordEncoder.encode(password);
     }
 }

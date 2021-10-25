@@ -6,8 +6,6 @@ import com.example.facebookdemo.service.implementation.UtilityGetURL;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
@@ -23,12 +20,10 @@ import java.io.UnsupportedEncodingException;
 @Controller
 public class ForgotPasswordController extends BaseController {
 
-    private JavaMailSender mailSender;
     private ForgotPasswordService forgotPasswordService;
 
     @Autowired
-    public ForgotPasswordController(JavaMailSender mailSender, ForgotPasswordService forgotPasswordService) {
-        this.mailSender = mailSender;
+    public ForgotPasswordController(ForgotPasswordService forgotPasswordService) {
         this.forgotPasswordService = forgotPasswordService;
     }
 
@@ -78,11 +73,15 @@ public class ForgotPasswordController extends BaseController {
         if (user == null) {
             model.addAttribute("title", "Reset your password");
             model.addAttribute("message", "Invalid Token");
-            return redirect("message") ;
-        } else {
-            forgotPasswordService.updatePassword(user, password);
-            model.addAttribute("message", "You have successfully changed your password.");
+            return redirect("message");
         }
-        return redirect("profile");
+
+        String encodedPassword = forgotPasswordService.hashPassword(password);
+        forgotPasswordService.updatePassword(user, encodedPassword);
+        model.addAttribute("message", "You have successfully changed your password.");
+
+        request.login(user.getEmail(), password);
+
+        return redirect("profile", "user", user);
     }
 }

@@ -51,7 +51,6 @@ public class ChangeProfileController extends BaseController {
     @GetMapping("/profile-update")
     public ModelAndView viewDetails(@AuthenticationPrincipal User user) {
 
-
         UserDTO userDTO = userEmailService.createNewUserDTO(user);
 
         return send("profile-update", "user", userDTO);

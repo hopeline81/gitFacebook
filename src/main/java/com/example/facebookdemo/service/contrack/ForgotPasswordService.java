@@ -10,4 +10,6 @@ public interface ForgotPasswordService {
     void updatePassword(User user, String newPassword);
     User getByResetPasswordToken(String token);
     void sendEmail(String recipientEmail, String link) throws MessagingException, UnsupportedEncodingException;
+
+    String hashPassword(String password);
 }
