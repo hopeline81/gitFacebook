@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Update</title>
+</head>
+<body>
+<div th:if="${error != null}">
+    <p class="text-danger">[[${error}]]</p>
+</div>
+<div th:if="${message != null}">
+    <p class="text-warning">[[${message}]]</p>
+</div>
+<form th:action="@{/profile-update}" method="post" th:object="${user}" enctype="multipart/form-data">
+
+    <table>
+        <tr>
+            <td><label for="username">Full name:</label></td>
+            <td><input type="text" name="username" id="username" th:field="*{username}" placeholder="your name" ></td>
+        </tr>
+        <tr>
+        <td><label for="email">Email:</label></td>
+        <td><input type="text" name="email" id="email" th:field="*{email}" placeholder="your email" ></td>
+    </tr>
+        <tr>
+            <td><label for="address">Address:</label></td>
+            <td><input type="text" name="address" id="address" th:field="*{address}" placeholder="your address" ></td>
+        </tr>
+        <tr>
+            <td><label for="password">Password:</label></td>
+            <td><input type="password" name="password" id="password" ></td>
+        </tr>
+        <tr>
+            <td><label for="passwordRepeat">Repeat Password:</label></td>
+            <td><input type="password" name="passwordRepeat" id="passwordRepeat"></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" class="submit" value="save" /></td>
+         </tr>
+    </table>
+</form>
+</body>
+</html>

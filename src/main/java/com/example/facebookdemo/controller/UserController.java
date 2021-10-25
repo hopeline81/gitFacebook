@@ -1,7 +1,6 @@
 package com.example.facebookdemo.controller;
 
-import com.example.facebookdemo.dto.PostDTO;
-import com.example.facebookdemo.dto.RegisterDTO;
+import com.example.facebookdemo.dto.UserDTO;
 import com.example.facebookdemo.repository.ProfileRepository;
 import com.example.facebookdemo.service.contrack.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +18,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class UserController extends BaseController implements WebMvcConfigurer {
     private final UserService userService;
-    private final ProfileRepository profileRepository;
 
     @Autowired
-    public UserController(UserService userService, ProfileRepository profileRepository) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.profileRepository = profileRepository;
     }
 
     @PreAuthorize("!isAuthenticated()")
@@ -35,29 +32,27 @@ public class UserController extends BaseController implements WebMvcConfigurer {
 
     @PreAuthorize("!isAuthenticated()")
     @PostMapping("/login")
-    public ModelAndView login(@Validated @ModelAttribute("user") RegisterDTO registerDTO,
-                              PostDTO postDTO
+    public ModelAndView login(@Validated @ModelAttribute("user") UserDTO userDTO
             , BindingResult result
             , RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("user", registerDTO);
+            redirectAttributes.addFlashAttribute("user", userDTO);
             return redirect("forgot_password");
         }
-        userService.register(registerDTO, postDTO);
+        userService.register(userDTO);
         return redirect("profile");
     }
 
     @PreAuthorize("!isAuthenticated()")
     @PostMapping("/register")
-    public ModelAndView register(@Validated @ModelAttribute("user") RegisterDTO registerDTO
-            , PostDTO postDTO
+    public ModelAndView register(@Validated @ModelAttribute("user") UserDTO userDTO
             , BindingResult result
             , RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("user", registerDTO);
+            redirectAttributes.addFlashAttribute("user", userDTO);
             return redirect("register");
         }
-        userService.register(registerDTO, postDTO);
+        userService.register(userDTO);
         return redirect("login");
     }
 
@@ -65,11 +60,5 @@ public class UserController extends BaseController implements WebMvcConfigurer {
     @GetMapping("/register")
     public ModelAndView register() {
         return send("register");
-    }
-
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/my-page")
-    public ModelAndView myPage() {
-        return send("profile");
     }
 }

@@ -25,7 +25,7 @@ public class PostServiceImpl implements PostService {
         post.setTextPost(postDTO.getText());
         post.setPostDate(LocalDateTime.now(ZoneOffset.UTC));
         post.setUser(user);
-        post.setImages(image);
+//        post.setImages(image);
         return postRepository.save(post);
     }
 

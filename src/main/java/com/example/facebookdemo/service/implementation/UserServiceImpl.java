@@ -1,12 +1,11 @@
 package com.example.facebookdemo.service.implementation;
 
-import com.example.facebookdemo.dto.PostDTO;
-import com.example.facebookdemo.dto.RegisterDTO;
+import com.example.facebookdemo.dto.UserDTO;
 import com.example.facebookdemo.entity.Role;
 import com.example.facebookdemo.entity.User;
-import com.example.facebookdemo.exceptions.UserNotFoundException;
 import com.example.facebookdemo.repository.UserRepository;
 import com.example.facebookdemo.service.contrack.UserService;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,6 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
@@ -35,24 +35,35 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User register(RegisterDTO registerDTO, PostDTO postDTO) {
-        if (!registerDTO.getPasswordRepeat().equals(registerDTO.getPassword())) {
+    public User register(UserDTO userDTO) {
+        if (!userDTO.getPasswordRepeat().equals(userDTO.getPassword())) {
             throw new IllegalArgumentException("Passwords are different");
         }
 
         User user = new User();
-        user.setUsername(registerDTO.getUsername());
-        user.setEmail(registerDTO.getEmail());
-        user.setPassword(bCryptPasswordEncoder.encode(registerDTO.getPassword()));
-        user.setAge(registerDTO.getAge());
+        user.setUsername(userDTO.getUsername());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+        user.setAge(userDTO.getAge());
         user.setRegisterDate(LocalDateTime.now());
-        user.setProfile(profileService.createProfile(registerDTO));
+        user.setProfile(profileService.createProfile(userDTO));
+
+        String randomCode = RandomString.make(32);
+        user.setVerificationCode(randomCode);
 
         Set<Role> roles = new HashSet<>();
         roles.add(roleService.getUserRole());
         user.setRoles(roles);
         userRepository.save(user);
         return user;
+    }
+
+    @Override
+    public void updatePassword(User user, String newPassword) {
+        userRepository.findById(user.getId()).ifPresent(u -> {
+            user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        });
+        userRepository.save(user);
     }
 
     @Override
