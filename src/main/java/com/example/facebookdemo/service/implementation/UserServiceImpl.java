@@ -1,6 +1,8 @@
 package com.example.facebookdemo.service.implementation;
 
+import com.example.facebookdemo.dto.ProfileDTO;
 import com.example.facebookdemo.dto.UserDTO;
+import com.example.facebookdemo.entity.Profile;
 import com.example.facebookdemo.entity.Role;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.UserRepository;
@@ -56,6 +58,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setRoles(roles);
         userRepository.save(user);
         return user;
+    }
+
+    @Override
+    public UserDTO createNewUserDTO(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUsername(user.getUsername());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setAddress(user.getProfile().getAddress());
+        return userDTO;
     }
 
     @Override

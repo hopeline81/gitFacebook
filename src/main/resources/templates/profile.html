@@ -6,19 +6,17 @@
 </head>
 <body>
 <h2 th:if="${username != null}" th:text="'Welcome, ' + ${username}"></h2>
-<!--<<<<<<< HEAD-->
+
 <!--<div>-->
 <!--    <img th:if="${userImage == null}" th:src="@{'/defaultImages/defaultProfileImage.png'}" th:height="52" th:width="52"/>-->
 <!--     <span th:unless="${userImage != null }" th:href="@{${imageUrl}}" th:height="52" th:width="52"></span>-->
 <!--</div>-->
-<!--<form method="post" action="/avatar/upload" enctype="multipart/form-data">-->
-<!--    <input type="file" name="image"/>-->
-<!--=======-->
+
 <img th:if="${userImage == null}" th:src="@{'/defaultImages/defaultProfileImage.png'}" th:height="52"
      th:width="52">
 <!--<img th:src="@{${profile.photoImagePath}}" />-->
 </form>
-<form method="post" action="/avatar/upload" enctype="multipart/form-data">
+<form method="post" action="/avatar_upload" enctype="multipart/form-data">
     <input type="file" name="file"/>
     <input type="submit" value="Upload">
 </form>

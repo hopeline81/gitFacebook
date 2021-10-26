@@ -1,7 +1,9 @@
 package com.example.facebookdemo.controller;
 
+import com.example.facebookdemo.dto.UserDTO;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.service.contrack.ForgotPasswordService;
+import com.example.facebookdemo.service.contrack.UserService;
 import com.example.facebookdemo.service.implementation.UtilityGetURL;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +23,12 @@ import java.io.UnsupportedEncodingException;
 public class ForgotPasswordController extends BaseController {
 
     private ForgotPasswordService forgotPasswordService;
+    private UserService userService;
 
     @Autowired
-    public ForgotPasswordController(ForgotPasswordService forgotPasswordService) {
+    public ForgotPasswordController(ForgotPasswordService forgotPasswordService, UserService userService) {
         this.forgotPasswordService = forgotPasswordService;
+        this.userService = userService;
     }
 
     @GetMapping("/forgot_password")
@@ -81,8 +85,8 @@ public class ForgotPasswordController extends BaseController {
         model.addAttribute("message", "You have successfully changed your password.");
 
         request.login(user.getEmail(), password);
+        UserDTO userDTO = userService.createNewUserDTO(user);
 
-// TODO userDTO
-        return redirect("profile", "user", user);
+        return redirect("profile", "user", userDTO);
     }
 }

@@ -23,13 +23,13 @@ public class Profile {
     private String age;
 
     @OneToOne(targetEntity = Image.class)
-    private String photo;
+    private String avatarURL;
 
     @Transient
     public String getPhotoImagePath() {
-        if (photo == null || id == null) return null;
+        if (avatarURL == null || id == null) return null;
 
-        return "profile-photo/" + id + "/" + photo;
+        return "profile-photo/" + id + "/" + avatarURL;
     }
 
     public Profile() {
@@ -75,12 +75,11 @@ public class Profile {
         this.age = age;
     }
 
-
-    public String getPhoto() {
-        return photo;
+    public String getAvatarURL() {
+        return avatarURL;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setAvatarURL(String avatarURL) {
+        this.avatarURL = avatarURL;
     }
 }

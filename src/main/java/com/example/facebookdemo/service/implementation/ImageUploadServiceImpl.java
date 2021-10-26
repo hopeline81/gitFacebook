@@ -17,7 +17,7 @@ import java.nio.file.Files;
 import java.util.*;
 
 @Service
-public class ImageUploadService implements ImageService {
+public class ImageUploadServiceImpl implements ImageService {
 
     private FirebaseStrategy firebaseStrategy;
     String bucketName = "facebook-nadezhda.appspot.com";
@@ -25,7 +25,7 @@ public class ImageUploadService implements ImageService {
     private final ProfileServiceImpl profileService;
 
     @Autowired
-    public ImageUploadService(FirebaseStrategy firebaseStrategy, ImageRepository imageRepository, ProfileServiceImpl profileService) {
+    public ImageUploadServiceImpl(FirebaseStrategy firebaseStrategy, ImageRepository imageRepository, ProfileServiceImpl profileService) {
         this.firebaseStrategy = firebaseStrategy;
         this.imageRepository = imageRepository;
         this.profileService = profileService;
@@ -77,6 +77,4 @@ public class ImageUploadService implements ImageService {
     public List<Image> allImages() {
         return null;
     }
-
-
 }

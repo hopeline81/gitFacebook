@@ -7,11 +7,9 @@ import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.ProfileRepository;
 import com.example.facebookdemo.repository.UserRepository;
 import com.example.facebookdemo.service.contrack.ProfileService;
-import com.example.facebookdemo.service.contrack.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -42,7 +40,7 @@ public class ProfileServiceImpl implements ProfileService  {
         Optional<Profile> profile = profileRepository.findById(profileId);
         Profile updatedProfile;
         if(profile.isPresent()){
-            profile.get().setPhoto(avatarUrl);
+            profile.get().setAvatarURL(avatarUrl);
 //            TODO fix
             updatedProfile = profileRepository.save(profile.get());
         }else {
