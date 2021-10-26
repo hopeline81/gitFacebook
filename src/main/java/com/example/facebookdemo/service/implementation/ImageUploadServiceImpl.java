@@ -2,6 +2,7 @@ package com.example.facebookdemo.service.implementation;
 
 import com.example.facebookdemo.dto.ImageDTO;
 import com.example.facebookdemo.entity.Image;
+import com.example.facebookdemo.entity.Profile;
 import com.example.facebookdemo.firebase.FirebaseStrategy;
 import com.example.facebookdemo.repository.ImageRepository;
 import com.example.facebookdemo.service.contrack.ImageService;
@@ -38,6 +39,7 @@ public class ImageUploadServiceImpl implements ImageService {
         return image;
     }
 
+    @Override
     public String uploadImage(MultipartFile multipartFile) throws IOException {
         File file = convertMultiPartToFile(multipartFile);
         String objectName = generateFileName(multipartFile);
@@ -51,14 +53,13 @@ public class ImageUploadServiceImpl implements ImageService {
         return objectName;
     }
 
-    public String uploadAvatar(Long profileId,MultipartFile multipartFile) throws IOException{
+    @Override
+    public Profile uploadAvatar(Long profileId, MultipartFile multipartFile) throws IOException{
         String avatarUrl = uploadImage(multipartFile);
         Image image = new Image();
         image.setImageUrl(avatarUrl);
         Image storedImage = imageRepository.save(image);
-        profileService.updateAvatar(profileId, storedImage.getImageUrl());
-
-        return avatarUrl;
+        return profileService.updateAvatar(profileId, storedImage);
     }
 
     private File convertMultiPartToFile(MultipartFile file) throws IOException {

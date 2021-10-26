@@ -31,4 +31,11 @@ public class Image {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+//    @Transient
+//    public String getImageUrl() {
+//        if (avatarURL == null || id == null) return null;
+//
+//        return "profile-photo/" + id + "/" + avatarURL;
+//    }
 }

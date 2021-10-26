@@ -2,6 +2,7 @@ package com.example.facebookdemo.service.implementation;
 
 import com.example.facebookdemo.dto.ProfileDTO;
 import com.example.facebookdemo.dto.UserDTO;
+import com.example.facebookdemo.entity.Image;
 import com.example.facebookdemo.entity.Profile;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.ProfileRepository;
@@ -36,12 +37,11 @@ public class ProfileServiceImpl implements ProfileService  {
         return profile;
     }
 
-    public Profile updateAvatar(Long profileId, String avatarUrl){
+    public Profile updateAvatar(Long profileId, Image avatarImage){
         Optional<Profile> profile = profileRepository.findById(profileId);
         Profile updatedProfile;
         if(profile.isPresent()){
-            profile.get().setAvatarURL(avatarUrl);
-//            TODO fix
+            profile.get().setAvatarImage(avatarImage);
             updatedProfile = profileRepository.save(profile.get());
         }else {
             throw new IllegalArgumentException();
@@ -64,6 +64,7 @@ public class ProfileServiceImpl implements ProfileService  {
         profileDTO.setFullName(profile.getFullName());
         profileDTO.setAge(Integer.parseInt(profile.getAge()));
         profileDTO.setAddress(profile.getAddress());
+        profileDTO.setImageUrl(profile.getAvatarImage().getImageUrl());
 
         return profileDTO;
     }
