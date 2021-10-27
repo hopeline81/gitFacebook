@@ -13,6 +13,12 @@ public class Image {
     @Column(name = "urls")
     private String imageUrl;
 
+    @Column(name = "description")
+    private String description;
+
+    @ManyToOne(targetEntity = User.class, optional = false)
+    private User user;
+
     public Image() {
     }
 
@@ -32,10 +38,19 @@ public class Image {
         this.imageUrl = imageUrl;
     }
 
-//    @Transient
-//    public String getImageUrl() {
-//        if (avatarURL == null || id == null) return null;
-//
-//        return "profile-photo/" + id + "/" + avatarURL;
-//    }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

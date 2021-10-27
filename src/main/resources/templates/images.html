@@ -9,14 +9,14 @@
     <a th:href="@{profile}">Back to profile page</a>
 </div>
 
-<form method="post" action="/posts">
-    <tr th:each="post : ${posts}">
-        <td th:text="${post.textPost}">
+<form method="post" action="/images">
+    <tr th:each="image : ${imagess}">
+        <td th:text="${image.imageUrl}">
         </td>
         <br/>
         <td></td>
         <th><b>Post date</b></th>
-        <td th:text="${post.postDate}">
+        <td th:text="${image.description}">
         </td>
         <br/>
     </tr>

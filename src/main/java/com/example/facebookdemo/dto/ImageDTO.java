@@ -1,5 +1,6 @@
 package com.example.facebookdemo.dto;
 
+import com.example.facebookdemo.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
 public class ImageDTO {
@@ -7,6 +8,8 @@ public class ImageDTO {
     private MultipartFile image;
 
     private String description;
+
+    private User user;
 
     public ImageDTO() {
     }
@@ -25,5 +28,13 @@ public class ImageDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

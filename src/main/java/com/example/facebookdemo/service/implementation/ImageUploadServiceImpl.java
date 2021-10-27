@@ -1,9 +1,11 @@
 package com.example.facebookdemo.service.implementation;
 
 import com.example.facebookdemo.entity.Image;
+import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.Profile;
+import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.ImageRepository;
-import com.example.facebookdemo.service.contrack.ImageService;
+import com.example.facebookdemo.service.contrack.ImageUploadService;
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.BlobId;
@@ -19,12 +21,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
-public class ImageUploadServiceImpl implements ImageService {
+public class ImageUploadServiceImpl implements ImageUploadService {
 
     String BUCKET_NAME = "facebook-nadezhda.appspot.com";
     private final ImageRepository imageRepository;
@@ -51,13 +52,35 @@ public class ImageUploadServiceImpl implements ImageService {
     }
 
     @Override
-    public Profile uploadAvatar(Long profileId, MultipartFile multipartFile) throws IOException{
+    public Profile uploadAvatar(Long profileId, MultipartFile multipartFile) throws IOException {
         String avatarUrl = uploadImage(multipartFile);
         Image image = new Image();
         image.setImageUrl(avatarUrl);
 //TODO check saving
         Image storedImage = imageRepository.save(image);
         return profileService.updateAvatar(profileId, storedImage);
+    }
+
+    @Override
+    public List<Image> uploadUserImage(User user, MultipartFile multipartFile, String imageText) throws IOException {
+        String imageUrl = uploadImage(multipartFile);
+        Image image = new Image();
+        image.setUser(user);
+        image.setImageUrl(imageUrl);
+        image.setDescription(imageText);
+
+//TODO check saving
+        Image storedImage = imageRepository.save(image);
+        List<Image> userImages = new ArrayList<>();
+        userImages.add(storedImage);
+        return userImages;
+    }
+
+    @Override
+    public List<Image> getImages(User user) {
+        Optional<Image> images = imageRepository.findAllByUser(user);
+        return images.stream()
+                .collect(Collectors.toList());
     }
 
     private File convertMultiPartToFile(MultipartFile file) throws IOException {
@@ -70,10 +93,5 @@ public class ImageUploadServiceImpl implements ImageService {
 
     private String generateFileName(MultipartFile multiPart) {
         return new Date().getTime() + "-" + Objects.requireNonNull(multiPart.getOriginalFilename()).replace(" ", "_");
-    }
-
-    @Override
-    public List<Image> allImages() {
-        return null;
     }
 }

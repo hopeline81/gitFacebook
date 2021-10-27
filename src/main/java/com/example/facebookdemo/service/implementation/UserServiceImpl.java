@@ -1,6 +1,8 @@
 package com.example.facebookdemo.service.implementation;
 
 import com.example.facebookdemo.dto.UserDTO;
+import com.example.facebookdemo.entity.Image;
+import com.example.facebookdemo.entity.Profile;
 import com.example.facebookdemo.entity.Role;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.UserRepository;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
