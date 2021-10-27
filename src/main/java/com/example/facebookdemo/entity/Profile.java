@@ -19,9 +19,6 @@ public class Profile {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "age")
-    private String age;
-
     @OneToOne(targetEntity = Image.class)
     private Image avatarImage;
 
@@ -60,14 +57,6 @@ public class Profile {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getAge() {
-        return age;
-    }
-
-    public void setAge(String age) {
-        this.age = age;
     }
 
     public Image getAvatarImage() {

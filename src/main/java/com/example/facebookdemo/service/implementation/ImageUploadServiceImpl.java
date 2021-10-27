@@ -1,49 +1,46 @@
 package com.example.facebookdemo.service.implementation;
 
-import com.example.facebookdemo.dto.ImageDTO;
 import com.example.facebookdemo.entity.Image;
 import com.example.facebookdemo.entity.Profile;
-import com.example.facebookdemo.firebase.FirebaseStrategy;
 import com.example.facebookdemo.repository.ImageRepository;
 import com.example.facebookdemo.service.contrack.ImageService;
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.storage.*;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ImageUploadServiceImpl implements ImageService {
 
-    private FirebaseStrategy firebaseStrategy;
-    String bucketName = "facebook-nadezhda.appspot.com";
+    String BUCKET_NAME = "facebook-nadezhda.appspot.com";
     private final ImageRepository imageRepository;
     private final ProfileServiceImpl profileService;
 
     @Autowired
-    public ImageUploadServiceImpl(FirebaseStrategy firebaseStrategy, ImageRepository imageRepository, ProfileServiceImpl profileService) {
-        this.firebaseStrategy = firebaseStrategy;
+    public ImageUploadServiceImpl(ImageRepository imageRepository, ProfileServiceImpl profileService) {
         this.imageRepository = imageRepository;
         this.profileService = profileService;
-    }
-
-    @Override
-    public Image save(ImageDTO imageDto) throws IOException {
-        Image image = new Image();
-        image.setImageUrl(uploadImage(imageDto.getImage()));
-        return image;
     }
 
     @Override
     public String uploadImage(MultipartFile multipartFile) throws IOException {
         File file = convertMultiPartToFile(multipartFile);
         String objectName = generateFileName(multipartFile);
-        BlobId blobId = BlobId.of(bucketName, objectName);
+        BlobId blobId = BlobId.of(BUCKET_NAME, objectName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
 
         Credentials credentials = GoogleCredentials.fromStream(new FileInputStream("ServiceAccountKey.json"));
@@ -58,6 +55,7 @@ public class ImageUploadServiceImpl implements ImageService {
         String avatarUrl = uploadImage(multipartFile);
         Image image = new Image();
         image.setImageUrl(avatarUrl);
+//TODO check saving
         Image storedImage = imageRepository.save(image);
         return profileService.updateAvatar(profileId, storedImage);
     }

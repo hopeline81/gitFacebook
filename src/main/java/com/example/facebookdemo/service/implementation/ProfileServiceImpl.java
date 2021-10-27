@@ -32,7 +32,6 @@ public class ProfileServiceImpl implements ProfileService  {
         profile.setFullName(userDTO.getUsername());
         profile.setEmail(userDTO.getEmail());
         profile.setAddress(userDTO.getAddress());
-        profile.setAge(String.valueOf(userDTO.getAge()));
         profileRepository.save(profile);
         return profile;
     }
@@ -62,7 +61,7 @@ public class ProfileServiceImpl implements ProfileService  {
         ProfileDTO profileDTO = new ProfileDTO();
         profileDTO.setEmail(user1.getEmail());
         profileDTO.setFullName(profile.getFullName());
-        profileDTO.setAge(Integer.parseInt(profile.getAge()));
+        profileDTO.setAge(user1.getAge());
         profileDTO.setAddress(profile.getAddress());
         profileDTO.setImageUrl(profile.getAvatarImage().getImageUrl());
 

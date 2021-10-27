@@ -8,7 +8,10 @@ import com.example.facebookdemo.service.contrack.PostService;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -25,13 +28,13 @@ public class PostServiceImpl implements PostService {
         post.setTextPost(postDTO.getText());
         post.setPostDate(LocalDateTime.now(ZoneOffset.UTC));
         post.setUser(user);
-
-//        post.setImages(image);
-
         return postRepository.save(post);
     }
 
     @Override
-    public List<Post> getPosts() {return postRepository.findAll();}
-
+    public List<Post> getPosts(User user) {
+        Optional<Post> posts = postRepository.findAllByUser(user);
+        return posts.stream()
+                .collect(Collectors.toList());
+    }
 }

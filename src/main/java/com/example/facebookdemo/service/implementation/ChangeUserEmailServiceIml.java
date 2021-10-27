@@ -68,6 +68,7 @@ public class ChangeUserEmailServiceIml implements ChangeUserEmailService {
         userDTO1.setUsername(user1.getUsername());
         userDTO1.setEmail(user1.getEmail());
         userDTO1.setAddress(user1.getProfile().getAddress());
+        userDTO1.setAge(user1.getAge());
         return userDTO1;
     }
 }

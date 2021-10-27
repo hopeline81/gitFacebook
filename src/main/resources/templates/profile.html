@@ -6,10 +6,10 @@
 </head>
 <body>
 <h2 th:if="${username != null}" th:text="'Welcome, ' + ${username}"></h2>
-<div >
+    <div >
       <img th:src="@{'https://firebasestorage.googleapis.com/v0/b/facebook-nadezhda.appspot.com/o/' + ${profileDTO.imageUrl} + '?alt=media'}"
              th:height="52" th:width="52"/>
-</div>
+    </div>
 </form>
 <form method="post" action="/avatar_upload" enctype="multipart/form-data">
     <input type="file" name="file"/>

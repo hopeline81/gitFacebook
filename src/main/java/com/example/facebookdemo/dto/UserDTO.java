@@ -1,9 +1,12 @@
 package com.example.facebookdemo.dto;
 
+import com.example.facebookdemo.entity.Post;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 public class UserDTO {
 
@@ -25,6 +28,8 @@ public class UserDTO {
     @NotNull(message = "Age can't under 14")
     @Min(14)
     private Integer age;
+
+    private List<Post> posts;
 
     public UserDTO() {
     }
@@ -77,4 +82,11 @@ public class UserDTO {
         this.age = age;
     }
 
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
 }

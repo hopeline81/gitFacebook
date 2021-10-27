@@ -8,7 +8,6 @@ import com.example.facebookdemo.service.contrack.ChangeProfileService;
 import com.example.facebookdemo.service.contrack.ChangeUserEmailService;
 import com.example.facebookdemo.service.contrack.UserService;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;

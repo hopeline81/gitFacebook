@@ -4,7 +4,6 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -25,9 +24,6 @@ public class Post {
 
     @OneToMany(targetEntity = Post.class)
     private List<Post> comments;
-
-//    @OneToOne(targetEntity = Image.class)
-//    private Image images;
 
     public Post() {
     }
@@ -72,11 +68,4 @@ public class Post {
         this.comments = comments;
     }
 
-//    public Image getImages() {
-//        return images;
-//    }
-//
-//    public void setImages(Image images) {
-//        this.images = images;
-//    }
 }

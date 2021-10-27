@@ -11,7 +11,6 @@ import java.util.List;
 
 public interface ImageService {
     List<Image> allImages();
-    Image save(ImageDTO imageDto) throws IOException;
     String uploadImage(MultipartFile multipartFile) throws IOException;
     Profile uploadAvatar(Long profileId, MultipartFile multipartFile) throws IOException;
 }
