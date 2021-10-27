@@ -52,11 +52,12 @@
             username.focus();
             return false;
         }
-        // if (email.value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-        //     alert("Please enter a valid email!");
-        //     email.focus();
-        //     return false;
-        // }
+
+        if (address.value.length < 2 || address.value.length > 20) {
+            alert("Address length should be more than 2 and less than 21");
+            address.focus();
+            return false;
+        }
         if (address.value.length < 2 || address.value.length > 20) {
             alert("Address length should be more than 2 and less than 21");
             address.focus();

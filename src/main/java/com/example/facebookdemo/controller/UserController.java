@@ -1,7 +1,6 @@
 package com.example.facebookdemo.controller;
 
 import com.example.facebookdemo.dto.UserDTO;
-import com.example.facebookdemo.repository.ProfileRepository;
 import com.example.facebookdemo.service.contrack.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UserController extends BaseController implements WebMvcConfigurer {
+
     private final UserService userService;
 
     @Autowired
@@ -39,7 +39,6 @@ public class UserController extends BaseController implements WebMvcConfigurer {
             redirectAttributes.addFlashAttribute("user", userDTO);
             return redirect("forgot_password");
         }
-        userService.register(userDTO);
         return redirect("profile");
     }
 

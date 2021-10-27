@@ -1,36 +1,23 @@
 package com.example.facebookdemo.controller;
 
-import com.example.facebookdemo.dto.ProfileDTO;
 import com.example.facebookdemo.dto.UserDTO;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.UserRepository;
 import com.example.facebookdemo.service.contrack.ChangeProfileService;
 import com.example.facebookdemo.service.contrack.ChangeUserEmailService;
-import com.example.facebookdemo.service.contrack.ProfileService;
-import com.example.facebookdemo.service.contrack.UserService;
-import com.example.facebookdemo.service.implementation.UtilityGetURL;
-import net.bytebuddy.utility.RandomString;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Locale;
 
 @Controller
 public class ChangeProfileController extends BaseController {

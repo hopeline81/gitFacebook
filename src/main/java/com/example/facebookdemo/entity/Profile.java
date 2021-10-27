@@ -19,18 +19,10 @@ public class Profile {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "age")
-    private String age;
-
     @OneToOne(targetEntity = Image.class)
-    private String photo;
+    private Image avatarImage;
 
-    @Transient
-    public String getPhotoImagePath() {
-        if (photo == null || id == null) return null;
 
-        return "profile-photo/" + id + "/" + photo;
-    }
 
     public Profile() {
     }
@@ -67,19 +59,16 @@ public class Profile {
         this.address = address;
     }
 
-    public String getAge() {
-        return age;
+    public Image getAvatarImage() {
+        if (avatarImage == null) {
+            Image image = new Image();
+            image.setImageUrl("defaultProfileImage.png");
+            return image;
+        }
+        return avatarImage;
     }
 
-    public void setAge(String age) {
-        this.age = age;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setAvatarImage(Image avatarImage) {
+        this.avatarImage = avatarImage;
     }
 }

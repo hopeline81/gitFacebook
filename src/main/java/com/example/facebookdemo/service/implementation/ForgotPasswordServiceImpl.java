@@ -20,7 +20,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
     public ForgotPasswordServiceImpl(UserRepository userRepository,
                                      BCryptPasswordEncoder bCryptPasswordEncoder,

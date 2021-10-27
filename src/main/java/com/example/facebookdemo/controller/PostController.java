@@ -46,8 +46,8 @@ public class PostController extends BaseController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/posts")
-    public ModelAndView allPosts(){
-        List<Post> object = postService.getPosts();
+    public ModelAndView allPosts(@AuthenticationPrincipal User user){
+        List<Post> object = postService.getPosts(user);
         return send("posts", "posts", object);
     }
 }

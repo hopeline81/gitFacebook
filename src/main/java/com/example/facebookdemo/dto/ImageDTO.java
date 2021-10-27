@@ -2,10 +2,13 @@ package com.example.facebookdemo.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class ImageUploadDTO {
+public class ImageDTO {
+
     private MultipartFile image;
 
-    public ImageUploadDTO() {
+    private String description;
+
+    public ImageDTO() {
     }
 
     public MultipartFile getImage() {
@@ -14,5 +17,13 @@ public class ImageUploadDTO {
 
     public void setImage(MultipartFile image) {
         this.image = image;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

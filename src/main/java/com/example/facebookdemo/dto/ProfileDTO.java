@@ -1,10 +1,14 @@
 package com.example.facebookdemo.dto;
 
+import com.example.facebookdemo.entity.User;
+
 public class ProfileDTO {
 
-    private  String fullName;
+    private Long id;
 
-    private  String email;
+    private String fullName;
+
+    private String email;
 
     private Integer age;
 
@@ -12,9 +16,19 @@ public class ProfileDTO {
 
     private boolean isFullNamePublic;
 
-//    private Image userImage;
+    private User user;
+
+    private String imageUrl;
 
     public ProfileDTO() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFullName() {
@@ -57,11 +71,19 @@ public class ProfileDTO {
         isFullNamePublic = fullNamePublic;
     }
 
-    //    public Image getUserImage() {
-//        return userImage;
-//    }
-//
-//    public void setUserImage(Image userImage) {
-//        this.userImage = userImage;
-//    }
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

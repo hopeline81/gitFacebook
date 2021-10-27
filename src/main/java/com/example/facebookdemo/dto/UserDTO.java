@@ -1,9 +1,12 @@
 package com.example.facebookdemo.dto;
 
+import com.example.facebookdemo.entity.Post;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 public class UserDTO {
 
@@ -26,7 +29,17 @@ public class UserDTO {
     @Min(14)
     private Integer age;
 
+    private List<Post> posts;
+
     public UserDTO() {
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -43,14 +56,6 @@ public class UserDTO {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
@@ -77,4 +82,11 @@ public class UserDTO {
         this.age = age;
     }
 
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
 }

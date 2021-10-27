@@ -2,20 +2,23 @@ package com.example.facebookdemo.service.implementation;
 
 import com.example.facebookdemo.dto.ProfileDTO;
 import com.example.facebookdemo.dto.UserDTO;
+import com.example.facebookdemo.entity.Image;
 import com.example.facebookdemo.entity.Profile;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.ProfileRepository;
 import com.example.facebookdemo.repository.UserRepository;
 import com.example.facebookdemo.service.contrack.ProfileService;
-import com.example.facebookdemo.service.contrack.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ProfileServiceImpl implements ProfileService  {
 
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
+
 
     @Autowired
     public ProfileServiceImpl(ProfileRepository profileRepository, UserRepository userRepository) {
@@ -29,10 +32,20 @@ public class ProfileServiceImpl implements ProfileService  {
         profile.setFullName(userDTO.getUsername());
         profile.setEmail(userDTO.getEmail());
         profile.setAddress(userDTO.getAddress());
-        profile.setAge(String.valueOf(userDTO.getAge()));
-     //   profile.setPhoto(imageUploadService.uploadImage());
         profileRepository.save(profile);
         return profile;
+    }
+
+    public Profile updateAvatar(Long profileId, Image avatarImage){
+        Optional<Profile> profile = profileRepository.findById(profileId);
+        Profile updatedProfile;
+        if(profile.isPresent()){
+            profile.get().setAvatarImage(avatarImage);
+            updatedProfile = profileRepository.save(profile.get());
+        }else {
+            throw new IllegalArgumentException();
+        }
+        return updatedProfile;
     }
 
     @Override
@@ -48,8 +61,9 @@ public class ProfileServiceImpl implements ProfileService  {
         ProfileDTO profileDTO = new ProfileDTO();
         profileDTO.setEmail(user1.getEmail());
         profileDTO.setFullName(profile.getFullName());
-        profileDTO.setAge(Integer.parseInt(profile.getAge()));
+        profileDTO.setAge(user1.getAge());
         profileDTO.setAddress(profile.getAddress());
+        profileDTO.setImageUrl(profile.getAvatarImage().getImageUrl());
 
         return profileDTO;
     }

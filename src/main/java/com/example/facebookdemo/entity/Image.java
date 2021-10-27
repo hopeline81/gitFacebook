@@ -32,5 +32,10 @@ public class Image {
         this.imageUrl = imageUrl;
     }
 
-
+//    @Transient
+//    public String getImageUrl() {
+//        if (avatarURL == null || id == null) return null;
+//
+//        return "profile-photo/" + id + "/" + avatarURL;
+//    }
 }

@@ -59,6 +59,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public UserDTO createNewUserDTO(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUsername(user.getUsername());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setAddress(user.getProfile().getAddress());
+        return userDTO;
+    }
+
+    @Override
     public void updatePassword(User user, String newPassword) {
         userRepository.findById(user.getId()).ifPresent(u -> {
             user.setPassword(bCryptPasswordEncoder.encode(newPassword));
