@@ -36,11 +36,11 @@ public class ProfileServiceImpl implements ProfileService  {
         return profile;
     }
 
-    public Profile updateAvatar(Long profileId, Image avatarImage){
+    public Profile updateAvatar(Long profileId, String avatarImageUrl){
         Optional<Profile> profile = profileRepository.findById(profileId);
         Profile updatedProfile;
         if(profile.isPresent()){
-            profile.get().setAvatarImage(avatarImage);
+            profile.get().setAvatarImageUrl(avatarImageUrl);
             updatedProfile = profileRepository.save(profile.get());
         }else {
             throw new IllegalArgumentException();
@@ -63,7 +63,7 @@ public class ProfileServiceImpl implements ProfileService  {
         profileDTO.setFullName(profile.getFullName());
         profileDTO.setAge(user1.getAge());
         profileDTO.setAddress(profile.getAddress());
-        profileDTO.setImageUrl(profile.getAvatarImage().getImageUrl());
+        profileDTO.setImageUrl(profile.getAvatarImageUrl());
 
         return profileDTO;
     }

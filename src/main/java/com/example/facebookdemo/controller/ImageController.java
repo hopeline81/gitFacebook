@@ -3,12 +3,14 @@ package com.example.facebookdemo.controller;
 import com.example.facebookdemo.dto.ImageDTO;
 import com.example.facebookdemo.dto.PostDTO;
 import com.example.facebookdemo.dto.ProfileDTO;
+import com.example.facebookdemo.dto.UserDTO;
 import com.example.facebookdemo.entity.Image;
 import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.Profile;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.service.contrack.ImageUploadService;
 import com.example.facebookdemo.service.contrack.ProfileService;
+import com.example.facebookdemo.service.contrack.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,16 +30,18 @@ public class ImageController extends BaseController {
 
     private ImageUploadService imageUploadService;
     private ProfileService profileService;
+    private UserService userService;
 
     @Autowired
-    public ImageController(ImageUploadService imageUploadService, ProfileService profileService) {
+    public ImageController(ImageUploadService imageUploadService, ProfileService profileService, UserService userService) {
         this.imageUploadService = imageUploadService;
         this.profileService = profileService;
+        this.userService = userService;
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/upload_image")
-    public ModelAndView imageUpload(){
+    public ModelAndView imageUpload() {
         return send("new-image");
     }
 
@@ -48,7 +52,7 @@ public class ImageController extends BaseController {
                                     BindingResult result,
                                     @RequestParam("file") MultipartFile multipartFile) throws IOException {
         String debug = "";
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return send("new-image");
         }
         imageUploadService.uploadUserImage(user, multipartFile, imageDTO.getDescription());
@@ -58,15 +62,16 @@ public class ImageController extends BaseController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/images")
-    public ModelAndView allPosts(@AuthenticationPrincipal User user){
-        List<Image> object = imageUploadService.getImages(user);
-        return send("images", "images", object);
+    public ModelAndView allPosts(@AuthenticationPrincipal User user) {
+        List<Image> userImages = imageUploadService.getImages(user);
+
+        return send("images", "images", userImages);
     }
 
     @PostMapping("/avatar_upload")
     public ModelAndView avatarUpload(@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile multipartFile) throws IOException {
         Long profileId = user.getProfile().getId();
-        Profile profile = imageUploadService.uploadAvatar(profileId, multipartFile);
+        imageUploadService.uploadAvatar(profileId, multipartFile);
         ProfileDTO profileDTO = profileService.createNewProfileDTO(user.getEmail());
 
         return send("profile", "profileDTO", profileDTO);

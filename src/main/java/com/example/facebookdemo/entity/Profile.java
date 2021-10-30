@@ -22,8 +22,8 @@ public class Profile {
     @Column(name = "age")
     private String age;
 
-    @OneToOne(targetEntity = Image.class)
-    private Image avatarImage;
+    @Column(name = "profile_image_URL")
+    private String avatarImageUrl;
 
     public Profile() {
     }
@@ -68,16 +68,14 @@ public class Profile {
         this.age = age;
     }
 
-    public Image getAvatarImage() {
-        if (avatarImage == null) {
-            Image image = new Image();
-            image.setImageUrl("defaultProfileImage.png");
-            return image;
+    public String getAvatarImageUrl() {
+        if (avatarImageUrl == null) {
+            String imageUrl =  "defaultProfileImage.png";
+            return imageUrl;
         }
-        return avatarImage;
+        return avatarImageUrl;
     }
-
-    public void setAvatarImage(Image avatarImage) {
-        this.avatarImage = avatarImage;
+    public void setAvatarImageUrl(String avatarImageUrl) {
+        this.avatarImageUrl = avatarImageUrl;
     }
 }

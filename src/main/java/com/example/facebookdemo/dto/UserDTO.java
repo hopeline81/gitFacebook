@@ -1,5 +1,6 @@
 package com.example.facebookdemo.dto;
 
+import com.example.facebookdemo.entity.Image;
 import com.example.facebookdemo.entity.Post;
 
 import javax.validation.constraints.Min;
@@ -30,6 +31,8 @@ public class UserDTO {
     private Integer age;
 
     private List<Post> posts;
+
+    private List<Image> images;
 
     public UserDTO() {
     }
@@ -88,5 +91,13 @@ public class UserDTO {
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }
