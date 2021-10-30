@@ -48,8 +48,8 @@ public class Profile {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFullName(String firstName, String lastName) {
+        this.fullName = firstName + " " + lastName;
     }
 
     public String getAddress() {

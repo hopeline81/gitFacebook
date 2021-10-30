@@ -30,10 +30,16 @@ public class ChangeProfileServiceImpl implements ChangeProfileService {
     @Override
     public Profile updateProfileDetails(User user, Profile profile, UserDTO userDTO, String code) throws MessagingException, UnsupportedEncodingException {
         Profile newProfile = user.getProfile();
-        if (userDTO.getUsername() == null || userDTO.getUsername().isEmpty()) {
-            user.setUsername(user.getUsername());
+        if (userDTO.getFirstName() == null || userDTO.getFirstName().isEmpty()) {
+            user.setFirstName(user.getFirstName());
         }else {
-            user.setUsername(userDTO.getUsername());
+            user.setFirstName(userDTO.getFirstName());
+        }
+
+        if (userDTO.getLastName() == null || userDTO.getLastName().isEmpty()) {
+            user.setLastName(user.getLastName() );
+        }else {
+            user.setLastName(userDTO.getLastName());
         }
 
         if (userDTO.getAddress() == null || userDTO.getAddress().isEmpty()) {

@@ -20,8 +20,11 @@ public class User implements UserDetails {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "username", nullable = false, unique = true)
-    private String username;
+    @Column(name = "firstName", nullable = false, unique = true)
+    private String firstName;
+
+    @Column(name = "lastName", nullable = false, unique = true)
+    private String lastName;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -64,6 +67,22 @@ public class User implements UserDetails {
         this.id = id;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
@@ -78,13 +97,12 @@ public class User implements UserDetails {
         return password;
     }
 
+
+
     @Override
     public String getUsername() {
+        String username = firstName + " " + lastName;
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getEmail() {
@@ -179,4 +197,7 @@ public class User implements UserDetails {
         return true;
     }
 
+    public void setUsername(String firstName, String lastName) {
+        String username = firstName + " " + lastName;
+    }
 }
