@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <a th:href="@{profile}">Back to profile page</a>
+</div>
+
+<form method="post" action="/images">
+    <tr th:each="image : ${images}">
+        <br/>
+        <div >
+            <img th:src="@{'https://firebasestorage.googleapis.com/v0/b/facebook-nadezhda.appspot.com/o/' + ${image.imageUrl} + '?alt=media'}"
+                 th:height="52" th:width="52"/>
+        <td th:text="${image.description}">
+        </td>
+            <br/>
+        <br/>
+        </div>
+    </tr>
+</form>
+</body>
+</html>

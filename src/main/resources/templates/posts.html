@@ -5,11 +5,16 @@
     <title>Title</title>
 </head>
 <body>
+<div>
+    <a th:href="@{profile}">Back to profile page</a>
+</div>
+
 <form method="post" action="/posts">
     <tr th:each="post : ${posts}">
         <td th:text="${post.textPost}">
         </td>
         <br/>
+        <td></td>
         <th><b>Post date</b></th>
         <td th:text="${post.postDate}">
         </td>

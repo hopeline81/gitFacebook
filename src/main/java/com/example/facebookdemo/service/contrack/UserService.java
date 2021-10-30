@@ -1,6 +1,7 @@
 package com.example.facebookdemo.service.contrack;
 
 import com.example.facebookdemo.dto.UserDTO;
+import com.example.facebookdemo.entity.Image;
 import com.example.facebookdemo.entity.User;
 
 public interface UserService {

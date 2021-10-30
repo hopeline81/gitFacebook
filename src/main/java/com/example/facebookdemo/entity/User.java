@@ -50,6 +50,9 @@ public class User implements UserDetails {
     @OneToMany(targetEntity = Post.class, mappedBy = "user")
     private List<Post> posts;
 
+    @OneToMany(targetEntity = Image.class, mappedBy = "user")
+    private List<Image> images;
+
     public User() {
     }
 
@@ -148,6 +151,14 @@ public class User implements UserDetails {
         this.posts = posts;
     }
 
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -167,4 +178,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

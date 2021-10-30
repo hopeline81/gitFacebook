@@ -44,6 +44,12 @@
 <div>
     <a th:href="@{posts}">All post</a>
 </div>
+<div>
+    <a th:href="@{upload_image}">Add image</a>
+</div>
+<div>
+    <a th:href="@{images}">All images</a>
+</div>
 <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
 </body>
 </html>
