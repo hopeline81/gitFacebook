@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -84,5 +85,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findFirstByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
         return user;
+    }
+
+    public List<User> searchByFirstName(String firstName){
+        String debug = "";
+        return userRepository.searchByFirstName(firstName);
     }
 }

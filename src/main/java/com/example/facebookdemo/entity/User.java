@@ -84,6 +84,15 @@ public class User implements UserDetails {
     }
 
     @Override
+    public String getUsername() {
+        return firstName + " " + lastName;
+    }
+
+    public void setUsername(String firstName, String lastName) {
+        String username = firstName + " " + lastName;
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
     }
@@ -95,14 +104,6 @@ public class User implements UserDetails {
     @Override
     public String getPassword() {
         return password;
-    }
-
-
-
-    @Override
-    public String getUsername() {
-        String username = firstName + " " + lastName;
-        return username;
     }
 
     public String getEmail() {
@@ -197,7 +198,5 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void setUsername(String firstName, String lastName) {
-        String username = firstName + " " + lastName;
-    }
+
 }

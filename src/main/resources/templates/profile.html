@@ -50,6 +50,9 @@
 <div>
     <a th:href="@{images}">All images</a>
 </div>
+<div>
+    <a th:href="@{search}">Search users</a>
+</div>
 <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
 </body>
 </html>

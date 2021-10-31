@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="get" action="/search_result">
+    <tr th:each="user : ${searchResult}">
+        <td th:text="${user.firstName}">
+        </td>
+        <td> </td>
+        <td th:text="${user.lastName}">
+        </td>
+
+        <br/>
+    </tr>
+</form>
+</body>
+</html>
