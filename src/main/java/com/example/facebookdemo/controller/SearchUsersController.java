@@ -34,16 +34,16 @@ public class SearchUsersController extends BaseController {
     }
 
     @PostMapping("/search")
-    public ModelAndView searchUsers(@Param("firstName") String firstName , Model model) {
-        List<User> searchResult = userService.searchByFirstName(firstName);
-        model.addAttribute("firstName", firstName);
+    public ModelAndView searchUsers(@Param("name") String name , Model model) {
+        List<User> searchResult = userService.searchByName(name);
+        model.addAttribute("name", name);
         model.addAttribute("searchResult", searchResult);
         return send ("search_result", "searchResult", searchResult);
     }
 
-    @GetMapping("/search_result")
-    public ModelAndView searchResult(@Param("firstName") String firstName) {
-        List<User> searchResult = userService.searchByFirstName(firstName);
-        return send ("search_result", "searchResult", searchResult);
-    }
+//    @GetMapping("/search_result")
+//    public ModelAndView searchResult(@Param("partOfName") String name) {
+//        List<User> searchResult = userService.searchByName(name);
+//        return send ("search_result", "searchResult", searchResult);
+//    }
 }

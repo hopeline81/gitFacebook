@@ -21,6 +21,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //    @Query("SELECT u FROM User AS u WHERE u.firstName = :name")
 //    List<User> searchByFirstNameAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
 //
-    @Query("SELECT u FROM User AS u WHERE u.firstName = :firstName ")
-    List<User> searchByFirstName(@Param("firstName") String firstName);
+//    @Query("SELECT u FROM User AS u WHERE u.firstName = :firstName ")
+//    List<User> searchByFirstName(@Param("firstName") String firstName);
+
+    @Query("SELECT u FROM User AS u WHERE (u.firstName like ?1% OR u.lastName like ?1%)")
+    List<User> searchByName(String name);
 }

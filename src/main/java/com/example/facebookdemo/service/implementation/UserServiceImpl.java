@@ -87,8 +87,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return user;
     }
 
-    public List<User> searchByFirstName(String firstName){
+    public List<User> searchByName(String name){
         String debug = "";
-        return userRepository.searchByFirstName(firstName);
+        return userRepository.searchByName(name);
     }
 }

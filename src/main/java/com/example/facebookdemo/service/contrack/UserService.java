@@ -11,5 +11,5 @@ public interface UserService {
     User register(UserDTO userDTO);
     UserDTO createNewUserDTO(User user);
     void updatePassword(User user, String newPassword);
-    List<User> searchByFirstName(String firstName);
+    List<User> searchByName(String name);
 }
