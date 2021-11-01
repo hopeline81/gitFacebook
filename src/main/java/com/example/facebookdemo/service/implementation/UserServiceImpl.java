@@ -7,6 +7,7 @@ import com.example.facebookdemo.repository.UserRepository;
 import com.example.facebookdemo.service.contrack.UserService;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -87,8 +88,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return user;
     }
 
-    public List<User> searchByName(String name){
-        String debug = "";
-        return userRepository.searchByName(name);
+    public List<User> searchByNameAndSort(String name, Sort sort){
+        return userRepository.searchByNameAndSort(name, sort);
     }
 }
