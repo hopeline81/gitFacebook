@@ -91,4 +91,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<User> searchByNameAndSort(String name, Sort sort){
         return userRepository.searchByNameAndSort(name, sort);
     }
+
+    @Override
+    public void deleteUser(User user) {
+        userRepository.deleteById(user.getId());
+    }
 }

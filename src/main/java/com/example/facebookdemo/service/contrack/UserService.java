@@ -12,4 +12,6 @@ public interface UserService {
     UserDTO createNewUserDTO(User user);
     void updatePassword(User user, String newPassword);
     List<User> searchByNameAndSort(String name, Sort sort);
+
+    void deleteUser(User user);
 }
