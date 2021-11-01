@@ -65,7 +65,7 @@ public class ChangeUserEmailServiceIml implements ChangeUserEmailService {
     public UserDTO createNewUserDTO(User user){
         User user1 = userRepository.findUserByEmail(user.getEmail());
         UserDTO userDTO1 = new UserDTO();
-        userDTO1.setUsername(user1.getUsername());
+        userDTO1.setUsername(user1.getFirstName(), user1.getLastName());
         userDTO1.setEmail(user1.getEmail());
         userDTO1.setAddress(user1.getProfile().getAddress());
         userDTO1.setAge(user1.getAge());

@@ -51,12 +51,10 @@ public class ImageController extends BaseController {
                                     @ModelAttribute ImageDTO imageDTO,
                                     BindingResult result,
                                     @RequestParam("file") MultipartFile multipartFile) throws IOException {
-        String debug = "";
         if (result.hasErrors()) {
             return send("new-image");
         }
         imageUploadService.uploadUserImage(user, multipartFile, imageDTO.getDescription());
-
         return redirect("/images");
     }
 

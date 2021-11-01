@@ -1,8 +1,6 @@
 package com.example.facebookdemo.service.implementation;
 
 import com.example.facebookdemo.dto.UserDTO;
-import com.example.facebookdemo.entity.Image;
-import com.example.facebookdemo.entity.Profile;
 import com.example.facebookdemo.entity.Role;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.UserRepository;
@@ -17,7 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.Optional;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -44,7 +42,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         User user = new User();
-        user.setUsername(userDTO.getUsername());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setUsername(userDTO.getFirstName(), userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
         user.setAge(userDTO.getAge());
@@ -64,7 +64,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDTO createNewUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
-        userDTO.setUsername(user.getUsername());
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
+        userDTO.setUsername(user.getFirstName(), userDTO.getLastName());
         userDTO.setEmail(user.getEmail());
         userDTO.setAddress(user.getProfile().getAddress());
         return userDTO;
@@ -83,5 +85,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findFirstByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
         return user;
+    }
+
+    public List<User> searchByName(String name){
+        String debug = "";
+        return userRepository.searchByName(name);
     }
 }

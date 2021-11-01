@@ -29,9 +29,10 @@ public class ProfileServiceImpl implements ProfileService  {
     @Override
     public Profile createProfile(UserDTO userDTO) {
         Profile profile = new Profile();
-        profile.setFullName(userDTO.getUsername());
+        profile.setFullName(userDTO.getFirstName(), userDTO.getLastName());
         profile.setEmail(userDTO.getEmail());
         profile.setAddress(userDTO.getAddress());
+        profile.setAge(String.valueOf(userDTO.getAge()));
         profileRepository.save(profile);
         return profile;
     }
@@ -60,7 +61,7 @@ public class ProfileServiceImpl implements ProfileService  {
 
         ProfileDTO profileDTO = new ProfileDTO();
         profileDTO.setEmail(user1.getEmail());
-        profileDTO.setFullName(profile.getFullName());
+        profileDTO.setFullName(user1.getFirstName(), user1.getLastName());
         profileDTO.setAge(user1.getAge());
         profileDTO.setAddress(profile.getAddress());
         profileDTO.setImageUrl(profile.getAvatarImageUrl());
