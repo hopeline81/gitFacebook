@@ -47,13 +47,13 @@ public class User implements UserDetails {
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles;
 
-    @OneToOne(targetEntity = Profile.class, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = Profile.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Profile profile;
 
-    @OneToMany(targetEntity = Post.class, mappedBy = "user")
+    @OneToMany(targetEntity = Post.class, mappedBy = "user", cascade = CascadeType.ALL)
     private List<Post> posts;
 
-    @OneToMany(targetEntity = Image.class, mappedBy = "user")
+    @OneToMany(targetEntity = Image.class, mappedBy = "user", cascade = CascadeType.ALL)
     private List<Image> images;
 
     public User() {
