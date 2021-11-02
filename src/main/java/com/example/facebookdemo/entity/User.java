@@ -56,6 +56,18 @@ public class User implements UserDetails {
     @OneToMany(targetEntity = Image.class, mappedBy = "user", cascade = CascadeType.ALL)
     private List<Image> images;
 
+    @ManyToMany(targetEntity = User.class, fetch = FetchType.EAGER)
+    @JoinTable(name = "users_request",
+            joinColumns = {@JoinColumn(name = "requester_id")},
+            inverseJoinColumns = {@JoinColumn(name = "friend_request")})
+    private Set<User> usersRequest;
+
+    @ManyToMany(targetEntity = User.class, fetch = FetchType.EAGER)
+    @JoinTable(name = "users_friends",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "friend_id")})
+    private Set<User> friends;
+
     public User() {
     }
 
@@ -176,6 +188,22 @@ public class User implements UserDetails {
 
     public void setImages(List<Image> images) {
         this.images = images;
+    }
+
+    public Set<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(Set<User> friends) {
+        this.friends = friends;
+    }
+
+    public Set<User> getUsersRequest() {
+        return usersRequest;
+    }
+
+    public void setUsersRequest(Set<User> usersRequest) {
+        this.usersRequest = usersRequest;
     }
 
     @Override
