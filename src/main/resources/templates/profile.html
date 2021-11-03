@@ -56,6 +56,10 @@
 <div>
     <a th:href="@{delete_acount}">Delete account</a>
 </div>
+<div>
+    <a th:href="@{all-user-requests}">requests</a>
+</div>
+
 <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
 </body>
 </html>

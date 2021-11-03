@@ -11,9 +11,12 @@ public class FriendRequest {
     private Long id;
 
     @ManyToOne(targetEntity = User.class, optional = false)
-    private User user;
+    private User requesterUser;
 
-    @Enumerated(EnumType.ORDINAL)
+    @ManyToOne(targetEntity = User.class, optional = false)
+    private User requestedUsers;
+
+    @Enumerated(EnumType.STRING)
     private FriendRequestStatus status;
 
     public FriendRequest() {
@@ -27,12 +30,20 @@ public class FriendRequest {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public User getRequesterUser() {
+        return requesterUser;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setRequesterUser(User user) {
+        this.requesterUser = user;
+    }
+
+    public User getRequestedUsers() {
+        return requestedUsers;
+    }
+
+    public void setRequestedUsers(User requestedUsers) {
+        this.requestedUsers = requestedUsers;
     }
 
     public FriendRequestStatus getStatus() {

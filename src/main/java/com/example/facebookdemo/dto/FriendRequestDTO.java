@@ -7,9 +7,11 @@ import java.time.LocalDateTime;
 
 public class FriendRequestDTO {
 
-    private FriendRequestStatus status;
+    private User requesterUser;
 
-    private User user;
+    private User requestedUser;
+
+    private FriendRequestStatus status;
 
     public FriendRequestDTO() {
     }
@@ -22,11 +24,19 @@ public class FriendRequestDTO {
         this.status = status;
     }
 
-    public User getUser() {
-        return user;
+    public User getRequesterUser() {
+        return requesterUser;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setRequesterUser(User requesterUser) {
+        this.requesterUser = requesterUser;
+    }
+
+    public User getRequestedUser() {
+        return requestedUser;
+    }
+
+    public void setRequestedUser(User requestedUser) {
+        this.requestedUser = requestedUser;
     }
 }

@@ -56,13 +56,16 @@ public class User implements UserDetails {
     @OneToMany(targetEntity = Image.class, mappedBy = "user", cascade = CascadeType.ALL)
     private List<Image> images;
 
-    @ManyToMany(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinTable(name = "users_request",
-            joinColumns = {@JoinColumn(name = "requester_id")},
-            inverseJoinColumns = {@JoinColumn(name = "friend_request")})
-    private Set<User> usersRequest;
+    @OneToMany(targetEntity = FriendRequest.class, mappedBy = "requesterUser", cascade = CascadeType.ALL)
+    private Set<FriendRequest> userRequests;
 
-    @ManyToMany(targetEntity = User.class, fetch = FetchType.EAGER)
+//    @ManyToMany(targetEntity = FriendRequest.class, fetch = FetchType.EAGER)
+//    @JoinTable(name = "users_requests",
+//            joinColumns = {@JoinColumn(name = "user_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "requester_user_id")})
+//    private Set<FriendRequest> userRequests;
+
+    @ManyToMany(targetEntity = Friends.class, fetch = FetchType.EAGER)
     @JoinTable(name = "users_friends",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "friend_id")})
@@ -198,12 +201,12 @@ public class User implements UserDetails {
         this.friends = friends;
     }
 
-    public Set<User> getUsersRequest() {
-        return usersRequest;
+    public Set<FriendRequest> getUserRequests() {
+        return userRequests;
     }
 
-    public void setUsersRequest(Set<User> usersRequest) {
-        this.usersRequest = usersRequest;
+    public void setUserRequests(Set<FriendRequest> userRequests) {
+        this.userRequests = userRequests;
     }
 
     @Override
@@ -225,6 +228,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 
 }
