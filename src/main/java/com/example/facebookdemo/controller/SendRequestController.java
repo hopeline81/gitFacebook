@@ -46,9 +46,9 @@ public class SendRequestController extends BaseController {
         return redirect("profile");
     }
 
-    @PostMapping("all_request")
+    @GetMapping("requests")
     public ModelAndView allRequest(@AuthenticationPrincipal User user) {
         Set<FriendRequest> object = friendRequestService.findRequestToUser(user);
-        return send("all_request", "allRequests", object);
+        return send("requests", "requests", object);
     }
 }
