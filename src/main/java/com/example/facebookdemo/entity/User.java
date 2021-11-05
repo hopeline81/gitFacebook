@@ -20,10 +20,10 @@ public class User implements UserDetails {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "firstName", nullable = false, unique = true)
+    @Column(name = "firstName", nullable = false)
     private String firstName;
 
-    @Column(name = "lastName", nullable = false, unique = true)
+    @Column(name = "lastName", nullable = false)
     private String lastName;
 
     @Column(name = "password", nullable = false)
@@ -59,13 +59,7 @@ public class User implements UserDetails {
     @OneToMany(targetEntity = FriendRequest.class, mappedBy = "requesterUser", cascade = CascadeType.ALL)
     private Set<FriendRequest> userRequests;
 
-//    @ManyToMany(targetEntity = FriendRequest.class, fetch = FetchType.EAGER)
-//    @JoinTable(name = "users_requests",
-//            joinColumns = {@JoinColumn(name = "user_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "requester_user_id")})
-//    private Set<FriendRequest> userRequests;
-
-    @ManyToMany(targetEntity = Friends.class, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Friend.class, fetch = FetchType.EAGER)
     @JoinTable(name = "users_friends",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "friend_id")})

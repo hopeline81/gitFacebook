@@ -19,6 +19,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findUserByFirstNameAndLastName(String firstName, String lastName);
 
+    Optional<User> findUserById(Long userId);
+
     User findByVerificationCode(String code);
 
     @Query("SELECT u FROM User AS u WHERE (u.firstName like ?1% OR u.lastName like ?1%)")

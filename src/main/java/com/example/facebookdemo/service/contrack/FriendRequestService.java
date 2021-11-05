@@ -10,4 +10,12 @@ public interface FriendRequestService {
     FriendRequest sendFriendRequest(User requestedUser, String firstName, String lastName);
 
     Set<FriendRequest> findRequestToUser(User user);
+
+    User findRequesterUser(Long userId);
+
+    FriendRequest findRequest(User newFriend, User user);
+
+    void addNewFriend(User user, User newFriend);
+
+    void changeRequestStatusFromPendingToAccept(User user, User newFriend);
 }

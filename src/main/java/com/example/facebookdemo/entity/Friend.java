@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "friends")
-public class Friends {
+public class Friend {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -13,7 +13,7 @@ public class Friends {
     @ManyToOne(targetEntity = User.class, optional = false)
     private User user;
 
-    public Friends() {
+    public Friend() {
     }
 
     public Long getId() {

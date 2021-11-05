@@ -83,9 +83,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findFirstByEmail(email)
+        return userRepository.findFirstByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
-        return user;
     }
 
     public List<User> searchByNameAndSort(String name, Sort sort){
