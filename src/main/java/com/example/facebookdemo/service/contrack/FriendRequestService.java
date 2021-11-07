@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface FriendRequestService {
-    FriendRequest sendFriendRequest(User requestedUser, String firstName, String lastName);
+    FriendRequest sendFriendRequest(User requestedUser, String requestedId);
 
     Set<FriendRequest> findRequestToUser(User user);
 
@@ -20,5 +20,5 @@ public interface FriendRequestService {
 
     void changeRequestStatusFromPendingToAccept(User user, User newFriend);
 
-    List<User> getFriends(User user);
+    Set<User> getFriends(User user);
 }

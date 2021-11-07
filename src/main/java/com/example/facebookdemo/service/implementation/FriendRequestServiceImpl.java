@@ -26,8 +26,15 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     }
 
     @Override
-    public FriendRequest sendFriendRequest(User user, String firstName, String lastName) {
-        User requestedUser = userRepository.findUserByFirstNameAndLastName(firstName, lastName);
+    public FriendRequest sendFriendRequest(User user, String requestedId) {
+        User requestedUser = findRequestedUser(Long.valueOf(requestedId));
+        Set<FriendRequest> allRequest = requestedUser.getUserRequests();
+        if(allRequest != null) {
+           FriendRequest friendRequest =  friendRequestRepository.findFriendRequestByRequesterUserAndRequestedUsers(user, requestedUser);
+           if(friendRequest != null) {
+               throw new IllegalArgumentException("Already exist");
+           }
+        }
         FriendRequest friendRequest = new FriendRequest();
         friendRequest.setStatus(FriendRequestStatus.PENDING);
         friendRequest.setRequesterUser(user);
@@ -37,6 +44,17 @@ public class FriendRequestServiceImpl implements FriendRequestService {
 
     public Set<FriendRequest> findRequestToUser(User user) {
         return friendRequestRepository.findAllByRequestedUsers(user);
+    }
+
+    public User findRequestedUser(Long userId) {
+        Optional<User> user = userRepository.findUserById(userId);
+        User existingUser;
+        if(user.isPresent()) {
+            existingUser = user.get();
+        } else {
+            throw new IllegalArgumentException();
+        }
+        return existingUser;
     }
 
     @Override
@@ -58,13 +76,20 @@ public class FriendRequestServiceImpl implements FriendRequestService {
 
     @Override
     public User addNewFriend(User user, User newFriend) {
-
         Set<User> userFriends = user.getFriends();
         if(userFriends.contains(newFriend)){
             throw new IllegalArgumentException("This friend is already added");
         }
         userFriends.add(newFriend);
         user.setFriends(userFriends);
+
+        Set<User> friendsNewFriends = newFriend.getFriends();
+        if(friendsNewFriends.contains(user)){
+            throw new IllegalArgumentException("This friend is already added");
+        }
+        friendsNewFriends.add(user);
+        newFriend.setFriends(friendsNewFriends);
+
         userRepository.save(user);
         return user;
     }
@@ -79,12 +104,7 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     }
 
     @Override
-    public List<User> getFriends(User user) {
-        Set<FriendRequest> allUserRequests = findRequestToUser(user);
-
-        return allUserRequests.stream()
-                .filter(friendRequest -> friendRequest.getStatus().equals(FriendRequestStatus.ACCEPTED))
-                .map(FriendRequest::getRequesterUser)
-                .collect(Collectors.toList());
+    public Set<User> getFriends(User user) {
+        return user.getFriends();
     }
 }

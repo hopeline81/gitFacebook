@@ -56,7 +56,7 @@ public class User implements UserDetails {
     @OneToMany(targetEntity = Image.class, mappedBy = "user", cascade = CascadeType.ALL)
     private List<Image> images;
 
-    @OneToMany(targetEntity = FriendRequest.class, mappedBy = "requesterUser", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = FriendRequest.class,fetch = FetchType.EAGER, mappedBy = "requesterUser", cascade = CascadeType.ALL)
     private Set<FriendRequest> userRequests;
 
     @ManyToMany(targetEntity = User.class, fetch = FetchType.EAGER)

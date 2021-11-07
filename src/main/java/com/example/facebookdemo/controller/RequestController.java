@@ -8,11 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,21 +31,20 @@ public class RequestController extends BaseController {
     }
 
     @GetMapping("send_friend_request")
-    public ModelAndView sendFriendRequest() {
-        return send("send-friend-request");
-    }
-
-    @PostMapping("send_friend_request")
     public ModelAndView sendFriendRequest(@AuthenticationPrincipal User user,
-                                          @RequestParam("firstName") String firstName,
-                                          @RequestParam("lastName") String lastName) {
+                                          @RequestParam("requesterId") String requestedId,
+                                          Model model) {
 
-        FriendRequest friendRequest = friendRequestService.sendFriendRequest(user, firstName, lastName);
-        Set<FriendRequest> friendRequests = new HashSet<>();
-        friendRequests.add(friendRequest);
-
-        user.setUserRequests(friendRequests);
-        return redirect("profile");
+        try{
+            FriendRequest friendRequest = friendRequestService.sendFriendRequest(user, requestedId);
+            Set<FriendRequest> friendRequests = new HashSet<>();
+            friendRequests.add(friendRequest);
+            user.setUserRequests(friendRequests);
+        }catch (Exception e){
+            model.addAttribute("message", "This request already exist");
+            return send ("message");
+        }
+        return redirect("/profile");
     }
 
     @GetMapping("requests")
@@ -60,13 +62,13 @@ public class RequestController extends BaseController {
 
         friendRequestService.addNewFriend(user, newFriend);
         friendRequestService.changeRequestStatusFromPendingToAccept(user, newFriend);
-        return redirect("profile");
+        return redirect("/profile");
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/friends")
     public ModelAndView allFriends(@AuthenticationPrincipal User user){
-        List<User> object = friendRequestService.getFriends(user);
+        Set<User> object = friendRequestService.getFriends(user);
         return send("friends", "friends", object);
     }
 }

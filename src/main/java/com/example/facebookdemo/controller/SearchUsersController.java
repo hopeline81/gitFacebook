@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,8 +36,9 @@ public class SearchUsersController extends BaseController {
     }
 
     @PostMapping("/search")
-    public ModelAndView searchUsers(@Param("name") String name , Model model) {
+    public ModelAndView searchUsers(@AuthenticationPrincipal User user, @Param("name") String name , Model model) {
         List<User> searchResult = userService.searchByNameAndSort(name, Sort.by(Sort.Direction.ASC, "firstName"));
+
         model.addAttribute("name", name);
         model.addAttribute("searchResult", searchResult);
         return send ("search_result", "searchResult", searchResult);

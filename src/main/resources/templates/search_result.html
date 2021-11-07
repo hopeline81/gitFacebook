@@ -13,6 +13,10 @@
         <td th:text="${user.lastName}">
         </td>
         <br/>
+        <a th:href="@{send_friend_request/(requesterId=${user.id})}" th:action="get">Send Request</a>
+<!--        <input type="submit" value="Send friend request" class="btn btn-primary"-->
+<!--               placeholder="Send friend request"/>-->
+        </br>
     </tr>
 </form>
 </body>
