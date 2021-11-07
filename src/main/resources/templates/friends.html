@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <a th:href="@{profile}">Back to profile page</a>
+</div>
+
+<form method="post" action="/friends">
+    <tr th:each="friend : ${friends}">
+        <td th:text="${friend.firstName}">
+        </td>
+        <br/>
+        <td></td>
+        <td th:text="${friend.lastName}">
+        </td>
+        <br/>
+    </tr>
+</form>
+</body>
+</html>

@@ -3,8 +3,6 @@ package com.example.facebookdemo.dto;
 import com.example.facebookdemo.entity.FriendRequestStatus;
 import com.example.facebookdemo.entity.User;
 
-import java.time.LocalDateTime;
-
 public class FriendRequestDTO {
 
     private User requesterUser;

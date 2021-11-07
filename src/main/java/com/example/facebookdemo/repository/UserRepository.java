@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -25,4 +26,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User AS u WHERE (u.firstName like ?1% OR u.lastName like ?1%)")
     List<User> searchByNameAndSort(String name, Sort sort);
+
 }
