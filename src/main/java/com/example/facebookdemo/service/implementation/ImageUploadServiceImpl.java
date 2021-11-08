@@ -5,26 +5,18 @@ import com.example.facebookdemo.entity.Profile;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.ImageRepository;
 import com.example.facebookdemo.service.contrack.ImageUploadService;
-import com.google.auth.Credentials;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
+import com.example.facebookdemo.service.implementation.util.FileUtil;
+import com.example.facebookdemo.service.implementation.util.FirebaseStorageCreateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.*;
 
 @Service
 public class ImageUploadServiceImpl implements ImageUploadService {
-    String BUCKET_NAME = "facebook-nadezhda.appspot.com";
-
 
     private final ImageRepository imageRepository;
     private final ProfileServiceImpl profileService;

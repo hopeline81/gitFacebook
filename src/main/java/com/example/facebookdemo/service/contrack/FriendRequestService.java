@@ -10,7 +10,7 @@ import java.util.Set;
 public interface FriendRequestService {
     FriendRequest sendFriendRequest(User requestedUser, String requestedId);
 
-    Set<FriendRequest> findRequestToUser(User user);
+    List<FriendRequestDTO> findRequestToUser(User user);
 
     User findRequesterUser(Long userId);
 

@@ -4,7 +4,7 @@ import com.example.facebookdemo.dto.UserDTO;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.service.contrack.ForgotPasswordService;
 import com.example.facebookdemo.service.contrack.UserService;
-import com.example.facebookdemo.service.implementation.UtilityGetURL;
+import com.example.facebookdemo.service.implementation.util.GetURLUtil;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -44,12 +44,12 @@ public class ForgotPasswordController extends BaseController {
 
         try {
             forgotPasswordService.updateResetPasswordToken(token, email);
-            String resetPasswordLink = UtilityGetURL.getSiteURL(request) + "/reset_password?token=" + token;
+            String resetPasswordLink = GetURLUtil.getSiteURL(request) + "/reset_password?token=" + token;
             forgotPasswordService.sendEmail(email, resetPasswordLink);
             model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
 
         } catch (UnsupportedEncodingException | MessagingException e) {
-            model.addAttribute("error", "Error while sending email");
+            model.addAttribute("message", "Error while sending email");
         }
         return "forgot-password-form";
     }
