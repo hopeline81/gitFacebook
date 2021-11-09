@@ -57,13 +57,19 @@ public class RequestController extends BaseController {
 
     @GetMapping("accept_friend_request")
     public ModelAndView acceptRequest(@AuthenticationPrincipal User user,
-                                      @RequestParam("requesterId") String requesterId) {
+                                      @RequestParam("requesterId") String requesterId,
+                                      Model model) {
 
         Long requesterUserId = Long.valueOf(requesterId);
         User newFriend = friendRequestService.findRequesterUser(requesterUserId);
 
-        friendRequestService.addNewFriend(user, newFriend);
-        friendRequestService.changeRequestStatusFromPendingToAccept(user, newFriend);
+        try {
+            friendRequestService.addNewFriend(user, newFriend);
+            friendRequestService.changeRequestStatusFromPendingToAccept(user, newFriend);
+        }catch (Exception e) {
+            model.addAttribute("message", "This request already accepted");
+            return send ("message");
+        }
         return redirect("/profile");
     }
 
