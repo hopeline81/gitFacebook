@@ -1,6 +1,9 @@
 package com.example.facebookdemo.dto;
 
+import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.User;
+
+import java.util.List;
 
 public class ProfileDTO {
 
@@ -85,5 +88,9 @@ public class ProfileDTO {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }

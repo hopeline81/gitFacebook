@@ -9,4 +9,5 @@ public interface PostService {
 
     Post save(PostDTO postDTO, User user);
     List<Post> getPosts(User user);
+    List<Post> allPosts();
 }

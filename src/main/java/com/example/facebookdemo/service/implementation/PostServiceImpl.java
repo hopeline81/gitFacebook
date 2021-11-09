@@ -39,4 +39,9 @@ public class PostServiceImpl implements PostService {
                 .sorted(Comparator.comparing(Post::getPostDate))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Post> allPosts() {
+        return postRepository.findAll();
+    }
 }
