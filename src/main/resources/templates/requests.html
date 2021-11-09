@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <a th:href="@{profile}">Back to profile page</a>
+</div>
+
+<form method="post" action="/requests">
+    <tr th:each="friendRequest : ${requests}">
+        <td th:text="${friendRequest.requesterUser.firstName}" th:value="firstName">
+        </td>
+        <td th:text="${friendRequest.requesterUser.lastName}" th:value="lastName">
+        </td>
+        <td th:text="${friendRequest.status}">
+        </td>
+        <div>
+            <a th:href="@{accept_friend_request/(requesterId=${friendRequest.requesterUser.id})}">Accept</a>
+        </div>
+        <div>
+            <a th:href="@{decline_friend_request}">Decline</a>
+        </div>
+        <br/>
+    </tr>
+</form>
+</body>
+</html>

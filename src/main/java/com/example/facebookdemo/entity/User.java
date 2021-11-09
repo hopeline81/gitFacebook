@@ -20,10 +20,10 @@ public class User implements UserDetails {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "firstName", nullable = false, unique = true)
+    @Column(name = "firstName", nullable = false)
     private String firstName;
 
-    @Column(name = "lastName", nullable = false, unique = true)
+    @Column(name = "lastName", nullable = false)
     private String lastName;
 
     @Column(name = "password", nullable = false)
@@ -55,6 +55,15 @@ public class User implements UserDetails {
 
     @OneToMany(targetEntity = Image.class, mappedBy = "user", cascade = CascadeType.ALL)
     private List<Image> images;
+
+    @OneToMany(targetEntity = FriendRequest.class,fetch = FetchType.EAGER, mappedBy = "requesterUser", cascade = CascadeType.ALL)
+    private Set<FriendRequest> userRequests;
+
+    @ManyToMany(targetEntity = User.class, fetch = FetchType.EAGER)
+    @JoinTable(name = "users_friends",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "friend_id")})
+    private Set<User> friends;
 
     public User() {
     }
@@ -178,6 +187,22 @@ public class User implements UserDetails {
         this.images = images;
     }
 
+    public Set<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(Set<User> friends) {
+        this.friends = friends;
+    }
+
+    public Set<FriendRequest> getUserRequests() {
+        return userRequests;
+    }
+
+    public void setUserRequests(Set<FriendRequest> userRequests) {
+        this.userRequests = userRequests;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -197,6 +222,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 
 }

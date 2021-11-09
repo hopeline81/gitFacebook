@@ -49,5 +49,7 @@ public class PostController extends BaseController {
     public ModelAndView allPosts(@AuthenticationPrincipal User user){
         List<Post> object = postService.getPosts(user);
         return send("posts", "posts", object);
+ //       return postService.getAllPosts().stream().map(post -> modelMapper.map(post, PostDto.class))
+//            .collect(Collectors.toList());
     }
 }

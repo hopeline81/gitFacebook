@@ -1,4 +1,4 @@
-package com.example.facebookdemo.service.implementation;
+package com.example.facebookdemo.service.implementation.util;
 
 import org.springframework.web.multipart.MultipartFile;
 
