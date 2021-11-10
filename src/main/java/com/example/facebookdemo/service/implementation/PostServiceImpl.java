@@ -40,6 +40,9 @@ public class PostServiceImpl implements PostService {
                 .collect(Collectors.toList());
     }
 
+    //    return postService.getAllPosts().stream().map(post -> modelMapper.map(post, PostDto.class))
+//            .collect(Collectors.toList());
+
     @Override
     public List<Post> allPosts() {
         return postRepository.findAll();

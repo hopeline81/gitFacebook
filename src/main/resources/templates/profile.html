@@ -6,34 +6,18 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/profile.css}"/>
 </head>
-<!--<div>-->
-<!--    <a th:href="@{profile-update}">Update profile details</a>-->
-<!--</div>-->
-<!--<div>-->
-<!--    <a th:href="@{post/add}">Add post</a>-->
-<!--</div>-->
-<!--<div>-->
-<!--        <a th:href="@{posts}">All posts</a>-->
-<!--</div>-->
-<!--<div>-->
-<!--    <a th:href="@{upload_image}">Add image</a>-->
-<!--</div>-->
-<!--<div>-->
-<!--    <a th:href="@{images}">All images</a>-->
-<!--</div>-->
 <div>
-    <a th:href="@{search}">Search users</a>
+    <a th:href="@{posts}">All posts</a>
 </div>
-<!--<div>-->
-<!--    <a th:href="@{friends}">Friends</a>-->
-<!--</div>-->
-<!--<div>-->
-<!--    <a th:href="@{delete_acount}">Delete account</a>-->
-<!--</div>-->
-<!--<div>-->
-<!--    <a th:href="@{requests}">Requests</a>-->
-<!--</div>-->
-
+<div>
+    <a th:href="@{images}">All images</a>
+</div>
+<div>
+    <a th:href="@{friends}">Friends</a>
+</div>
+<div>
+    <a th:href="@{requests}">Requests</a>
+</div>
 <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
 <div class="container">
     <div class="col-lg-8">
@@ -69,8 +53,20 @@
                             </td>
                         </tr>
                     </form>
+                    <div>
+                        <a th:href="@{profile-update}">Update profile details</a>
+                    </div>
+                    <div>
+                        <a th:href="@{delete_acount}">Delete account</a>
+                    </div>
                 </ul>
             </div>
+        </div>
+        <div>
+            <form class="example" action="/search" method="post" style="margin:auto;max-width:300px">
+                <input type="text" placeholder="Search friends" name="name">
+                <button type="submit" value="Search"><i class="fa fa-search"></i></button>
+            </form>
         </div>
         <div class="panel">
             <div class="panel-heading">
@@ -81,46 +77,32 @@
                     <textarea name="text" placeholder="Share what you've been up to..."
                               class="form-control"></textarea>
                     <div class="actions">
-                        <div class="btn-group">
-                            <button type="button" class="btn-link" title="" data-toggle="tooltip"
-                                    data-original-title="Post an Image">
-                                <i class="fa fa-image"></i>
-                            </button>
-                        </div>
                         <button type="submit" class="btn btn-sm btn-rounded btn-info">
                             Post
                         </button>
                     </div>
                 </form>
-
-<!--                <div class="activity__list__footer">-->
-<!--                    <a href="#"> <i class="fa fa-thumbs-up"></i>123</a>-->
-<!--                    <a href="#"> <i class="fa fa-comments"></i>23</a>-->
-<!--                    <span> <i class="fa fa-clock"></i>2 hours ago</span>-->
-<!--                </div>-->
-<!--                </li>-->
-                <li>
-                    <i class="activity__list__icon fa fa-lightbulb-o"></i>
-                    <div class="activity__list__header">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""/>
-                        <a href="#">John Doe</a> bookmarked a page: <a href="#">Awesome Idea</a>
-                    </div>
-                    <div class="activity__list__footer">
-                        <a href="#"> <i class="fa fa-thumbs-up"></i>123</a>
-                        <a href="#"> <i class="fa fa-comments"></i>23</a>
-                        <span> <i class="fa fa-clock"></i>2 hours ago</span>
-                    </div>
-                </li>
-<!--                </ul>-->
             </div>
-            <div class="panel-content panel-activity">
-                <form action="/search" method="post" style="margin:auto;max-width:300px class="panel-activity__status">
-                    <input type="text" placeholder="Search.." name="name">
-                    <button type="submit" value="Search"><i class="fa fa-search"></i></button>
-                </form>
+            <h5>Add image</h5>
+            <form method="post" action="upload_image" enctype="multipart/form-data">
+                <div class="container">
+                    <tr>
+                        <input type="text" name="description" placeholder="Say somethink.." />
+                    </tr>
+                    <tr>
+                        <input type="file" name="file"/>
+                    </tr>
+                    <tr>
+                        <input type="submit" name="submit">
+                    </tr>
+                </div>
+            </form>
+            </br>
+            </br>
+            </br>
         </div>
-    </div>
 
+    </div>
 </div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.example.facebookdemo.service.implementation;
 
+import com.example.facebookdemo.dto.ImageDTO;
 import com.example.facebookdemo.entity.Image;
 import com.example.facebookdemo.entity.Profile;
 import com.example.facebookdemo.entity.User;
@@ -7,6 +8,7 @@ import com.example.facebookdemo.repository.ImageRepository;
 import com.example.facebookdemo.service.contrack.ImageUploadService;
 import com.example.facebookdemo.service.implementation.util.FileUtil;
 import com.example.facebookdemo.service.implementation.util.FirebaseStorageCreateUtil;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,17 +16,20 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ImageUploadServiceImpl implements ImageUploadService {
 
     private final ImageRepository imageRepository;
     private final ProfileServiceImpl profileService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public ImageUploadServiceImpl(ImageRepository imageRepository, ProfileServiceImpl profileService) {
+    public ImageUploadServiceImpl(ImageRepository imageRepository, ProfileServiceImpl profileService, ModelMapper modelMapper) {
         this.imageRepository = imageRepository;
         this.profileService = profileService;
+        this.modelMapper = modelMapper;
     }
 
     @Override

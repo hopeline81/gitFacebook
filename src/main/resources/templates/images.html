@@ -10,7 +10,7 @@
 </div>
 
 <form method="post" action="/images">
-    <tr th:each="image : ${images}">
+    <div class="list-group" th:each="image : ${images}">
         <br/>
         <div >
             <img th:src="@{'https://firebasestorage.googleapis.com/v0/b/facebook-nadezhda.appspot.com/o/' + ${image.imageUrl} + '?alt=media'}"
@@ -20,7 +20,7 @@
             <br/>
         <br/>
         </div>
-    </tr>
+    </div>
 </form>
 </body>
 </html>

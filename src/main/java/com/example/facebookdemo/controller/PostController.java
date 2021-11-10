@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class PostController extends BaseController {
@@ -49,7 +51,9 @@ public class PostController extends BaseController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/posts")
     public String allPosts(@AuthenticationPrincipal User user, Model model){
-        List<Post> posts = postService.allPosts();
+        List<Post> posts = postService.allPosts().stream()
+                .sorted(Comparator.comparing(Post::getPostDate).reversed())
+                .collect(Collectors.toList());
         model.addAttribute("posts", posts);
         return "posts";
  //       return postService.getAllPosts().stream().map(post -> modelMapper.map(post, PostDto.class))
