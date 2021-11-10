@@ -56,9 +56,6 @@ public class FriendRequestServiceImpl implements FriendRequestService {
                 .collect(Collectors.toList());
     }
 
-//    return postService.getAllPosts().stream().map(post -> modelMapper.map(post, PostDto.class))
-//            .collect(Collectors.toList());
-
     public User findRequestedUser(Long userId) {
         Optional<User> user = userRepository.findUserById(userId);
         User existingUser;

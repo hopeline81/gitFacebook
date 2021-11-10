@@ -60,11 +60,15 @@ public class ImageController extends BaseController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/images")
-    public ModelAndView allPosts(@AuthenticationPrincipal User user) {
-        List<Image> userImages = imageUploadService.getImages(user);
+    public ModelAndView allImages(@AuthenticationPrincipal User user) {
+        List<Image> images = imageUploadService.getImages(user);
 
-        return send("images", "images", userImages);
+        return send("images", "images", images);
     }
+
+
+
+
 
     @PostMapping("/avatar_upload")
     public ModelAndView avatarUpload(@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile multipartFile) throws IOException {
