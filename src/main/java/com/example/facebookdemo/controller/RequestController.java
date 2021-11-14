@@ -76,7 +76,7 @@ public class RequestController extends BaseController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/friends")
     public ModelAndView allFriends(@AuthenticationPrincipal User user){
-        Set<User> object = friendRequestService.getFriends(user);
-        return send("friends", "friends", object);
+        Set<User> friends = friendRequestService.getFriends(user);
+        return send("friends", "friends", friends);
     }
 }

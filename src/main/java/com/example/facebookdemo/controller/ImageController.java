@@ -3,10 +3,9 @@ package com.example.facebookdemo.controller;
 import com.example.facebookdemo.dto.ImageDTO;
 import com.example.facebookdemo.dto.PostDTO;
 import com.example.facebookdemo.dto.ProfileDTO;
-import com.example.facebookdemo.dto.UserDTO;
+import com.example.facebookdemo.dto.ResponseImageDTO;
 import com.example.facebookdemo.entity.Image;
 import com.example.facebookdemo.entity.Post;
-import com.example.facebookdemo.entity.Profile;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.service.contrack.ImageUploadService;
 import com.example.facebookdemo.service.contrack.ProfileService;
@@ -15,13 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -60,15 +63,25 @@ public class ImageController extends BaseController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/images")
-    public ModelAndView allImages(@AuthenticationPrincipal User user) {
-        List<Image> images = imageUploadService.getImages(user);
+    public ModelAndView allImages() {
+        List<Image> images = imageUploadService.getAllImages();
+        List<ResponseImageDTO> responseImages = new ArrayList<>();
+        images.forEach(image -> {
+            ResponseImageDTO responseImageDTO = new ResponseImageDTO();
+            responseImageDTO.setId(image.getId());
+            responseImageDTO.setUrl(image.getImageUrl());
+            responseImageDTO.setDescription(image.getDescription());
+            responseImageDTO.setUserId(image.getUser().getId());
+            responseImageDTO.setNumberOfLikesImage(image.getNumberOfLikesImage());
+            responseImageDTO.setUsersLikedImage(image.getUsersLikes());
+            responseImages.add(responseImageDTO);
+        });
+//        List<Image> friendsImages = user.getFriends().stream()
+//            .flatMap(friend -> friend.getImages().stream())
+//            .collect(Collectors.toList());
 
-        return send("images", "images", images);
+        return send("images", "images", responseImages);
     }
-
-
-
-
 
     @PostMapping("/avatar_upload")
     public ModelAndView avatarUpload(@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile multipartFile) throws IOException {
@@ -77,5 +90,19 @@ public class ImageController extends BaseController {
         ProfileDTO profileDTO = profileService.createNewProfileDTO(user.getEmail());
 
         return send("profile", "profileDTO", profileDTO);
+    }
+
+    @GetMapping("/likesImage")
+    public ModelAndView addLike(@RequestParam("imageId") String imageId,
+                                @AuthenticationPrincipal User user,
+                                Model model) {
+        try {
+            Image image = imageUploadService.getImageById(Long.valueOf(imageId));
+            imageUploadService.update(image, user.getId());
+        } catch (Exception e) {
+            model.addAttribute("message", "This image does not exist");
+            return send("message");
+        }
+        return redirect("/images");
     }
 }

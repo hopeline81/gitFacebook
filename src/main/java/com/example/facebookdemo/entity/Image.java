@@ -1,6 +1,7 @@
 package com.example.facebookdemo.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "images")
@@ -16,8 +17,17 @@ public class Image {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "likes_image")
+    private Integer numberOfLikesImage;
+
     @ManyToOne(targetEntity = User.class, optional = false)
     private User user;
+
+    @ManyToMany(targetEntity = User.class, fetch = FetchType.EAGER)
+    @JoinTable(name = "liked_images_users",
+            joinColumns = {@JoinColumn(name = "image_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
+    private List<User> usersLikes;
 
     public Image() {
     }
@@ -52,5 +62,21 @@ public class Image {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Integer getNumberOfLikesImage() {
+        return numberOfLikesImage;
+    }
+
+    public void setNumberOfLikesImage(Integer numberOfLikesImage) {
+        this.numberOfLikesImage = numberOfLikesImage;
+    }
+
+    public List<User> getUsersLikes() {
+        return usersLikes;
+    }
+
+    public void setUsersLikes(List<User> usersLikes) {
+        this.usersLikes = usersLikes;
     }
 }

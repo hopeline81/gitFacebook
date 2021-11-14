@@ -4,10 +4,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 
 @Entity
 @Table(name = "users")
@@ -40,6 +42,9 @@ public class User implements UserDetails {
 
     @Column(name = "verification_code", updatable = false)
     private String verificationCode;
+
+    @Column(name = "timezone")
+    private TimeZone timeZone;
 
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
@@ -139,6 +144,14 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    public TimeZone getTimeZone() {
+        return timeZone;
+    }
+
+    public void setTimeZone(TimeZone timeZone) {
+        this.timeZone = timeZone;
+    }
+
     public String getResetPasswordToken() {
         return resetPasswordToken;
     }
@@ -186,6 +199,7 @@ public class User implements UserDetails {
     public void setImages(List<Image> images) {
         this.images = images;
     }
+
 
     public Set<User> getFriends() {
         return friends;

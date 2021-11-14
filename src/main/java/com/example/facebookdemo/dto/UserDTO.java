@@ -37,6 +37,8 @@ public class UserDTO {
 
     private List<Post> posts;
 
+    private List<Post> likedPosts;
+
     private List<Image> images;
 
     public UserDTO() {
@@ -112,6 +114,10 @@ public class UserDTO {
 
     public void setPosts(List<Post> posts) {
         this.posts = posts;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public List<Image> getImages() {
