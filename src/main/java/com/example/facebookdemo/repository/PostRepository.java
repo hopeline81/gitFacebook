@@ -16,8 +16,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     
     Optional<Post> findAllByUser(User user);
 
-    Page<Post> findByUser(User user, PageRequest pageRequest);
-
     @Override
     List<Post> findAll(Sort sort);
 }

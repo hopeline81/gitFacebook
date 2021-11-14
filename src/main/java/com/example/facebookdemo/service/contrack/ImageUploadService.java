@@ -17,6 +17,6 @@ public interface ImageUploadService {
     Image uploadUserImage(User user, MultipartFile multipartFile, String imageText) throws IOException;
     List<Image> getImages(User user);
     Image getImageById(Long valueOf);
-
+    List<Image> getAllImages();
     void update(Image image, Long userId);
 }

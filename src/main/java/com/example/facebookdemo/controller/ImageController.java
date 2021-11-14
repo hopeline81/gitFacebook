@@ -63,8 +63,8 @@ public class ImageController extends BaseController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/images")
-    public ModelAndView allImages(@AuthenticationPrincipal User user) {
-        List<Image> images = imageUploadService.getImages(user);
+    public ModelAndView allImages() {
+        List<Image> images = imageUploadService.getAllImages();
         List<ResponseImageDTO> responseImages = new ArrayList<>();
         images.forEach(image -> {
             ResponseImageDTO responseImageDTO = new ResponseImageDTO();

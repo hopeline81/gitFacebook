@@ -39,14 +39,6 @@ public class PostServiceImpl implements PostService {
         return postRepository.save(post);
     }
 
-//    @Override
-//    public List<Post> getPosts(User user) {
-//        Optional<Post> posts = postRepository.findAllByUser(user);
-//        return posts.stream()
-//                .sorted(Comparator.comparing(Post::getPostDate))
-//                .collect(Collectors.toList());
-//    }
-
     @Override
     public List<Post> allPosts() {
         return postRepository.findAll();

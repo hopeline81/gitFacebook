@@ -68,8 +68,11 @@ public class ImageUploadServiceImpl implements ImageUploadService {
 
     @Override
     public Image getImageById(Long imageId) {
-        Image image = imageRepository.getById(imageId);
-        return image;
+        return imageRepository.getById(imageId);
+    }
+
+    public List<Image> getAllImages() {
+        return imageRepository.findAll();
     }
 
     @Override
@@ -85,10 +88,6 @@ public class ImageUploadServiceImpl implements ImageUploadService {
             usersWhoLikedImage.add(user);
         }
         imageRepository.save(image);
-    }
-
-    private ImageDTO convertToDTO(Image image) {
-        return modelMapper.map(image, ImageDTO.class);
     }
 
     private String generateFileName(MultipartFile multiPart) {
