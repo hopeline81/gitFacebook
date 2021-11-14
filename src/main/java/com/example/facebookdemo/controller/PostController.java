@@ -67,13 +67,12 @@ public class PostController extends BaseController {
     public ModelAndView addLike(@RequestParam("postId") String postId,
                                 @AuthenticationPrincipal User user,
                                 Model model) {
-
-        PostDTO postDTO = postService.getPostById(Long.valueOf(postId));
         try {
+            PostDTO postDTO = postService.getPostById(Long.valueOf(postId));
             Post post = postService.convertToEntity(postDTO);
             postService.createLike(post, user.getId());
         } catch (Exception e) {
-            model.addAttribute("message", "This post already liked");
+            model.addAttribute("message", "This post does not exist");
             return send("message");
         }
         return redirect("/posts");
