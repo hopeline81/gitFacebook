@@ -12,13 +12,20 @@
 <form method="post" action="/images">
     <div class="list-group" th:each="image : ${images}">
         <br/>
-        <div >
+        <div>
             <img th:src="@{'https://firebasestorage.googleapis.com/v0/b/facebook-nadezhda.appspot.com/o/' + ${image.url} + '?alt=media'}"
-                 th:height="52" th:width="52"/>
-        <td th:text="${image.description}">
-        </td>
+                 th:height="152" th:width="152"/>
             <br/>
-        <br/>
+            <td th:text="${image.description}">
+            </td>
+            <br/>
+            <td th:text="${image.numberOfLikesImage}">
+            </td>
+            <a th:href="@{likesImage/(imageId=${image.id})}">Like</a>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
         </div>
     </div>
 </form>

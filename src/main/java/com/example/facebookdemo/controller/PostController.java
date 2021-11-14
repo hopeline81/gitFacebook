@@ -54,7 +54,7 @@ public class PostController extends BaseController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/posts")
-    public String allPosts(@AuthenticationPrincipal User user, Model model) {
+    public String allPosts(Model model) {
         List<PostDTO> posts = postService.allPosts().stream()
                 .sorted(Comparator.comparing(Post::getPostDate).reversed())
                 .map(post -> modelMapper.map(post, PostDTO.class))
