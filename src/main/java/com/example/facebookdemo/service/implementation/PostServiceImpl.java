@@ -4,31 +4,28 @@ import com.example.facebookdemo.dto.PostDTO;
 import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.PostRepository;
+import com.example.facebookdemo.repository.UserRepository;
 import com.example.facebookdemo.service.contrack.PostService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.modelmapper.spi.MatchingStrategy;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Transactional
 @Service
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
-    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
+    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, ModelMapper modelMapper) {
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -73,11 +70,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void createLike(Post post, User user) {
-        Integer numberOfLike = post.getNumberOfLikes();
-        post.setNumberOfLikes(numberOfLike + 1);
+    public void createLike(Post post, Long userId) {
+        User user = userRepository.findById(userId).get();
         List<User> likedUsers = post.getUsersLikes();
-        likedUsers.add(user);
+        Integer numberOfLike = post.getNumberOfLikes();
+
+        if(likedUsers.contains(user)){
+            post.setNumberOfLikes(numberOfLike - 1);
+            likedUsers.remove(user);
+        }else {
+            post.setNumberOfLikes(numberOfLike + 1);
+            likedUsers.add(user);
+        }
         postRepository.save(post);
     }
 }

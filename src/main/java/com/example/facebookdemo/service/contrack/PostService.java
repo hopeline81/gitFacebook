@@ -13,5 +13,5 @@ public interface PostService {
     PostDTO convertToDTO(Post postCreated);
     Post convertToEntity(PostDTO postDTO);
     PostDTO getPostById(Long id);
-    void createLike(Post post,User authenticatedUser);
+    void createLike(Post post,Long userId);
 }

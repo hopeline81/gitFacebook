@@ -71,8 +71,7 @@ public class PostController extends BaseController {
         PostDTO postDTO = postService.getPostById(Long.valueOf(postId));
         try {
             Post post = postService.convertToEntity(postDTO);
-            postService.createLike(post, user);
-            String debug = "";
+            postService.createLike(post, user.getId());
         } catch (Exception e) {
             model.addAttribute("message", "This post already liked");
             return send("message");
