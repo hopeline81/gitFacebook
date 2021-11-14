@@ -1,9 +1,6 @@
 package com.example.facebookdemo.controller;
 
-import com.example.facebookdemo.dto.ImageDTO;
-import com.example.facebookdemo.dto.PostDTO;
-import com.example.facebookdemo.dto.ProfileDTO;
-import com.example.facebookdemo.dto.UserDTO;
+import com.example.facebookdemo.dto.*;
 import com.example.facebookdemo.entity.Image;
 import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.Profile;
@@ -22,7 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -62,13 +61,20 @@ public class ImageController extends BaseController {
     @GetMapping("/images")
     public ModelAndView allImages(@AuthenticationPrincipal User user) {
         List<Image> images = imageUploadService.getImages(user);
+        List<ResponseImageDTO> responseImages = new ArrayList<>();
+        images.forEach(image -> {
+            ResponseImageDTO responseImageDTO = new ResponseImageDTO();
+            responseImageDTO.setUrl(image.getImageUrl());
+            responseImageDTO.setDescription(image.getDescription());
+            responseImageDTO.setUserId(image.getUser().getId());
+            responseImages.add(responseImageDTO);
+        });
+//        List<Image> friendsImages = user.getFriends().stream()
+//            .flatMap(friend -> friend.getImages().stream())
+//            .collect(Collectors.toList());
 
-        return send("images", "images", images);
+        return send("images", "images", responseImages);
     }
-
-
-
-
 
     @PostMapping("/avatar_upload")
     public ModelAndView avatarUpload(@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile multipartFile) throws IOException {

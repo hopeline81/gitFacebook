@@ -13,7 +13,7 @@
     <div class="list-group" th:each="image : ${images}">
         <br/>
         <div >
-            <img th:src="@{'https://firebasestorage.googleapis.com/v0/b/facebook-nadezhda.appspot.com/o/' + ${image.imageUrl} + '?alt=media'}"
+            <img th:src="@{'https://firebasestorage.googleapis.com/v0/b/facebook-nadezhda.appspot.com/o/' + ${image.url} + '?alt=media'}"
                  th:height="52" th:width="52"/>
         <td th:text="${image.description}">
         </td>

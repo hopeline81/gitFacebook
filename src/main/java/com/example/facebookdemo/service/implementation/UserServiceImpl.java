@@ -1,6 +1,7 @@
 package com.example.facebookdemo.service.implementation;
 
 import com.example.facebookdemo.dto.UserDTO;
+import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.Role;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.UserRepository;

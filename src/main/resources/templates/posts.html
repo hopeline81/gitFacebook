@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -11,13 +11,18 @@
 
 <form method="post" action="/posts">
     <tr th:each="post : ${posts}">
-        <td th:text="${post.textPost}">
+        <td th:text="${post.text}">
         </td>
         <br/>
         <td></td>
         <th><b>Post date</b></th>
         <td th:text="${post.postDate}">
         </td>
+        <br/>
+        <td th:text="${post.numberOfLikes}">
+        </td>
+        <a th:href="@{likes/(postId=${post.id})}">Like</a>
+<!--        <a th:href="@{accept_friend_request/(requesterId=${friendRequest.requesterUser.id})}">Accept</a>-->
         <br/>
     </tr>
 </form>

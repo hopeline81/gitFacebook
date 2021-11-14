@@ -1,11 +1,19 @@
 package com.example.facebookdemo.entity;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import javax.persistence.Entity;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TimeZone;
 
 @Entity
+@DynamicUpdate
 @Table(name = "posts")
 public class Post {
 
@@ -19,8 +27,17 @@ public class Post {
     @Column(name = "post_date")
     private LocalDateTime postDate;
 
+    @Column(name = "number_of_likes")
+    private Integer numberOfLikes;
+
     @ManyToOne(targetEntity = User.class, optional = false)
     private User user;
+
+    @ManyToMany(targetEntity = User.class, fetch = FetchType.EAGER)
+    @JoinTable(name = "liked_users",
+            joinColumns = {@JoinColumn(name = "post_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
+    private List<User> usersLikes;
 
     @OneToMany(targetEntity = Post.class)
     private List<Post> comments;
@@ -58,6 +75,22 @@ public class Post {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Integer getNumberOfLikes() {
+        return numberOfLikes;
+    }
+
+    public void setNumberOfLikes(Integer numberOfLikes) {
+        this.numberOfLikes = numberOfLikes;
+    }
+
+    public List<User> getUsersLikes() {
+        return usersLikes;
+    }
+
+    public void setUsersLikes(List<User> usersLikes) {
+        this.usersLikes = usersLikes;
     }
 
     public List<Post> getComments() {
