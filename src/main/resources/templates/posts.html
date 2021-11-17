@@ -22,6 +22,8 @@
         <td th:text="${post.numberOfLikes}">
         </td>
         <a th:href="@{likes/(postId=${post.id})}">Like</a>
+        <a href="add-comments.html" th:href="@{add_comments/(parentPostId=${post.id})}">Add comment</a>
+        <a href="comments.html" th:href="@{comments/(parentPostId=${post.id})}">Comments</a>
         <br/>
     </tr>
 </form>

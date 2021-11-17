@@ -4,7 +4,7 @@ import com.example.facebookdemo.entity.User;
 
 import java.util.List;
 
-public class ResponseImageDTO {
+public class ImageDTOResponse {
 
     private Long id;
 
@@ -18,7 +18,7 @@ public class ResponseImageDTO {
 
     private List<User> usersLikedImage;
 
-    public ResponseImageDTO() {
+    public ImageDTOResponse() {
     }
 
     public Long getId() {

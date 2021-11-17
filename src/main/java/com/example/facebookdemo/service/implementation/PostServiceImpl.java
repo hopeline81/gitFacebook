@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -46,7 +47,22 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post convertToEntity(PostDTO postDTO) {
+
         return modelMapper.map(postDTO, Post.class);
+    }
+
+    public Post convertCommentDTOToEntity(PostDTO postDTO) {
+        Post comment = new Post();
+        comment.setTextPost(postDTO.getText());
+        return comment;
+    }
+
+    @Override
+    public List<PostDTO> findAllCommentsToCurrentPost(Long postId) {
+        Post currentPost = postRepository.findFirstById(postId).get();
+        return currentPost.getComments().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -76,4 +92,28 @@ public class PostServiceImpl implements PostService {
         }
         postRepository.save(post);
     }
+
+    @Override
+    public List<Post> allComments(Long parentPostId) {
+        Post post = postRepository.findById(parentPostId).get();
+        return post.getComments();
+    }
+
+    @Override
+    public void addComment(Long parentPostId, Post comment, Long userId) {
+        User user = userRepository.findUserById(userId).get();
+        Post post1 = postRepository.findById(parentPostId).get();
+        comment.setUser(user);
+        comment.setParent(post1);
+        comment.setNumberOfLikes(0);
+        comment.setPostDate(LocalDateTime.now());
+        comment = postRepository.save(comment);
+        List<Post> comments = post1.getComments();
+        comments.add(comment);
+        postRepository.save(post1);
+    }
+
+//    List<Image> friendsImages = user.getFriends().stream()
+//            .flatMap(friend -> friend.getImages().stream())
+//            .collect(Collectors.toList());
 }

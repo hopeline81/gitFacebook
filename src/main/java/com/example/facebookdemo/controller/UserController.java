@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,9 +36,9 @@ public class UserController extends BaseController implements WebMvcConfigurer {
     @PostMapping("/login")
     public ModelAndView login(@Validated @ModelAttribute("user") UserDTO userDTO
             , BindingResult result
-            , RedirectAttributes redirectAttributes) {
+            , Model model) {
         if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("user", userDTO);
+            model.addAttribute("message", "This user does not exist or password is incorrect");
             return redirect("forgot_password");
         }
         return redirect("profile");
@@ -47,9 +48,9 @@ public class UserController extends BaseController implements WebMvcConfigurer {
     @PostMapping("/register")
     public ModelAndView register(@Validated @ModelAttribute("user") UserDTO userDTO
             , BindingResult result
-            , RedirectAttributes redirectAttributes) {
+            , Model model) {
         if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("user", userDTO);
+            model.addAttribute("message", "Please try again." );
             return redirect("register");
         }
         userService.register(userDTO);

@@ -3,8 +3,10 @@ package com.example.facebookdemo.controller;
 import com.example.facebookdemo.dto.PostDTO;
 import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.User;
+import com.example.facebookdemo.repository.PostRepository;
 import com.example.facebookdemo.service.contrack.PostService;
 import com.example.facebookdemo.service.contrack.UserService;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,19 +20,20 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
 public class PostController extends BaseController {
 
     private final PostService postService;
+    private final PostRepository postRepository;
     private final ModelMapper modelMapper;
     private final UserService userService;
 
     @Autowired
-    public PostController(PostService postService, ModelMapper modelMapper, UserService userService) {
+    public PostController(PostService postService, PostRepository postRepository, ModelMapper modelMapper, UserService userService) {
         this.postService = postService;
+        this.postRepository = postRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
     }
@@ -57,6 +60,7 @@ public class PostController extends BaseController {
     public String allPosts(Model model) {
         List<PostDTO> posts = postService.allPosts().stream()
                 .sorted(Comparator.comparing(Post::getPostDate).reversed())
+                .filter(post -> post.getParent() == null)
                 .map(post -> modelMapper.map(post, PostDTO.class))
                 .collect(Collectors.toList());
         model.addAttribute("posts", posts);

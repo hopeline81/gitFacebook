@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" action="/add_comments" >
+    <tr>
+        <h4>comment</h4>
+        <input type="text" name="text">
+        <input type="hidden" name="id" th:value="${parentPostId}">
+    </tr>
+
+    <tr>
+        <input type="submit" name="submit">
+    </tr>
+</form>
+</body>
+</html>

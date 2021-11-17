@@ -14,4 +14,8 @@ public interface PostService {
     Post convertToEntity(PostDTO postDTO);
     PostDTO getPostById(Long id);
     void createLike(Post post,Long userId);
+    List<Post> allComments(Long parentPostId);
+    void addComment(Long parentPostId, Post post, Long userId);
+    Post convertCommentDTOToEntity(PostDTO postDTO);
+    List<PostDTO> findAllCommentsToCurrentPost(Long postId);
 }

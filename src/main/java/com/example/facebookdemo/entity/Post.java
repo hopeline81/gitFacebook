@@ -1,16 +1,14 @@
 package com.example.facebookdemo.entity;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.jmx.export.annotation.ManagedOperation;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 
 @Entity
 @DynamicUpdate
@@ -39,8 +37,13 @@ public class Post {
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private List<User> usersLikes;
 
-    @OneToMany(targetEntity = Post.class)
-    private List<Post> comments;
+    @OneToMany(mappedBy = "parent")
+    private List<Post> comments = new ArrayList<>();
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "parent_id")
+    private Post parent;
+
 
     public Post() {
     }
@@ -101,4 +104,11 @@ public class Post {
         this.comments = comments;
     }
 
+    public Post getParent() {
+        return parent;
+    }
+
+    public void setParent(Post parent) {
+        this.parent = parent;
+    }
 }
