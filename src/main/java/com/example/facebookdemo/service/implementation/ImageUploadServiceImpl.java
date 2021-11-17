@@ -1,6 +1,7 @@
 package com.example.facebookdemo.service.implementation;
 
 import com.example.facebookdemo.dto.ImageDTO;
+import com.example.facebookdemo.dto.ImageDTOResponse;
 import com.example.facebookdemo.entity.Image;
 import com.example.facebookdemo.entity.Profile;
 import com.example.facebookdemo.entity.User;
@@ -88,6 +89,21 @@ public class ImageUploadServiceImpl implements ImageUploadService {
             usersWhoLikedImage.add(user);
         }
         imageRepository.save(image);
+    }
+
+    public List<ImageDTOResponse> convertImagesToImageDTOs(List<Image> images) {
+        List<ImageDTOResponse> responseImages = new ArrayList<>();
+        images.forEach(image -> {
+            ImageDTOResponse imageDTOResponse = new ImageDTOResponse();
+            imageDTOResponse.setId(image.getId());
+            imageDTOResponse.setUrl(image.getImageUrl());
+            imageDTOResponse.setDescription(image.getDescription());
+            imageDTOResponse.setUserId(image.getUser().getId());
+            imageDTOResponse.setNumberOfLikesImage(image.getNumberOfLikesImage());
+            imageDTOResponse.setUsersLikedImage(image.getUsersLikes());
+            responseImages.add(imageDTOResponse);
+        });
+        return responseImages;
     }
 
     private String generateFileName(MultipartFile multiPart) {

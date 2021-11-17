@@ -1,11 +1,15 @@
 package com.example.facebookdemo.controller;
 
 import com.example.facebookdemo.dto.UserDTO;
+import com.example.facebookdemo.entity.Profile;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.UserRepository;
-import com.example.facebookdemo.service.contrack.ChangeProfileService;
+import com.example.facebookdemo.service.contrack.UpdateProfileService;
 import com.example.facebookdemo.service.contrack.ChangeUserEmailService;
+import com.example.facebookdemo.service.implementation.util.GetURLUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,19 +22,21 @@ import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 @Controller
-public class ChangeProfileController extends BaseController {
+public class UpdateProfileController extends BaseController {
 
-    private ChangeProfileService changeProfileService;
-    private UserRepository userRepository;
-    private ChangeUserEmailService userEmailService;
+    private final UpdateProfileService updateProfileService;
+    private final UserRepository userRepository;
+    private final ChangeUserEmailService userEmailService;
 
 
-    public ChangeProfileController(ChangeProfileService changeProfileService,
+    @Autowired
+    public UpdateProfileController(UpdateProfileService updateProfileService,
                                    UserRepository userRepository,
                                    ChangeUserEmailService userEmailService) {
-        this.changeProfileService = changeProfileService;
+        this.updateProfileService = updateProfileService;
         this.userRepository = userRepository;
         this.userEmailService = userEmailService;
     }
@@ -45,12 +51,15 @@ public class ChangeProfileController extends BaseController {
 
     @PostMapping("/profile-update")
     public String saveDetails(@AuthenticationPrincipal User user,
-                                    @ModelAttribute("user") UserDTO userDTO,
-                                    Model model) throws IOException, MessagingException {
+                              @ModelAttribute("user") UserDTO userDTO,
+                              Model model) throws IOException, MessagingException {
 
         model.addAttribute("user", userDTO);
-        user.setProfile(changeProfileService.updateProfileDetails(user, user.getProfile(), userDTO, user.getVerificationCode()));
-        return "change-email-success";
+        user.setProfile(updateProfileService.updateProfileDetails(user, user.getProfile(), userDTO, user.getVerificationCode()));
+        if(!userDTO.getEmail().equals(user.getEmail())){
+            return "change-email-success";
+        }
+        return "redirect:/profile";
     }
 
     @GetMapping("/verify")
@@ -58,7 +67,7 @@ public class ChangeProfileController extends BaseController {
                                        HttpServletRequest request,
                                        @RequestParam("code") String code) throws ServletException {
 
-        User user1 = userEmailService.getByVerificatonCode(code);
+        User user1 = userEmailService.getByVerificationCode(code);
         if (user1 != null) {
             user1.setEmail(email);
             user1 = userRepository.save(user1);

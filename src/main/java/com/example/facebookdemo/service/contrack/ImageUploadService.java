@@ -1,6 +1,7 @@
 package com.example.facebookdemo.service.contrack;
 
 import com.example.facebookdemo.dto.ImageDTO;
+import com.example.facebookdemo.dto.ImageDTOResponse;
 import com.example.facebookdemo.entity.Image;
 import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.Profile;
@@ -18,5 +19,6 @@ public interface ImageUploadService {
     List<Image> getImages(User user);
     Image getImageById(Long valueOf);
     List<Image> getAllImages();
+    List<ImageDTOResponse> convertImagesToImageDTOs(List<Image> images);
     void update(Image image, Long userId);
 }

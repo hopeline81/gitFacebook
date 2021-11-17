@@ -34,17 +34,17 @@ public class ChangeUserEmailServiceIml implements ChangeUserEmailService {
     public void updateEmail(String email, String code) throws UsernameNotFoundException,
             MessagingException,
             UnsupportedEncodingException {
-       sendVerificatonEmail(email, code);
+       sendVerificationEmail(email, code);
     }
 
     @Override
-    public User getByVerificatonCode(String code) {
+    public User getByVerificationCode(String code) {
 
         return userRepository.findByVerificationCode(code);
     }
 
     @Override
-    public void sendVerificatonEmail(String email, String code) throws MessagingException, UnsupportedEncodingException {
+    public void sendVerificationEmail(String email, String code) throws MessagingException, UnsupportedEncodingException {
         String subject = "Here's the link to verify your email";
         String verifyLink = LINK + "/verify?code=" + code + "&email=" + email;
         String content = "<p>Hello,</p>"

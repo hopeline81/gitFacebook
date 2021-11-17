@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" action="/comments">
+    <tr th:each="comment : ${comments}">
+        <td th:text="${comment.text}">
+        </td>
+        <br/>
+        <td></td>
+        <th><b>Post date</b></th>
+        <td th:text="${comment.postDate}">
+        </td>
+        <br/>
+<!--        <td th:text="${post.numberOfLikes}">-->
+<!--        </td>-->
+<!--        <a th:href="@{likes/(postId=${post.id})}">Like</a>-->
+<!--        <a th:href="@{posts/(parentPostId=${post.id})}">Comments</a>-->
+        <br/>
+    </tr>
+</form>
+</body>
+</html>

@@ -50,11 +50,6 @@ public class ProfileServiceImpl implements ProfileService  {
     }
 
     @Override
-    public Profile getProfile(String email) {
-        return profileRepository.findFirstByEmail(email);
-    }
-
-    @Override
     public ProfileDTO createNewProfileDTO(String email) {
         User user1 = userRepository.findUserByEmail(email);
         Profile profile = user1.getProfile();

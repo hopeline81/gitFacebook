@@ -37,8 +37,6 @@ public class UserDTO {
 
     private List<Post> posts;
 
-    private List<Post> likedPosts;
-
     private List<Image> images;
 
     public UserDTO() {

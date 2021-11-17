@@ -7,7 +7,7 @@ import java.io.UnsupportedEncodingException;
 
 public interface ChangeUserEmailService {
     void updateEmail(String email, String code) throws MessagingException, UnsupportedEncodingException;
-    void sendVerificatonEmail(String email, String code) throws MessagingException, UnsupportedEncodingException;
-    User getByVerificatonCode(String code);
+    void sendVerificationEmail(String email, String code) throws MessagingException, UnsupportedEncodingException;
+    User getByVerificationCode(String code);
     UserDTO createNewUserDTO(User user);
 }

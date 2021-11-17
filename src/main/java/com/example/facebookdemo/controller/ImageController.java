@@ -1,11 +1,9 @@
 package com.example.facebookdemo.controller;
 
 import com.example.facebookdemo.dto.ImageDTO;
-import com.example.facebookdemo.dto.PostDTO;
 import com.example.facebookdemo.dto.ProfileDTO;
-import com.example.facebookdemo.dto.ResponseImageDTO;
+import com.example.facebookdemo.dto.ImageDTOResponse;
 import com.example.facebookdemo.entity.Image;
-import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.service.contrack.ImageUploadService;
 import com.example.facebookdemo.service.contrack.ProfileService;
@@ -65,17 +63,8 @@ public class ImageController extends BaseController {
     @GetMapping("/images")
     public ModelAndView allImages() {
         List<Image> images = imageUploadService.getAllImages();
-        List<ResponseImageDTO> responseImages = new ArrayList<>();
-        images.forEach(image -> {
-            ResponseImageDTO responseImageDTO = new ResponseImageDTO();
-            responseImageDTO.setId(image.getId());
-            responseImageDTO.setUrl(image.getImageUrl());
-            responseImageDTO.setDescription(image.getDescription());
-            responseImageDTO.setUserId(image.getUser().getId());
-            responseImageDTO.setNumberOfLikesImage(image.getNumberOfLikesImage());
-            responseImageDTO.setUsersLikedImage(image.getUsersLikes());
-            responseImages.add(responseImageDTO);
-        });
+        List<ImageDTOResponse> responseImages = imageUploadService.convertImagesToImageDTOs(images);
+
 //        List<Image> friendsImages = user.getFriends().stream()
 //            .flatMap(friend -> friend.getImages().stream())
 //            .collect(Collectors.toList());
