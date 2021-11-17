@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
@@ -22,9 +21,8 @@ public class DeleteAccountController extends BaseController {
         this.userService = userService;
     }
 
-
-    @GetMapping("/delete_acount")
-    public ModelAndView deleteAcount(@AuthenticationPrincipal User user, HttpServletRequest request) throws ServletException {
+    @GetMapping("/delete_account")
+    public ModelAndView deleteAccount(@AuthenticationPrincipal User user, HttpServletRequest request) throws ServletException {
 
         userService.deleteUser(user);
         request.logout();

@@ -115,6 +115,7 @@ public class FriendRequestServiceImpl implements FriendRequestService {
 
     @Override
     public Set<User> getFriends(User user) {
+
         return user.getFriends();
     }
 

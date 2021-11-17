@@ -3,7 +3,6 @@ package com.example.facebookdemo.controller;
 import com.example.facebookdemo.dto.PostDTO;
 import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.User;
-import com.example.facebookdemo.repository.PostRepository;
 import com.example.facebookdemo.service.contrack.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,12 +21,10 @@ import java.util.List;
 public class CommentController extends BaseController {
 
     private final PostService postService;
-    private final PostRepository postRepository;
 
     @Autowired
-    public CommentController(PostService postService, PostRepository postRepository) {
+    public CommentController(PostService postService) {
         this.postService = postService;
-        this.postRepository = postRepository;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -44,10 +41,9 @@ public class CommentController extends BaseController {
     public ModelAndView addComments(@ModelAttribute("postDTO") PostDTO postDTO,
                                     @AuthenticationPrincipal User user) {
         Long parentPostId = postDTO.getId();
-        String textComment = postDTO.getText();
-
         Post comment = postService.convertCommentDTOToEntity(postDTO);
         postService.addComment(parentPostId, comment, user.getId());
+
         return redirect("/posts");
     }
 

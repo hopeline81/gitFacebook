@@ -43,9 +43,6 @@ public class User implements UserDetails {
     @Column(name = "verification_code", updatable = false)
     private String verificationCode;
 
-    @Column(name = "timezone")
-    private TimeZone timeZone;
-
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = {@JoinColumn(name = "user_id")},
@@ -142,14 +139,6 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public TimeZone getTimeZone() {
-        return timeZone;
-    }
-
-    public void setTimeZone(TimeZone timeZone) {
-        this.timeZone = timeZone;
     }
 
     public String getResetPasswordToken() {

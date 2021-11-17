@@ -47,7 +47,6 @@ public class ForgotPasswordController extends BaseController {
             String resetPasswordLink = GetURLUtil.getSiteURL(request) + "/reset_password?token=" + token;
             forgotPasswordService.sendEmail(email, resetPasswordLink);
             model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
-
         } catch (UnsupportedEncodingException | MessagingException e) {
             model.addAttribute("message", "Error while sending email");
         }

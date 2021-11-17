@@ -63,17 +63,8 @@ public class ImageController extends BaseController {
     @GetMapping("/images")
     public ModelAndView allImages() {
         List<Image> images = imageUploadService.getAllImages();
-        List<ImageDTOResponse> responseImages = new ArrayList<>();
-        images.forEach(image -> {
-            ImageDTOResponse imageDTOResponse = new ImageDTOResponse();
-            imageDTOResponse.setId(image.getId());
-            imageDTOResponse.setUrl(image.getImageUrl());
-            imageDTOResponse.setDescription(image.getDescription());
-            imageDTOResponse.setUserId(image.getUser().getId());
-            imageDTOResponse.setNumberOfLikesImage(image.getNumberOfLikesImage());
-            imageDTOResponse.setUsersLikedImage(image.getUsersLikes());
-            responseImages.add(imageDTOResponse);
-        });
+        List<ImageDTOResponse> responseImages = imageUploadService.convertImagesToImageDTOs(images);
+
 //        List<Image> friendsImages = user.getFriends().stream()
 //            .flatMap(friend -> friend.getImages().stream())
 //            .collect(Collectors.toList());

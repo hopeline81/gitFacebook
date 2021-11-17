@@ -30,7 +30,7 @@ public class SearchUsersController extends BaseController {
     }
 
     @PostMapping("/search")
-    public ModelAndView searchUsers(@AuthenticationPrincipal User user, @RequestParam("name") String name , Model model) {
+    public ModelAndView searchUsers(@RequestParam("name") String name , Model model) {
         List<User> searchResult = userService.searchByNameAndSort(name, Sort.by(Sort.Direction.ASC, "firstName"));
 
         model.addAttribute("name", name);

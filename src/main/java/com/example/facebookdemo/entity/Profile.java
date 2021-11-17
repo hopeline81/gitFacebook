@@ -70,8 +70,7 @@ public class Profile {
 
     public String getAvatarImageUrl() {
         if (avatarImageUrl == null) {
-            String imageUrl =  "defaultProfileImage.png";
-            return imageUrl;
+            return "defaultProfileImage.png";
         }
         return avatarImageUrl;
     }

@@ -39,7 +39,7 @@ public class UserController extends BaseController implements WebMvcConfigurer {
             , Model model) {
         if (result.hasErrors()) {
             model.addAttribute("message", "This user does not exist or password is incorrect");
-            return redirect("forgot_password");
+            return send("message");
         }
         return redirect("profile");
     }
@@ -51,7 +51,7 @@ public class UserController extends BaseController implements WebMvcConfigurer {
             , Model model) {
         if (result.hasErrors()) {
             model.addAttribute("message", "Please try again." );
-            return redirect("register");
+            return send("message");
         }
         userService.register(userDTO);
         return redirect("login");
