@@ -33,12 +33,24 @@ public class UpdateProfileServiceImpl implements UpdateProfileService {
 
         changeAddress(profile, userDTO, newProfile);
         if(!userDTO.getEmail().equals(user.getEmail())) {
-            changeEmail(user, userDTO);
+            changeEmail(user, user.getProfile(), userDTO, code);
         }
         changePassword(user, userDTO);
 
         profileRepository.save(newProfile);
         return newProfile;
+    }
+
+    @Override
+    public void changeEmail(User user, Profile profile, UserDTO userDTO, String verificationCode) throws MessagingException, UnsupportedEncodingException {
+        if (userDTO.getEmail() == null || userDTO.getEmail().isEmpty()) {
+            user.setEmail(user.getEmail());
+        }else if (userDTO.getEmail() != null || !userDTO.getEmail().isEmpty()) {
+            if(!user.getEmail().equals(userDTO.getEmail())) {
+                changeUserEmailService.updateEmail(userDTO.getEmail(), user.getVerificationCode());
+            }
+            user.setEmail(user.getEmail());
+        }
     }
 
     private void changePassword(User user, UserDTO userDTO) {
@@ -49,16 +61,6 @@ public class UpdateProfileServiceImpl implements UpdateProfileService {
                 throw new IllegalArgumentException("Password didn't match");
             }
             userService.updatePassword(user, userDTO.getPassword());
-        }
-    }
-
-    private void changeEmail(User user, UserDTO userDTO) throws MessagingException, UnsupportedEncodingException {
-        if (userDTO.getEmail() == null || userDTO.getEmail().isEmpty()) {
-            user.setEmail(user.getEmail());
-        }else if (userDTO.getEmail() != null || !userDTO.getEmail().isEmpty()) {
-            if(!user.getEmail().equals(userDTO.getEmail())) {
-                changeUserEmailService.updateEmail(userDTO.getEmail(), user.getVerificationCode());
-            }
         }
     }
 

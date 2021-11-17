@@ -9,4 +9,6 @@ import java.io.UnsupportedEncodingException;
 
 public interface UpdateProfileService {
     Profile updateProfileDetails(User user, Profile profile, UserDTO userDTO, String code) throws MessagingException, UnsupportedEncodingException;
+
+    void changeEmail(User user, Profile profile, UserDTO userDTO, String verificationCode) throws MessagingException, UnsupportedEncodingException;
 }
