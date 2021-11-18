@@ -1,0 +1,44 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="get" action="/activity_feed">
+    <tr th:each="activityFeedDTO : ${activityFeedDTO}">
+        <tr th:each="post : ${activityFeedDTO.userPosts}">
+            <td th:text="${post.text}">
+            </td>
+            <br/>
+            <td></td>
+            <th><b>Post date</b></th>
+            <td th:text="${post.postDate}">
+            </td>
+            <br/>
+            <td th:text="${post.numberOfLikes}">
+            </td>
+            <a th:href="@{likes/(postId=${post.id})}">Like</a>
+            <a href="add-comments.html" th:href="@{add_comments/(parentPostId=${post.id})}">Add comment</a>
+            <a href="comments.html" th:href="@{comments/(parentPostId=${post.id})}">Comments</a>
+            <br/>
+            <br/>
+            <br/>
+        </tr>
+    </tr>
+    <br/>
+        </tr>
+        <br/>
+        <td th:text="${activityFeedDTO.friendPosts}">
+        </td>
+        <br/>
+        <td th:text="${activityFeedDTO.friendImages}">
+        </td>
+        <br/>
+        <td th:text="${activityFeedDTO.userImages}">
+        </td>
+        <br/>
+</form>
+
+</body>
+</html>

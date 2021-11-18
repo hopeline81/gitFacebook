@@ -23,7 +23,7 @@ public class Image {
     @ManyToOne(targetEntity = User.class, optional = false)
     private User user;
 
-    @ManyToMany(targetEntity = User.class, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = User.class)
     @JoinTable(name = "liked_images_users",
             joinColumns = {@JoinColumn(name = "image_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")})

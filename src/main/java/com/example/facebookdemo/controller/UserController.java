@@ -5,6 +5,7 @@ import com.example.facebookdemo.service.contrack.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,8 +39,7 @@ public class UserController extends BaseController implements WebMvcConfigurer {
             , BindingResult result
             , Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("message", "This user does not exist or password is incorrect");
-            return send("message");
+            throw new UsernameNotFoundException("This email does not exist or password is incorrect");
         }
         return redirect("profile");
     }

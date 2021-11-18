@@ -65,10 +65,6 @@ public class ImageController extends BaseController {
         List<Image> images = imageUploadService.getAllImages();
         List<ImageDTOResponse> responseImages = imageUploadService.convertImagesToImageDTOs(images);
 
-//        List<Image> friendsImages = user.getFriends().stream()
-//            .flatMap(friend -> friend.getImages().stream())
-//            .collect(Collectors.toList());
-
         return send("images", "images", responseImages);
     }
 

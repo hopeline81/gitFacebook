@@ -106,6 +106,14 @@ public class ImageUploadServiceImpl implements ImageUploadService {
         return responseImages;
     }
 
+    public ImageDTOResponse convertImageToImageDTOResponse (Image image) {
+        ImageDTOResponse imageDTOResponse = new ImageDTOResponse();
+        imageDTOResponse.setDescription(image.getDescription());
+        imageDTOResponse.setUrl(image.getImageUrl());
+        imageDTOResponse.setNumberOfLikesImage(image.getNumberOfLikesImage());
+        return imageDTOResponse;
+    }
+
     private String generateFileName(MultipartFile multiPart) {
         return new Date().getTime() + "-" + Objects.requireNonNull(multiPart.getOriginalFilename()).replace(" ", "_");
     }

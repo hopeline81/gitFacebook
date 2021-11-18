@@ -19,6 +19,7 @@ public interface ImageUploadService {
     List<Image> getImages(User user);
     Image getImageById(Long valueOf);
     List<Image> getAllImages();
+    ImageDTOResponse convertImageToImageDTOResponse (Image image);
     List<ImageDTOResponse> convertImagesToImageDTOs(List<Image> images);
     void update(Image image, Long userId);
 }

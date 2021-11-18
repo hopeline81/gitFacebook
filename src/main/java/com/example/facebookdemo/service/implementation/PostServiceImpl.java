@@ -112,8 +112,4 @@ public class PostServiceImpl implements PostService {
         comments.add(comment);
         postRepository.save(post1);
     }
-
-//    List<Image> friendsImages = user.getFriends().stream()
-//            .flatMap(friend -> friend.getImages().stream())
-//            .collect(Collectors.toList());
 }
