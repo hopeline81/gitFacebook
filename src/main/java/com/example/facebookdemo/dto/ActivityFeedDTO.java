@@ -12,9 +12,9 @@ class ActivityFeedDTO {
 
     private List<PostDTO> userPosts;
 
-    private List<ImageDTOResponse> friendImages;
+    private List<ImageResponseDTO> friendImages;
 
-    private List<ImageDTOResponse> userImages;
+    private List<ImageResponseDTO> userImages;
 
     public ActivityFeedDTO() {
     }
@@ -35,19 +35,19 @@ class ActivityFeedDTO {
         this.userPosts = userPosts;
     }
 
-    public List<ImageDTOResponse> getFriendImages() {
+    public List<ImageResponseDTO> getFriendImages() {
         return friendImages;
     }
 
-    public void setFriendImages(List<ImageDTOResponse> friendImages) {
+    public void setFriendImages(List<ImageResponseDTO> friendImages) {
         this.friendImages = friendImages;
     }
 
-    public List<ImageDTOResponse> getUserImages() {
+    public List<ImageResponseDTO> getUserImages() {
         return userImages;
     }
 
-    public void setUserImages(List<ImageDTOResponse> userImages) {
+    public void setUserImages(List<ImageResponseDTO> userImages) {
         this.userImages = userImages;
     }
 

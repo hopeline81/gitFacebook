@@ -1,7 +1,6 @@
 package com.example.facebookdemo.service.implementation;
 
-import com.example.facebookdemo.dto.ImageDTO;
-import com.example.facebookdemo.dto.ImageDTOResponse;
+import com.example.facebookdemo.dto.ImageResponseDTO;
 import com.example.facebookdemo.entity.Image;
 import com.example.facebookdemo.entity.Profile;
 import com.example.facebookdemo.entity.User;
@@ -77,7 +76,7 @@ public class ImageUploadServiceImpl implements ImageUploadService {
     }
 
     @Override
-    public void update(Image image, Long userId) {
+    public void updateLikes(Image image, Long userId) {
         User user = userRepository.findById(userId).get();
         List<User> usersWhoLikedImage = image.getUsersLikes();
         Integer numberOfLikesImage = image.getNumberOfLikesImage();
@@ -91,27 +90,27 @@ public class ImageUploadServiceImpl implements ImageUploadService {
         imageRepository.save(image);
     }
 
-    public List<ImageDTOResponse> convertImagesToImageDTOs(List<Image> images) {
-        List<ImageDTOResponse> responseImages = new ArrayList<>();
+    public List<ImageResponseDTO> convertImagesToImageDTOs(List<Image> images) {
+        List<ImageResponseDTO> responseImages = new ArrayList<>();
         images.forEach(image -> {
-            ImageDTOResponse imageDTOResponse = new ImageDTOResponse();
-            imageDTOResponse.setId(image.getId());
-            imageDTOResponse.setUrl(image.getImageUrl());
-            imageDTOResponse.setDescription(image.getDescription());
-            imageDTOResponse.setUserId(image.getUser().getId());
-            imageDTOResponse.setNumberOfLikesImage(image.getNumberOfLikesImage());
-            imageDTOResponse.setUsersLikedImage(image.getUsersLikes());
-            responseImages.add(imageDTOResponse);
+            ImageResponseDTO imageResponseDTO = new ImageResponseDTO();
+            imageResponseDTO.setId(image.getId());
+            imageResponseDTO.setUrl(image.getImageUrl());
+            imageResponseDTO.setDescription(image.getDescription());
+            imageResponseDTO.setUserId(image.getUser().getId());
+            imageResponseDTO.setNumberOfLikesImage(image.getNumberOfLikesImage());
+            imageResponseDTO.setUsersLikedImage(image.getUsersLikes());
+            responseImages.add(imageResponseDTO);
         });
         return responseImages;
     }
 
-    public ImageDTOResponse convertImageToImageDTOResponse (Image image) {
-        ImageDTOResponse imageDTOResponse = new ImageDTOResponse();
-        imageDTOResponse.setDescription(image.getDescription());
-        imageDTOResponse.setUrl(image.getImageUrl());
-        imageDTOResponse.setNumberOfLikesImage(image.getNumberOfLikesImage());
-        return imageDTOResponse;
+    public ImageResponseDTO convertImageToImageDTOResponse (Image image) {
+        ImageResponseDTO imageResponseDTO = new ImageResponseDTO();
+        imageResponseDTO.setDescription(image.getDescription());
+        imageResponseDTO.setUrl(image.getImageUrl());
+        imageResponseDTO.setNumberOfLikesImage(image.getNumberOfLikesImage());
+        return imageResponseDTO;
     }
 
     private String generateFileName(MultipartFile multiPart) {
