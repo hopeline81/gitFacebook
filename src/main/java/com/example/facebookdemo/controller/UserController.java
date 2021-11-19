@@ -17,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.security.auth.login.LoginException;
+
 @Controller
 public class UserController extends BaseController implements WebMvcConfigurer {
 
@@ -36,10 +38,9 @@ public class UserController extends BaseController implements WebMvcConfigurer {
     @PreAuthorize("!isAuthenticated()")
     @PostMapping("/login")
     public ModelAndView login(@Validated @ModelAttribute("user") UserDTO userDTO
-            , BindingResult result
-            , Model model) {
+            , BindingResult result) throws LoginException {
         if (result.hasErrors()) {
-            throw new UsernameNotFoundException("This email does not exist or password is incorrect");
+            throw new LoginException();
         }
         return redirect("profile");
     }
