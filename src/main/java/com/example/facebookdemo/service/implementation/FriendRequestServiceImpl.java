@@ -99,8 +99,8 @@ public class FriendRequestServiceImpl implements FriendRequestService {
         }
         friendsNewFriends.add(user);
         newFriend.setFriends(friendsNewFriends);
-
         userRepository.save(user);
+
         return user;
     }
 
@@ -117,13 +117,5 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     public Set<User> getFriends(User user) {
 
         return user.getFriends();
-    }
-
-    private FriendRequestDTO createFriendRequestDto(User requesterUser, User requestedUser, FriendRequestStatus status) {
-        FriendRequestDTO friendRequestDTO = new FriendRequestDTO();
-        friendRequestDTO.setRequesterUser(requesterUser);
-        friendRequestDTO.setRequestedUser(requestedUser);
-        friendRequestDTO.setStatus(status);
-        return friendRequestDTO;
     }
 }

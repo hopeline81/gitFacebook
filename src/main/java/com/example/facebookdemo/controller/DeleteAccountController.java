@@ -24,7 +24,8 @@ public class DeleteAccountController extends BaseController {
     @GetMapping("/delete_account")
     public ModelAndView deleteAccount(@AuthenticationPrincipal User user, HttpServletRequest request) throws ServletException {
 
-        userService.deleteUser(user);
+        User user1 = userService.loadUserByUsername(user.getEmail());
+        userService.deleteUser(user1);
         request.logout();
         return redirect("");
     }

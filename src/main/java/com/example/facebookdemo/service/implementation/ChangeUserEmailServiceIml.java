@@ -19,10 +19,9 @@ import java.io.UnsupportedEncodingException;
 @Transactional
 public class ChangeUserEmailServiceIml implements ChangeUserEmailService {
 
-    private UserRepository userRepository;
-    private JavaMailSender mailSender;
+    private final UserRepository userRepository;
+    private final JavaMailSender mailSender;
     public static final String LINK = "http://localhost:8080";
-
 
     @Autowired
     public ChangeUserEmailServiceIml(UserRepository userRepository, JavaMailSender mailSender) {

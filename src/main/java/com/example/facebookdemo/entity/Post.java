@@ -1,6 +1,8 @@
 package com.example.facebookdemo.entity;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 
 import javax.persistence.*;
@@ -37,6 +39,7 @@ public class Post {
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private List<User> usersLikes;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "parent")
     private List<Post> comments = new ArrayList<>();
 
@@ -110,5 +113,17 @@ public class Post {
 
     public void setParent(Post parent) {
         this.parent = parent;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "textPost='" + textPost + '\'' +
+                ", postDate=" + postDate +
+                ", numberOfLikes=" + numberOfLikes +
+                ", usersLikes=" + usersLikes +
+                ", comments=" + comments +
+                ", parent=" + parent +
+                '}';
     }
 }

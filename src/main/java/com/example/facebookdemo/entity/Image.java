@@ -1,6 +1,7 @@
 package com.example.facebookdemo.entity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -17,13 +18,16 @@ public class Image {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "image_upload_date")
+    private LocalDateTime imageUploadDate;
+
     @Column(name = "likes_image")
     private Integer numberOfLikesImage;
 
     @ManyToOne(targetEntity = User.class, optional = false)
     private User user;
 
-    @ManyToMany(targetEntity = User.class, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = User.class)
     @JoinTable(name = "liked_images_users",
             joinColumns = {@JoinColumn(name = "image_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
@@ -62,6 +66,14 @@ public class Image {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public LocalDateTime getImageUploadDate() {
+        return imageUploadDate;
+    }
+
+    public void setImageUploadDate(LocalDateTime imageUploadDate) {
+        this.imageUploadDate = imageUploadDate;
     }
 
     public Integer getNumberOfLikesImage() {

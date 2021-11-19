@@ -1,19 +1,17 @@
 package com.example.facebookdemo.controller;
 
 import com.example.facebookdemo.dto.ImageDTO;
+import com.example.facebookdemo.dto.ImageResponseDTO;
 import com.example.facebookdemo.dto.ProfileDTO;
-import com.example.facebookdemo.dto.ImageDTOResponse;
 import com.example.facebookdemo.entity.Image;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.service.contrack.ImageUploadService;
 import com.example.facebookdemo.service.contrack.ProfileService;
-import com.example.facebookdemo.service.contrack.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,22 +20,21 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
 public class ImageController extends BaseController {
 
-    private ImageUploadService imageUploadService;
-    private ProfileService profileService;
-    private UserService userService;
+    private final ImageUploadService imageUploadService;
+    private final ProfileService profileService;
 
     @Autowired
-    public ImageController(ImageUploadService imageUploadService, ProfileService profileService, UserService userService) {
+    public ImageController(ImageUploadService imageUploadService, ProfileService profileService) {
         this.imageUploadService = imageUploadService;
         this.profileService = profileService;
-        this.userService = userService;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -50,24 +47,25 @@ public class ImageController extends BaseController {
     @PostMapping("/upload_image")
     public ModelAndView imageUpload(@AuthenticationPrincipal User user,
                                     @ModelAttribute ImageDTO imageDTO,
-                                    BindingResult result,
-                                    @RequestParam("file") MultipartFile multipartFile) throws IOException {
-        if (result.hasErrors()) {
-            return send("new-image");
+                                    @RequestParam("file") MultipartFile multipartFile,
+                                    Model model) {
+        try {
+            imageUploadService.uploadUserImage(user, multipartFile, imageDTO.getDescription());
+        } catch (Exception e) {
+            model.addAttribute("message", "There is a problem with upload, image too large");
+            return send("message");
         }
-        imageUploadService.uploadUserImage(user, multipartFile, imageDTO.getDescription());
+
         return redirect("/images");
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/images")
     public ModelAndView allImages() {
-        List<Image> images = imageUploadService.getAllImages();
-        List<ImageDTOResponse> responseImages = imageUploadService.convertImagesToImageDTOs(images);
-
-//        List<Image> friendsImages = user.getFriends().stream()
-//            .flatMap(friend -> friend.getImages().stream())
-//            .collect(Collectors.toList());
+        List<Image> images = imageUploadService.getAllImages().stream()
+                .sorted(Comparator.comparing(Image::getImageUploadDate).reversed())
+                .collect(Collectors.toList());
+        List<ImageResponseDTO> responseImages = imageUploadService.convertImagesToImageDTOs(images);
 
         return send("images", "images", responseImages);
     }
@@ -87,7 +85,7 @@ public class ImageController extends BaseController {
                                 Model model) {
         try {
             Image image = imageUploadService.getImageById(Long.valueOf(imageId));
-            imageUploadService.update(image, user.getId());
+            imageUploadService.updateLikes(image, user.getId());
         } catch (Exception e) {
             model.addAttribute("message", "This image does not exist");
             return send("message");

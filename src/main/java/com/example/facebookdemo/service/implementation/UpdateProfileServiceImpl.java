@@ -36,8 +36,8 @@ public class UpdateProfileServiceImpl implements UpdateProfileService {
             changeEmail(user, user.getProfile(), userDTO, code);
         }
         changePassword(user, userDTO);
-
         profileRepository.save(newProfile);
+
         return newProfile;
     }
 

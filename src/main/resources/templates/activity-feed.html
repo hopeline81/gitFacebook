@@ -1,0 +1,85 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <a th:href="@{profile}">Back to profile page</a>
+</div>
+<form method="post" action="/activity_feed">
+    <tr th:each="activityFeedDTO : ${activityFeedDTO}">
+    <tr th:each="post : ${activityFeedDTO.userPosts}">
+        <td th:text="${post.text}">
+        </td>
+        <br/>
+        <td></td>
+        <th><b>Post date</b></th>
+        <td th:text="${post.postDate}">
+        </td>
+        <br/>
+        <td th:text="${post.numberOfLikes}">Likes
+        </td>
+        <a href="comments.html" th:href="@{comments/(parentPostId=${post.id})}">Comments</a>
+        <br/>
+        <br/>
+        <br/>
+    </tr>
+    <tr th:each="post : ${activityFeedDTO.friendPosts}">
+        <td th:text="${post.text}">
+        </td>
+        <br/>
+        <td></td>
+        <th><b>Post date</b></th>
+        <td th:text="${post.postDate}">
+        </td>
+        <br/>
+        <td th:text="${post.numberOfLikes}">Likes
+        </td>
+        <a href="comments.html" th:href="@{comments/(parentPostId=${post.id})}">Comments</a>
+        <br/>
+        <br/>
+        <br/>
+    </tr>
+    </tr>
+    <div class="list-group" th:each="image : ${activityFeedDTO.userImages}">
+        <div>
+            <img th:src="@{'https://firebasestorage.googleapis.com/v0/b/facebook-nadezhda.appspot.com/o/' + ${image.url} + '?alt=media'}"
+                 th:height="152" th:width="152"/>
+            <br/>
+            <td th:text="${image.description}">
+            </td>
+            <br/>
+            <td th:text="${image.numberOfLikesImage}">Likes
+            </td>
+            <th><b>Post date</b></th>
+            <td th:text="${image.imageUploadDate}">
+            </td>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+        </div>
+    </div>
+    <div class="list-group" th:each="image : ${activityFeedDTO.friendImages}">
+        <div>
+            <img th:src="@{'https://firebasestorage.googleapis.com/v0/b/facebook-nadezhda.appspot.com/o/' + ${image.url} + '?alt=media'}"
+                 th:height="152" th:width="152"/>
+            <br/>
+            <td th:text="${image.description}">
+            </td>
+            <br/>
+            <th><b>Post date</b></th>
+            <td th:text="${image.imageUploadDate}">
+            </td>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+        </div>
+    </div>
+</form>
+
+</body>
+</html>

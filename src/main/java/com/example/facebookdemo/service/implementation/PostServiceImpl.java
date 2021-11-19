@@ -5,6 +5,7 @@ import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.PostRepository;
 import com.example.facebookdemo.repository.UserRepository;
+import com.example.facebookdemo.service.contrack.CommentService;
 import com.example.facebookdemo.service.contrack.PostService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Transactional
 @Service
@@ -37,44 +39,44 @@ public class PostServiceImpl implements PostService {
         post.setPostDate(LocalDateTime.now(ZoneOffset.UTC));
         post.setUser(user);
         post.setNumberOfLikes(0);
+
         return postRepository.save(post);
     }
 
     @Override
-    public List<Post> allPosts() {
-        return postRepository.findAll();
+    public List<PostDTO> getUserAndFriendPostDTOS(User user1) {
+        List<Post> allUserPosts = user1.getPosts().stream()
+                .filter(post -> post.getParent() == null)
+                .collect(Collectors.toList());
+
+        List<Post> allFriendPosts = user1.getFriends().stream()
+                .flatMap(friend -> friend.getPosts().stream())
+                .filter(post -> post.getParent() == null)
+                .collect(Collectors.toList());
+
+        return Stream.concat(allUserPosts.stream(), allFriendPosts.stream())
+                .sorted(Comparator.comparing(Post::getPostDate).reversed())
+                .map(post -> modelMapper.map(post, PostDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Post convertToEntity(PostDTO postDTO) {
+    public Post convertPostDTOToEntity(PostDTO postDTO) {
 
         return modelMapper.map(postDTO, Post.class);
     }
 
-    public Post convertCommentDTOToEntity(PostDTO postDTO) {
-        Post comment = new Post();
-        comment.setTextPost(postDTO.getText());
-        return comment;
-    }
+    public PostDTO convertPostToPostDTO(Post postCreated) {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
 
-    @Override
-    public List<PostDTO> findAllCommentsToCurrentPost(Long postId) {
-        Post currentPost = postRepository.findFirstById(postId).get();
-        return currentPost.getComments().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+        return modelMapper.map(postCreated, PostDTO.class);
     }
 
     @Override
     public PostDTO getPostById(Long id) {
         Post post = postRepository.getById(id);
-        return convertToDTO(post);
-    }
 
-    @Override
-    public PostDTO convertToDTO(Post postCreated) {
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-        return modelMapper.map(postCreated, PostDTO.class);
+        return convertPostToPostDTO(post);
     }
 
     @Override
@@ -92,28 +94,4 @@ public class PostServiceImpl implements PostService {
         }
         postRepository.save(post);
     }
-
-    @Override
-    public List<Post> allComments(Long parentPostId) {
-        Post post = postRepository.findById(parentPostId).get();
-        return post.getComments();
-    }
-
-    @Override
-    public void addComment(Long parentPostId, Post comment, Long userId) {
-        User user = userRepository.findUserById(userId).get();
-        Post post1 = postRepository.findById(parentPostId).get();
-        comment.setUser(user);
-        comment.setParent(post1);
-        comment.setNumberOfLikes(0);
-        comment.setPostDate(LocalDateTime.now());
-        comment = postRepository.save(comment);
-        List<Post> comments = post1.getComments();
-        comments.add(comment);
-        postRepository.save(post1);
-    }
-
-//    List<Image> friendsImages = user.getFriends().stream()
-//            .flatMap(friend -> friend.getImages().stream())
-//            .collect(Collectors.toList());
 }
