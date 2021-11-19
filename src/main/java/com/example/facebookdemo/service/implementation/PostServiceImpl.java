@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Transactional
 @Service
@@ -37,43 +38,54 @@ public class PostServiceImpl implements PostService {
         post.setPostDate(LocalDateTime.now(ZoneOffset.UTC));
         post.setUser(user);
         post.setNumberOfLikes(0);
+
         return postRepository.save(post);
-    }
-
-    @Override
-    public List<Post> allPosts() {
-        return postRepository.findAll();
-    }
-
-    @Override
-    public Post convertToEntity(PostDTO postDTO) {
-
-        return modelMapper.map(postDTO, Post.class);
     }
 
     public Post convertCommentDTOToEntity(PostDTO postDTO) {
         Post comment = new Post();
         comment.setTextPost(postDTO.getText());
+
         return comment;
     }
 
     @Override
     public List<PostDTO> findAllCommentsToCurrentPost(Long postId) {
         Post currentPost = postRepository.findFirstById(postId).get();
+
         return currentPost.getComments().stream()
-                .map(this::convertToDTO)
+                .map(this::convertPostToPostDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PostDTO> getUserAndFriendPostDTOS(User user1) {
+        List<Post> allUserPosts = user1.getPosts().stream()
+                .filter(post -> post.getParent() == null)
+                .collect(Collectors.toList());
+
+        List<Post> allFriendPosts = user1.getFriends().stream()
+                .flatMap(friend -> friend.getPosts().stream())
+                .filter(post -> post.getParent() == null)
+                .collect(Collectors.toList());
+
+        return Stream.concat(allUserPosts.stream(), allFriendPosts.stream())
+                .sorted(Comparator.comparing(Post::getPostDate).reversed())
+                .map(post -> modelMapper.map(post, PostDTO.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public PostDTO getPostById(Long id) {
         Post post = postRepository.getById(id);
-        return convertToDTO(post);
+
+        return convertPostToPostDTO(post);
     }
 
     @Override
-    public PostDTO convertToDTO(Post postCreated) {
+    public PostDTO convertPostToPostDTO(Post postCreated) {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+
         return modelMapper.map(postCreated, PostDTO.class);
     }
 
@@ -94,12 +106,6 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> allComments(Long parentPostId) {
-        Post post = postRepository.findById(parentPostId).get();
-        return post.getComments();
-    }
-
-    @Override
     public void addComment(Long parentPostId, Post comment, Long userId) {
         User user = userRepository.findUserById(userId).get();
         Post post1 = postRepository.findById(parentPostId).get();
@@ -110,6 +116,7 @@ public class PostServiceImpl implements PostService {
         comment = postRepository.save(comment);
         List<Post> comments = post1.getComments();
         comments.add(comment);
+
         postRepository.save(post1);
     }
 }

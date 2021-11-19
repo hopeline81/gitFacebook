@@ -19,10 +19,8 @@
         <td th:text="${post.postDate}">
         </td>
         <br/>
-        <td th:text="${post.numberOfLikes}">
+        <td th:text="${post.numberOfLikes}">Likes
         </td>
-        <a th:href="@{likes/(postId=${post.id})}">Like</a>
-        <a href="add-comments.html" th:href="@{add_comments/(parentPostId=${post.id})}">Add comment</a>
         <a href="comments.html" th:href="@{comments/(parentPostId=${post.id})}">Comments</a>
         <br/>
         <br/>
@@ -37,10 +35,8 @@
         <td th:text="${post.postDate}">
         </td>
         <br/>
-        <td th:text="${post.numberOfLikes}">
+        <td th:text="${post.numberOfLikes}">Likes
         </td>
-        <a th:href="@{likes/(postId=${post.id})}">Like</a>
-        <a href="add-comments.html" th:href="@{add_comments/(parentPostId=${post.id})}">Add comment</a>
         <a href="comments.html" th:href="@{comments/(parentPostId=${post.id})}">Comments</a>
         <br/>
         <br/>
@@ -55,9 +51,26 @@
             <td th:text="${image.description}">
             </td>
             <br/>
-            <td th:text="${image.numberOfLikesImage}">
+            <th><b>Post date</b></th>
+            <td th:text="${image.imageUploadDate}">
             </td>
-            <a th:href="@{likesImage/(imageId=${image.id})}">Like</a>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+        </div>
+    </div>
+    <div class="list-group" th:each="image : ${activityFeedDTO.friendImages}">
+        <div>
+            <img th:src="@{'https://firebasestorage.googleapis.com/v0/b/facebook-nadezhda.appspot.com/o/' + ${image.url} + '?alt=media'}"
+                 th:height="152" th:width="152"/>
+            <br/>
+            <td th:text="${image.description}">
+            </td>
+            <br/>
+            <th><b>Post date</b></th>
+            <td th:text="${image.imageUploadDate}">
+            </td>
             <br/>
             <br/>
             <br/>

@@ -9,13 +9,11 @@ import java.util.List;
 
 public interface PostService {
     Post save(PostDTO postDTO, User user);
-    List<Post> allPosts();
-    PostDTO convertToDTO(Post postCreated);
-    Post convertToEntity(PostDTO postDTO);
+    PostDTO convertPostToPostDTO(Post postCreated);
     PostDTO getPostById(Long id);
     void createLike(Post post,Long userId);
-    List<Post> allComments(Long parentPostId);
     void addComment(Long parentPostId, Post post, Long userId);
     Post convertCommentDTOToEntity(PostDTO postDTO);
     List<PostDTO> findAllCommentsToCurrentPost(Long postId);
+    List<PostDTO> getUserAndFriendPostDTOS(User user1);
 }

@@ -2,6 +2,7 @@ package com.example.facebookdemo.dto;
 
 import com.example.facebookdemo.entity.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ImageResponseDTO {
@@ -13,6 +14,8 @@ public class ImageResponseDTO {
     private String description;
 
     private Long userId;
+
+    private LocalDateTime imageUploadDate;
 
     private Integer numberOfLikesImage;
 
@@ -51,6 +54,14 @@ public class ImageResponseDTO {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public LocalDateTime getImageUploadDate() {
+        return imageUploadDate;
+    }
+
+    public void setImageUploadDate(LocalDateTime imageUploadDate) {
+        this.imageUploadDate = imageUploadDate;
     }
 
     public Integer getNumberOfLikesImage() {

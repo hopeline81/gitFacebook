@@ -10,9 +10,14 @@
 </div>
 
 <form method="post" action="/posts">
-    <th><b>Post</b></th>
+    <br/>
+
+    <br/>
+    <th><b>Posts</b></th>
+    <br/>
+    <br/>
     <tr th:each="post : ${posts}">
-        <td th:text="${post.text}">
+        <td th:text="${post.text}"><b></b>
         </td>
         <br/>
         <td></td>

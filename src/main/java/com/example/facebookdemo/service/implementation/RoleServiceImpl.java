@@ -17,6 +17,7 @@ public class RoleServiceImpl {
     public Role getUserRole(){
         Role userRole = roleRepository.findFirstByAuthority("ROLE_USER")
                 .orElseThrow(()-> new IllegalStateException("User role not found"));
+
         return userRole;
     }
 }

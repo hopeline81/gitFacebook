@@ -50,14 +50,4 @@ class ActivityFeedDTO {
     public void setUserImages(List<ImageResponseDTO> userImages) {
         this.userImages = userImages;
     }
-
-    @Override
-    public String toString() {
-        return "ActivityFeedDTO{" +
-                "friendPosts=" + friendPosts +
-                ", userPosts=" + userPosts +
-                ", friendImages=" + friendImages +
-                ", userImages=" + userImages +
-                '}';
-    }
 }

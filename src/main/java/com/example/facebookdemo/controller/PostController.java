@@ -4,6 +4,7 @@ import com.example.facebookdemo.dto.PostDTO;
 import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.service.contrack.PostService;
+import com.example.facebookdemo.service.contrack.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,16 +22,19 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 public class PostController extends BaseController {
 
     private final PostService postService;
+    private final UserService userService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public PostController(PostService postService, ModelMapper modelMapper) {
+    public PostController(PostService postService, UserService userService, ModelMapper modelMapper) {
         this.postService = postService;
+        this.userService = userService;
         this.modelMapper = modelMapper;
     }
 
@@ -53,13 +57,11 @@ public class PostController extends BaseController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/posts")
-    public String allPosts(Model model) {
-        List<PostDTO> posts = postService.allPosts().stream()
-                .sorted(Comparator.comparing(Post::getPostDate).reversed())
-                .filter(post -> post.getParent() == null)
-                .map(post -> modelMapper.map(post, PostDTO.class))
-                .collect(Collectors.toList());
-        model.addAttribute("posts", posts);
+    public String allUserAndFriendPosts(@AuthenticationPrincipal User user, Model model) {
+        User user1 = userService.loadUserByUsername(user.getEmail());
+        List<PostDTO> userAndFriendPosts = postService.getUserAndFriendPostDTOS(user1);
+
+        model.addAttribute("posts", userAndFriendPosts);
         return "posts";
     }
 

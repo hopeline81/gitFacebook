@@ -1,6 +1,7 @@
 package com.example.facebookdemo.entity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -16,6 +17,9 @@ public class Image {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "image_upload_date")
+    private LocalDateTime imageUploadDate;
 
     @Column(name = "likes_image")
     private Integer numberOfLikesImage;
@@ -62,6 +66,14 @@ public class Image {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public LocalDateTime getImageUploadDate() {
+        return imageUploadDate;
+    }
+
+    public void setImageUploadDate(LocalDateTime imageUploadDate) {
+        this.imageUploadDate = imageUploadDate;
     }
 
     public Integer getNumberOfLikesImage() {

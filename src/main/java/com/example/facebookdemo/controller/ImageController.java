@@ -20,14 +20,16 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
 public class ImageController extends BaseController {
 
-    private ImageUploadService imageUploadService;
-    private ProfileService profileService;
+    private final ImageUploadService imageUploadService;
+    private final ProfileService profileService;
 
     @Autowired
     public ImageController(ImageUploadService imageUploadService, ProfileService profileService) {
@@ -60,7 +62,9 @@ public class ImageController extends BaseController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/images")
     public ModelAndView allImages() {
-        List<Image> images = imageUploadService.getAllImages();
+        List<Image> images = imageUploadService.getAllImages().stream()
+                .sorted(Comparator.comparing(Image::getImageUploadDate).reversed())
+                .collect(Collectors.toList());
         List<ImageResponseDTO> responseImages = imageUploadService.convertImagesToImageDTOs(images);
 
         return send("images", "images", responseImages);

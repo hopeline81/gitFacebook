@@ -118,12 +118,4 @@ public class FriendRequestServiceImpl implements FriendRequestService {
 
         return user.getFriends();
     }
-
-    private FriendRequestDTO createFriendRequestDto(User requesterUser, User requestedUser, FriendRequestStatus status) {
-        FriendRequestDTO friendRequestDTO = new FriendRequestDTO();
-        friendRequestDTO.setRequesterUser(requesterUser);
-        friendRequestDTO.setRequestedUser(requestedUser);
-        friendRequestDTO.setStatus(status);
-        return friendRequestDTO;
-    }
 }

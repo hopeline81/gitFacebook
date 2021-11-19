@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         roles.add(roleService.getUserRole());
         user.setRoles(roles);
         userRepository.save(user);
+
         return user;
     }
 
@@ -71,6 +72,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userDTO.setUsername(user.getFirstName(), userDTO.getLastName());
         userDTO.setEmail(user.getEmail());
         userDTO.setAddress(user.getProfile().getAddress());
+
         return userDTO;
     }
 
@@ -84,16 +86,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
+
         return userRepository.findFirstByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
     }
 
     public List<User> searchByNameAndSort(String name, Sort sort){
+
         return userRepository.searchByNameAndSort(name, sort);
     }
 
     @Override
     public void deleteUser(User user) {
+
         userRepository.deleteById(user.getId());
     }
 }
