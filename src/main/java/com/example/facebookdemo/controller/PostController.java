@@ -5,7 +5,6 @@ import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.service.contrack.PostService;
 import com.example.facebookdemo.service.contrack.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,23 +18,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 public class PostController extends BaseController {
 
     private final PostService postService;
     private final UserService userService;
-    private final ModelMapper modelMapper;
 
     @Autowired
-    public PostController(PostService postService, UserService userService, ModelMapper modelMapper) {
+    public PostController(PostService postService, UserService userService) {
         this.postService = postService;
         this.userService = userService;
-        this.modelMapper = modelMapper;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -71,7 +65,7 @@ public class PostController extends BaseController {
                                 Model model) {
         try {
             PostDTO postDTO = postService.getPostById(Long.valueOf(postId));
-            Post post = postService.convertToEntity(postDTO);
+            Post post = postService.convertPostDTOToEntity(postDTO);
             postService.createLike(post, user.getId());
         } catch (Exception e) {
             model.addAttribute("message", "This post does not exist");

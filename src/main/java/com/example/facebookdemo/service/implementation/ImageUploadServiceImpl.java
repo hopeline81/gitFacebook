@@ -58,7 +58,6 @@ public class ImageUploadServiceImpl implements ImageUploadService {
         image.setDescription(imageText);
         image.setImageUploadDate(LocalDateTime.now());
         image.setNumberOfLikesImage(0);
-
         imageRepository.save(image);
     }
 

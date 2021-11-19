@@ -99,8 +99,8 @@ public class FriendRequestServiceImpl implements FriendRequestService {
         }
         friendsNewFriends.add(user);
         newFriend.setFriends(friendsNewFriends);
-
         userRepository.save(user);
+
         return user;
     }
 

@@ -23,7 +23,6 @@ public class ChangeUserEmailServiceIml implements ChangeUserEmailService {
     private final JavaMailSender mailSender;
     public static final String LINK = "http://localhost:8080";
 
-
     @Autowired
     public ChangeUserEmailServiceIml(UserRepository userRepository, JavaMailSender mailSender) {
         this.userRepository = userRepository;

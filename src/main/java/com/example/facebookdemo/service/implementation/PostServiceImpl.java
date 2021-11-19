@@ -5,6 +5,7 @@ import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.PostRepository;
 import com.example.facebookdemo.repository.UserRepository;
+import com.example.facebookdemo.service.contrack.CommentService;
 import com.example.facebookdemo.service.contrack.PostService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -42,22 +43,6 @@ public class PostServiceImpl implements PostService {
         return postRepository.save(post);
     }
 
-    public Post convertCommentDTOToEntity(PostDTO postDTO) {
-        Post comment = new Post();
-        comment.setTextPost(postDTO.getText());
-
-        return comment;
-    }
-
-    @Override
-    public List<PostDTO> findAllCommentsToCurrentPost(Long postId) {
-        Post currentPost = postRepository.findFirstById(postId).get();
-
-        return currentPost.getComments().stream()
-                .map(this::convertPostToPostDTO)
-                .collect(Collectors.toList());
-    }
-
     @Override
     public List<PostDTO> getUserAndFriendPostDTOS(User user1) {
         List<Post> allUserPosts = user1.getPosts().stream()
@@ -76,17 +61,22 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO getPostById(Long id) {
-        Post post = postRepository.getById(id);
+    public Post convertPostDTOToEntity(PostDTO postDTO) {
 
-        return convertPostToPostDTO(post);
+        return modelMapper.map(postDTO, Post.class);
     }
 
-    @Override
     public PostDTO convertPostToPostDTO(Post postCreated) {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
 
         return modelMapper.map(postCreated, PostDTO.class);
+    }
+
+    @Override
+    public PostDTO getPostById(Long id) {
+        Post post = postRepository.getById(id);
+
+        return convertPostToPostDTO(post);
     }
 
     @Override
@@ -103,20 +93,5 @@ public class PostServiceImpl implements PostService {
             likedUsers.add(user);
         }
         postRepository.save(post);
-    }
-
-    @Override
-    public void addComment(Long parentPostId, Post comment, Long userId) {
-        User user = userRepository.findUserById(userId).get();
-        Post post1 = postRepository.findById(parentPostId).get();
-        comment.setUser(user);
-        comment.setParent(post1);
-        comment.setNumberOfLikes(0);
-        comment.setPostDate(LocalDateTime.now());
-        comment = postRepository.save(comment);
-        List<Post> comments = post1.getComments();
-        comments.add(comment);
-
-        postRepository.save(post1);
     }
 }

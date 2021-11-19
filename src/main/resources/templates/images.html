@@ -19,9 +19,9 @@
             <td th:text="${image.description}">
             </td>
             <br/>
-            <th><b>Post date</b></th>
-            <td th:text="${image.imageUploadDate}">
+            <td th:text="${image.numberOfLikesImage}">
             </td>
+            <a th:href="@{likesImage/(imageId=${image.id})}">Like</a>
             <br/>
             <br/>
             <br/>

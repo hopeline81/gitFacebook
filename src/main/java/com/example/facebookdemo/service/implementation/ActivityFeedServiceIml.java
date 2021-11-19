@@ -6,6 +6,7 @@ import com.example.facebookdemo.dto.PostDTO;
 import com.example.facebookdemo.entity.Image;
 import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.User;
+import com.example.facebookdemo.service.contrack.ActivityFeedService;
 import com.example.facebookdemo.service.contrack.ImageUploadService;
 import com.example.facebookdemo.service.contrack.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ActivityFeedServiceIml {
+public class ActivityFeedServiceIml implements ActivityFeedService {
 
     private final PostService postService;
     private final ImageUploadService imageService;
