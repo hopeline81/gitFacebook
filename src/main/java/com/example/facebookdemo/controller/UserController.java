@@ -1,6 +1,8 @@
 package com.example.facebookdemo.controller;
 
 import com.example.facebookdemo.dto.UserDTO;
+import com.example.facebookdemo.exception.InvalidEmailException;
+import com.example.facebookdemo.exception.InvalidPasswordException;
 import com.example.facebookdemo.service.contrack.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,7 +49,7 @@ public class UserController extends BaseController implements WebMvcConfigurer {
     @PostMapping("/register")
     public ModelAndView register(@Validated @ModelAttribute("user") UserDTO userDTO
             , BindingResult result
-            , Model model) {
+            , Model model) throws InvalidPasswordException, InvalidEmailException {
         if (result.hasErrors()) {
             model.addAttribute("message", "Please try again." );
             return send("message");

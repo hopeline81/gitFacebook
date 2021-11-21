@@ -80,4 +80,10 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
     public String hashPassword(String password) {
         return bCryptPasswordEncoder.encode(password);
     }
+
+    @Override
+    public boolean isEmailExist(String email) {
+        User user = userRepository.findUserByEmail(email);
+        return user != null;
+    }
 }

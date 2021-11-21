@@ -11,4 +11,5 @@ public interface ForgotPasswordService {
     User getByResetPasswordToken(String token);
     void sendEmail(String recipientEmail, String link) throws MessagingException, UnsupportedEncodingException;
     String hashPassword(String password);
+    boolean isEmailExist(String email);
 }

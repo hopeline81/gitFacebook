@@ -8,6 +8,7 @@ import com.example.facebookdemo.service.implementation.util.GetURLUtil;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +41,10 @@ public class ForgotPasswordController extends BaseController {
     @PostMapping("/forgot_password")
     public String processForgotPassword(HttpServletRequest request, Model model) {
         String email = request.getParameter("email");
+        if(!forgotPasswordService.isEmailExist(email)) {
+            model.addAttribute("message", "This email didn't exist. First need register");
+            return "message";
+        }
         String token = RandomString.make(30);
 
         try {
@@ -49,6 +54,7 @@ public class ForgotPasswordController extends BaseController {
             model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
         } catch (UnsupportedEncodingException | MessagingException e) {
             model.addAttribute("message", "Error while sending email");
+            return "message";
         }
         return "forgot-password-form";
     }
