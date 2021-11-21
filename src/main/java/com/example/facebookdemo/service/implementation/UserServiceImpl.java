@@ -1,9 +1,10 @@
 package com.example.facebookdemo.service.implementation;
 
 import com.example.facebookdemo.dto.UserDTO;
-import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.Role;
 import com.example.facebookdemo.entity.User;
+import com.example.facebookdemo.exception.InvalidEmailException;
+import com.example.facebookdemo.exception.InvalidPasswordException;
 import com.example.facebookdemo.repository.UserRepository;
 import com.example.facebookdemo.service.contrack.UserService;
 import net.bytebuddy.utility.RandomString;
@@ -38,7 +39,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User register(UserDTO userDTO) {
+    public User register(UserDTO userDTO) throws InvalidEmailException, InvalidPasswordException {
+        if(userDTO.getEmail() == null) {
+            throw new InvalidEmailException("Email not provided");
+        }
+        if(userDTO.getPassword() == null) {
+            throw new InvalidPasswordException("Password not provided");
+        }
         if (!userDTO.getPasswordRepeat().equals(userDTO.getPassword())) {
             throw new IllegalArgumentException("Passwords are different");
         }

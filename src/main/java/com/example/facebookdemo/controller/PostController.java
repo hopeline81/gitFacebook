@@ -59,6 +59,7 @@ public class PostController extends BaseController {
         return "posts";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/likes")
     public ModelAndView addLike(@RequestParam("postId") String postId,
                                 @AuthenticationPrincipal User user,

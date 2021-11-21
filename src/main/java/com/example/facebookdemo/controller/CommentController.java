@@ -38,6 +38,7 @@ public class CommentController extends BaseController {
         return send("add-comments");
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/add_comments")
     public ModelAndView addComments(@ModelAttribute("postDTO") PostDTO postDTO,
                                     @AuthenticationPrincipal User user) {
@@ -48,6 +49,7 @@ public class CommentController extends BaseController {
         return redirect("/posts");
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/comments")
     public ModelAndView getAllComments(@RequestParam("parentPostId") String parentPostId,
                                        Model model ) {

@@ -3,6 +3,7 @@ package com.example.facebookdemo.controller;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.service.contrack.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ public class DeleteAccountController extends BaseController {
         this.userService = userService;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete_account")
     public ModelAndView deleteAccount(@AuthenticationPrincipal User user, HttpServletRequest request) throws ServletException {
 

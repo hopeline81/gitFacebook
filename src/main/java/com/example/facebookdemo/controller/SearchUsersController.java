@@ -4,6 +4,7 @@ import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.service.contrack.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,11 +25,13 @@ public class SearchUsersController extends BaseController {
         this.userService = userService;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/search")
     public ModelAndView search() {
         return send ("search");
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/search")
     public ModelAndView searchUsers(@RequestParam("name") String name , Model model) {
         List<User> searchResult = userService.searchByNameAndSort(name, Sort.by(Sort.Direction.ASC, "firstName"));

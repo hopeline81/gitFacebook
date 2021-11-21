@@ -8,6 +8,7 @@ import com.example.facebookdemo.service.contrack.UpdateProfileService;
 import com.example.facebookdemo.service.contrack.ChangeUserEmailService;
 import com.example.facebookdemo.service.implementation.util.GetURLUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,7 @@ public class UpdateProfileController extends BaseController {
         this.userEmailService = userEmailService;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile-update")
     public ModelAndView viewDetails(@AuthenticationPrincipal User user) {
 
@@ -48,6 +50,7 @@ public class UpdateProfileController extends BaseController {
         return send("profile-update", "user", userDTO);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/profile-update")
     public String saveDetails(@AuthenticationPrincipal User user,
                               @ModelAttribute("user") UserDTO userDTO,

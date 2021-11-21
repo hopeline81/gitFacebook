@@ -70,6 +70,7 @@ public class ImageController extends BaseController {
         return send("images", "images", responseImages);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/avatar_upload")
     public ModelAndView avatarUpload(@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile multipartFile) throws IOException {
         Long profileId = user.getProfile().getId();
@@ -79,6 +80,7 @@ public class ImageController extends BaseController {
         return send("profile", "profileDTO", profileDTO);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/likesImage")
     public ModelAndView addLike(@RequestParam("imageId") String imageId,
                                 @AuthenticationPrincipal User user,

@@ -27,6 +27,7 @@ public class RequestController extends BaseController {
         this.friendRequestService = friendRequestService;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("send_friend_request")
     public ModelAndView sendFriendRequest(@AuthenticationPrincipal User user,
                                           @RequestParam("requesterId") String requestedId,
@@ -43,6 +44,7 @@ public class RequestController extends BaseController {
         return redirect("/profile");
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("requests")
     public ModelAndView allRequest(@AuthenticationPrincipal User user) {
 
@@ -51,6 +53,7 @@ public class RequestController extends BaseController {
         return send("requests", "requests", requests);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("accept_friend_request")
     public ModelAndView acceptRequest(@AuthenticationPrincipal User user,
                                       @RequestParam("requesterId") String requesterId,
