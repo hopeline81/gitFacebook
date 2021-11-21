@@ -30,7 +30,6 @@ public class UpdateProfileServiceImpl implements UpdateProfileService {
     @Override
     public Profile updateProfileDetails(User user, Profile profile, UserDTO userDTO, String code) throws MessagingException, UnsupportedEncodingException {
         Profile newProfile = user.getProfile();
-
         changeAddress(profile, userDTO, newProfile);
         if(!userDTO.getEmail().equals(user.getEmail())) {
             changeEmail(user, user.getProfile(), userDTO, code);

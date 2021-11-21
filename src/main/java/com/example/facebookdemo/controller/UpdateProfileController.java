@@ -1,15 +1,13 @@
 package com.example.facebookdemo.controller;
 
 import com.example.facebookdemo.dto.UserDTO;
-import com.example.facebookdemo.entity.Profile;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.UserRepository;
-import com.example.facebookdemo.service.contrack.UpdateProfileService;
 import com.example.facebookdemo.service.contrack.ChangeUserEmailService;
-import com.example.facebookdemo.service.implementation.util.GetURLUtil;
+import com.example.facebookdemo.service.contrack.UpdateProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +28,6 @@ public class UpdateProfileController extends BaseController {
     private final UserRepository userRepository;
     private final ChangeUserEmailService userEmailService;
 
-
     @Autowired
     public UpdateProfileController(UpdateProfileService updateProfileService,
                                    UserRepository userRepository,
@@ -40,14 +37,15 @@ public class UpdateProfileController extends BaseController {
         this.userEmailService = userEmailService;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile-update")
     public ModelAndView viewDetails(@AuthenticationPrincipal User user) {
-
         UserDTO userDTO = userEmailService.createNewUserDTO(user);
 
         return send("profile-update", "user", userDTO);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/profile-update")
     public String saveDetails(@AuthenticationPrincipal User user,
                               @ModelAttribute("user") UserDTO userDTO,

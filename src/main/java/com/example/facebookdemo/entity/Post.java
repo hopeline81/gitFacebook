@@ -114,16 +114,4 @@ public class Post {
     public void setParent(Post parent) {
         this.parent = parent;
     }
-
-    @Override
-    public String toString() {
-        return "Post{" +
-                "textPost='" + textPost + '\'' +
-                ", postDate=" + postDate +
-                ", numberOfLikes=" + numberOfLikes +
-                ", usersLikes=" + usersLikes +
-                ", comments=" + comments +
-                ", parent=" + parent +
-                '}';
-    }
 }

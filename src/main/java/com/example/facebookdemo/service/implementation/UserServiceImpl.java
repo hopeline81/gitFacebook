@@ -1,10 +1,13 @@
 package com.example.facebookdemo.service.implementation;
 
 import com.example.facebookdemo.dto.UserDTO;
-import com.example.facebookdemo.entity.Post;
+import com.example.facebookdemo.entity.FriendRequest;
 import com.example.facebookdemo.entity.Role;
 import com.example.facebookdemo.entity.User;
+import com.example.facebookdemo.exception.InvalidEmailException;
+import com.example.facebookdemo.exception.InvalidPasswordException;
 import com.example.facebookdemo.repository.UserRepository;
+import com.example.facebookdemo.service.contrack.FriendRequestService;
 import com.example.facebookdemo.service.contrack.UserService;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +31,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final RoleServiceImpl roleService;
     private final ProfileServiceImpl profileService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final FriendRequestService friendRequestService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleServiceImpl roleService, ProfileServiceImpl profileService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleServiceImpl roleService, ProfileServiceImpl profileService, BCryptPasswordEncoder bCryptPasswordEncoder, FriendRequestService friendRequestService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.profileService = profileService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.friendRequestService = friendRequestService;
     }
 
     @Override
-    public User register(UserDTO userDTO) {
+    public void register(UserDTO userDTO) throws InvalidEmailException, InvalidPasswordException {
+        if (userDTO.getEmail() == null) {
+            throw new InvalidEmailException("Email not provided");
+        }
+        if (userDTO.getPassword() == null) {
+            throw new InvalidPasswordException("Password not provided");
+        }
         if (!userDTO.getPasswordRepeat().equals(userDTO.getPassword())) {
             throw new IllegalArgumentException("Passwords are different");
         }
@@ -61,7 +72,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setRoles(roles);
         userRepository.save(user);
 
-        return user;
     }
 
     @Override
@@ -91,14 +101,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
     }
 
-    public List<User> searchByNameAndSort(String name, Sort sort){
+    public List<User> searchByNameAndSort(String name, Sort sort) {
 
         return userRepository.searchByNameAndSort(name, sort);
     }
 
     @Override
     public void deleteUser(User user) {
-
+        Set<FriendRequest> allUserRequest = friendRequestService.findAllRequestToUser(user);
+        allUserRequest.clear();
+//        Set<User> allUserFriends  =  user1.getFriends();
+//        allUserFriends.clear();
+//        userRepository.save(user1);
         userRepository.deleteById(user.getId());
     }
 }

@@ -18,4 +18,5 @@ public interface ImageUploadService {
     ImageResponseDTO convertImageToImageDTOResponse (Image image);
     List<ImageResponseDTO> convertImagesToImageDTOs(List<Image> images);
     void updateLikes(Image image, Long userId);
+    List<ImageResponseDTO> getUserAndFriendsImages(User user1);
 }

@@ -3,6 +3,7 @@ package com.example.facebookdemo.service.implementation;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.UserRepository;
 import com.example.facebookdemo.service.contrack.ForgotPasswordService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +23,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JavaMailSender mailSender;
 
+    @Autowired
     public ForgotPasswordServiceImpl(UserRepository userRepository,
                                      BCryptPasswordEncoder bCryptPasswordEncoder,
                                      JavaMailSender mailSender) {
@@ -79,5 +81,11 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
     @Override
     public String hashPassword(String password) {
         return bCryptPasswordEncoder.encode(password);
+    }
+
+    @Override
+    public boolean isEmailExist(String email) {
+        User user = userRepository.findUserByEmail(email);
+        return user != null;
     }
 }

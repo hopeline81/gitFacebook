@@ -1,11 +1,11 @@
 package com.example.facebookdemo.controller;
 
 import com.example.facebookdemo.dto.UserDTO;
+import com.example.facebookdemo.exception.InvalidEmailException;
+import com.example.facebookdemo.exception.InvalidPasswordException;
 import com.example.facebookdemo.service.contrack.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.security.auth.login.LoginException;
 
@@ -49,7 +48,7 @@ public class UserController extends BaseController implements WebMvcConfigurer {
     @PostMapping("/register")
     public ModelAndView register(@Validated @ModelAttribute("user") UserDTO userDTO
             , BindingResult result
-            , Model model) {
+            , Model model) throws InvalidPasswordException, InvalidEmailException {
         if (result.hasErrors()) {
             model.addAttribute("message", "Please try again." );
             return send("message");

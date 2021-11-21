@@ -4,7 +4,6 @@ import com.example.facebookdemo.dto.PostDTO;
 import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.service.contrack.CommentService;
-import com.example.facebookdemo.service.contrack.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -38,6 +37,7 @@ public class CommentController extends BaseController {
         return send("add-comments");
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/add_comments")
     public ModelAndView addComments(@ModelAttribute("postDTO") PostDTO postDTO,
                                     @AuthenticationPrincipal User user) {
@@ -48,6 +48,7 @@ public class CommentController extends BaseController {
         return redirect("/posts");
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/comments")
     public ModelAndView getAllComments(@RequestParam("parentPostId") String parentPostId,
                                        Model model ) {

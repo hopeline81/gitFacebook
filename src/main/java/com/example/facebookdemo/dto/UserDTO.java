@@ -35,10 +35,6 @@ public class UserDTO {
     @Min(14)
     private Integer age;
 
-    private List<Post> posts;
-
-    private List<Image> images;
-
     public UserDTO() {
     }
 
@@ -104,25 +100,5 @@ public class UserDTO {
 
     public void setAge(Integer age) {
         this.age = age;
-    }
-
-    public List<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public List<Image> getImages() {
-        return images;
-    }
-
-    public void setImages(List<Image> images) {
-        this.images = images;
     }
 }

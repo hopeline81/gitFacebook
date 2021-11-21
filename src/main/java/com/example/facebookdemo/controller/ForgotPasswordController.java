@@ -40,6 +40,10 @@ public class ForgotPasswordController extends BaseController {
     @PostMapping("/forgot_password")
     public String processForgotPassword(HttpServletRequest request, Model model) {
         String email = request.getParameter("email");
+        if(!forgotPasswordService.isEmailExist(email)) {
+            model.addAttribute("message", "This email didn't exist. First need register");
+            return "message";
+        }
         String token = RandomString.make(30);
 
         try {
@@ -49,6 +53,7 @@ public class ForgotPasswordController extends BaseController {
             model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
         } catch (UnsupportedEncodingException | MessagingException e) {
             model.addAttribute("message", "Error while sending email");
+            return "message";
         }
         return "forgot-password-form";
     }
@@ -78,11 +83,9 @@ public class ForgotPasswordController extends BaseController {
             model.addAttribute("message", "Invalid Token");
             return redirect("message");
         }
-
         String encodedPassword = forgotPasswordService.hashPassword(password);
         forgotPasswordService.updatePassword(user, encodedPassword);
         model.addAttribute("message", "You have successfully changed your password.");
-
         request.login(user.getEmail(), password);
         UserDTO userDTO = userService.createNewUserDTO(user);
 

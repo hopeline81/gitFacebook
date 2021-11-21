@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-
 @Controller
 public class ProfileController extends BaseController {
 
@@ -18,14 +17,12 @@ public class ProfileController extends BaseController {
 
     @Autowired
     public ProfileController(ProfileService profileService) {
-
         this.profileService = profileService;
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/profile")
     public ModelAndView userProfile(@AuthenticationPrincipal User user) {
-
         ProfileDTO profileDTO = profileService.createNewProfileDTO(user.getEmail());
 
         return send("profile", "profileDTO", profileDTO);

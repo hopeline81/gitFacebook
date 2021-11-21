@@ -10,9 +10,8 @@ import java.util.Set;
 public interface FriendRequestService {
     FriendRequest sendFriendRequest(User requestedUser, String requestedId);
     List<FriendRequestDTO> findRequestToUser(User user);
-    User findRequesterUser(Long userId);
     FriendRequest findRequest(User newFriend, User user);
-    User addNewFriend(User user, User newFriend);
     void changeRequestStatusFromPendingToAccept(User user, User newFriend);
-    Set<User> getFriends(User user);
+    User findRequesterUserById(Long requesterUserId);
+    Set<FriendRequest> findAllRequestToUser(User user);
 }
