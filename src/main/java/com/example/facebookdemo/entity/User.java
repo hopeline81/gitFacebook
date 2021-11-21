@@ -65,7 +65,7 @@ public class User implements UserDetails {
     @OneToMany(targetEntity = FriendRequest.class, fetch = FetchType.EAGER, mappedBy = "requesterUser", cascade = CascadeType.ALL)
     private Set<FriendRequest> userRequests;
 
-    @ManyToMany(targetEntity = User.class, fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = User.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "users_friends",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "friend_id")})

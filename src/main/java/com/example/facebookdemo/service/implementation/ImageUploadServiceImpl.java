@@ -1,7 +1,9 @@
 package com.example.facebookdemo.service.implementation;
 
 import com.example.facebookdemo.dto.ImageResponseDTO;
+import com.example.facebookdemo.dto.PostDTO;
 import com.example.facebookdemo.entity.Image;
+import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.ImageRepository;
 import com.example.facebookdemo.repository.UserRepository;
@@ -17,6 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Transactional
 @Service
@@ -75,14 +79,26 @@ public class ImageUploadServiceImpl implements ImageUploadService {
         User user = userRepository.findById(userId).get();
         List<User> usersWhoLikedImage = image.getUsersLikes();
         Integer numberOfLikesImage = image.getNumberOfLikesImage();
-        if(usersWhoLikedImage.contains(user)){
+        if (usersWhoLikedImage.contains(user)) {
             image.setNumberOfLikesImage(numberOfLikesImage - 1);
             usersWhoLikedImage.remove(user);
-        }else{
+        } else {
             image.setNumberOfLikesImage(numberOfLikesImage + 1);
             usersWhoLikedImage.add(user);
         }
         imageRepository.save(image);
+    }
+
+    @Override
+    public List<ImageResponseDTO> getUserAndFriendsImages(User user1) {
+        List<Image> allUserImages = new ArrayList<>(user1.getImages());
+        List<Image> allFriendImages = user1.getFriends().stream()
+                .flatMap(friend -> friend.getImages().stream())
+                .collect(Collectors.toList());
+        List <Image> allUserAndFriendImages =  Stream.concat(allUserImages.stream(), allFriendImages.stream())
+        .sorted(Comparator.comparing(Image::getImageUploadDate).reversed())
+        .collect(Collectors.toList());
+        return convertImagesToImageDTOs(allUserAndFriendImages);
     }
 
     public List<ImageResponseDTO> convertImagesToImageDTOs(List<Image> images) {
@@ -101,7 +117,7 @@ public class ImageUploadServiceImpl implements ImageUploadService {
         return responseImages;
     }
 
-    public ImageResponseDTO convertImageToImageDTOResponse (Image image) {
+    public ImageResponseDTO convertImageToImageDTOResponse(Image image) {
         ImageResponseDTO imageResponseDTO = new ImageResponseDTO();
         imageResponseDTO.setDescription(image.getDescription());
         imageResponseDTO.setUrl(image.getImageUrl());
@@ -114,6 +130,6 @@ public class ImageUploadServiceImpl implements ImageUploadService {
     private String generateFileName(MultipartFile multiPart) {
 
         return new Date().getTime() + "-" + Objects.requireNonNull(multiPart.getOriginalFilename())
-                         .replace(" ", "_");
+                .replace(" ", "_");
     }
 }

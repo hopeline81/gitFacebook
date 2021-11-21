@@ -10,10 +10,10 @@ public class FriendRequest {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(targetEntity = User.class, optional = false)
+    @ManyToOne(targetEntity = User.class, optional = false, cascade = CascadeType.ALL)
     private User requesterUser;
 
-    @ManyToOne(targetEntity = User.class, optional = false)
+    @ManyToOne(targetEntity = User.class, optional = false, cascade = CascadeType.ALL)
     private User requestedUsers;
 
     @Enumerated(EnumType.STRING)
