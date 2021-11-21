@@ -68,7 +68,7 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     }
 
     @Override
-    public User findRequesterUser(Long userId) {
+    public User findRequesterUserById(Long userId) {
         Optional<User> user = userRepository.findUserById(userId);
         User existingUser;
         if(user.isPresent()) {
@@ -85,8 +85,9 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     }
 
     @Override
-    public User addNewFriend(User user, User newFriend) {
+    public User addNewFriend(User user, Long newFriendId) {
         Set<User> userFriends = user.getFriends();
+        User newFriend = userRepository.findUserById(newFriendId).get();
         if(userFriends.contains(newFriend)){
             throw new IllegalArgumentException("This friend is already added");
         }

@@ -4,6 +4,7 @@ import com.example.facebookdemo.dto.FriendRequestDTO;
 import com.example.facebookdemo.entity.FriendRequest;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.service.contrack.FriendRequestService;
+import com.example.facebookdemo.service.contrack.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,10 +22,12 @@ import java.util.Set;
 public class RequestController extends BaseController {
 
     private final FriendRequestService friendRequestService;
+    private final UserService userService;
 
     @Autowired
-    public RequestController(FriendRequestService friendRequestService) {
+    public RequestController(FriendRequestService friendRequestService, UserService userService) {
         this.friendRequestService = friendRequestService;
+        this.userService = userService;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -60,10 +63,11 @@ public class RequestController extends BaseController {
                                       Model model) {
 
         Long requesterUserId = Long.valueOf(requesterId);
-        User newFriend = friendRequestService.findRequesterUser(requesterUserId);
+        User user1 = userService.loadUserByUsername(user.getEmail());
+        User newFriend = friendRequestService.findRequesterUserById(requesterUserId);
         try {
-            friendRequestService.addNewFriend(user, newFriend);
-            friendRequestService.changeRequestStatusFromPendingToAccept(user, newFriend);
+            friendRequestService.addNewFriend(user1, newFriend.getId());
+            friendRequestService.changeRequestStatusFromPendingToAccept(user1, newFriend);
         }catch (Exception e) {
             model.addAttribute("message", "This request already accepted");
             return send ("message");
