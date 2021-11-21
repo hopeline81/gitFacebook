@@ -92,17 +92,21 @@ public class ImageUploadServiceImpl implements ImageUploadService {
     @Override
     public List<ImageResponseDTO> getUserAndFriendsImages(User user1) {
         List<Image> allUserImages = new ArrayList<>(user1.getImages());
+
         List<Image> allFriendImages = user1.getFriends().stream()
                 .flatMap(friend -> friend.getImages().stream())
                 .collect(Collectors.toList());
+
         List <Image> allUserAndFriendImages =  Stream.concat(allUserImages.stream(), allFriendImages.stream())
         .sorted(Comparator.comparing(Image::getImageUploadDate).reversed())
         .collect(Collectors.toList());
+
         return convertImagesToImageDTOs(allUserAndFriendImages);
     }
 
     public List<ImageResponseDTO> convertImagesToImageDTOs(List<Image> images) {
         List<ImageResponseDTO> responseImages = new ArrayList<>();
+
         images.forEach(image -> {
             ImageResponseDTO imageResponseDTO = new ImageResponseDTO();
             imageResponseDTO.setId(image.getId());
@@ -114,6 +118,7 @@ public class ImageUploadServiceImpl implements ImageUploadService {
             imageResponseDTO.setUsersLikedImage(image.getUsersLikes());
             responseImages.add(imageResponseDTO);
         });
+
         return responseImages;
     }
 

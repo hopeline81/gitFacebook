@@ -4,6 +4,7 @@ import com.example.facebookdemo.dto.FriendRequestDTO;
 import com.example.facebookdemo.entity.FriendRequest;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.service.contrack.FriendRequestService;
+import com.example.facebookdemo.service.contrack.FriendService;
 import com.example.facebookdemo.service.contrack.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,11 +23,13 @@ import java.util.Set;
 public class RequestController extends BaseController {
 
     private final FriendRequestService friendRequestService;
+    private final FriendService friendService;
     private final UserService userService;
 
     @Autowired
-    public RequestController(FriendRequestService friendRequestService, UserService userService) {
+    public RequestController(FriendRequestService friendRequestService, FriendService friendService, UserService userService) {
         this.friendRequestService = friendRequestService;
+        this.friendService = friendService;
         this.userService = userService;
     }
 
@@ -36,10 +39,11 @@ public class RequestController extends BaseController {
                                           @RequestParam("requesterId") String requestedId,
                                           Model model) {
         try{
-            FriendRequest friendRequest = friendRequestService.sendFriendRequest(user, requestedId);
+            User user1 = userService.loadUserByUsername(user.getEmail());
+            FriendRequest friendRequest = friendRequestService.sendFriendRequest(user1, requestedId);
             Set<FriendRequest> friendRequests = new HashSet<>();
             friendRequests.add(friendRequest);
-            user.setUserRequests(friendRequests);
+            user1.setUserRequests(friendRequests);
         }catch (Exception e){
             model.addAttribute("message", "This request already exist");
             return send ("message");
@@ -51,7 +55,8 @@ public class RequestController extends BaseController {
     @GetMapping("requests")
     public ModelAndView allRequest(@AuthenticationPrincipal User user) {
 
-        List<FriendRequestDTO> requests = friendRequestService.findRequestToUser(user);
+        User user1 = userService.loadUserByUsername(user.getEmail());
+        List<FriendRequestDTO> requests = friendRequestService.findRequestToUser(user1);
 
         return send("requests", "requests", requests);
     }
@@ -66,21 +71,12 @@ public class RequestController extends BaseController {
         User user1 = userService.loadUserByUsername(user.getEmail());
         User newFriend = friendRequestService.findRequesterUserById(requesterUserId);
         try {
-            friendRequestService.addNewFriend(user1, newFriend.getId());
+            friendService.addNewFriend(user1, newFriend.getId());
             friendRequestService.changeRequestStatusFromPendingToAccept(user1, newFriend);
         }catch (Exception e) {
             model.addAttribute("message", "This request already accepted");
             return send ("message");
         }
         return redirect("/profile");
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/friends")
-    public ModelAndView allFriends(@AuthenticationPrincipal User user){
-
-        Set<User> friends = friendRequestService.getFriends(user);
-
-        return send("friends", "friends", friends);
     }
 }

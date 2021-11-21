@@ -4,6 +4,7 @@ import com.example.facebookdemo.dto.ActivityFeedDTO;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.service.contrack.ActivityFeedService;
 import com.example.facebookdemo.service.contrack.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,11 +18,11 @@ public class ActivityFeedController extends BaseController {
     private final ActivityFeedService activityFeedService;
     private final UserService userService;
 
+    @Autowired
     public ActivityFeedController(ActivityFeedService activityFeedService, UserService userService) {
         this.activityFeedService = activityFeedService;
         this.userService = userService;
     }
-
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/activity_feed")

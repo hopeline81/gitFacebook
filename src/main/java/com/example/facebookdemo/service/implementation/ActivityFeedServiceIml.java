@@ -29,7 +29,6 @@ public class ActivityFeedServiceIml implements ActivityFeedService {
     }
 
     public ActivityFeedDTO showActivityFeedDTO(User user) {
-
         List<PostDTO> allUserPosts = user.getPosts().stream()
                 .filter(post -> post.getParent() == null)
                 .sorted(Comparator.comparing(Post::getPostDate).reversed())

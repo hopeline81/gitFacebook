@@ -8,7 +8,6 @@ import com.example.facebookdemo.service.implementation.util.GetURLUtil;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,11 +83,9 @@ public class ForgotPasswordController extends BaseController {
             model.addAttribute("message", "Invalid Token");
             return redirect("message");
         }
-
         String encodedPassword = forgotPasswordService.hashPassword(password);
         forgotPasswordService.updatePassword(user, encodedPassword);
         model.addAttribute("message", "You have successfully changed your password.");
-
         request.login(user.getEmail(), password);
         UserDTO userDTO = userService.createNewUserDTO(user);
 

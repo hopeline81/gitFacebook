@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.List;
 
 public interface UserService {
-    User register(UserDTO userDTO) throws InvalidEmailException, InvalidPasswordException;
+    void register(UserDTO userDTO) throws InvalidEmailException, InvalidPasswordException;
     UserDTO createNewUserDTO(User user);
     void updatePassword(User user, String newPassword);
     List<User> searchByNameAndSort(String name, Sort sort);

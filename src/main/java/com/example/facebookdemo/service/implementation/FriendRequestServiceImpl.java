@@ -41,11 +41,11 @@ public class FriendRequestServiceImpl implements FriendRequestService {
                throw new IllegalArgumentException("Already exist");
            }
         }
-
         FriendRequest friendRequest = new FriendRequest();
         friendRequest.setRequesterUser(user);
         friendRequest.setRequestedUsers(requestedUser);
         friendRequest.setStatus(FriendRequestStatus.PENDING);
+
         return friendRequestRepository.save(friendRequest);
     }
 
@@ -80,29 +80,16 @@ public class FriendRequestServiceImpl implements FriendRequestService {
     }
 
     @Override
-    public FriendRequest findRequest(User newFriend, User user) {
-        return friendRequestRepository.findFriendRequestByRequesterUserAndRequestedUsers(newFriend, user);
+    public Set<FriendRequest> findAllRequestToUser(User user) {
+        User user1 = userRepository.findUserByEmail(user.getEmail());
+
+        return user1.getUserRequests();
     }
 
     @Override
-    public User addNewFriend(User user, Long newFriendId) {
-        Set<User> userFriends = user.getFriends();
-        User newFriend = userRepository.findUserById(newFriendId).get();
-        if(userFriends.contains(newFriend)){
-            throw new IllegalArgumentException("This friend is already added");
-        }
-        userFriends.add(newFriend);
-        user.setFriends(userFriends);
+    public FriendRequest findRequest(User newFriend, User user) {
 
-        Set<User> friendsNewFriends = newFriend.getFriends();
-        if(friendsNewFriends.contains(user)){
-            throw new IllegalArgumentException("This friend is already added");
-        }
-        friendsNewFriends.add(user);
-        newFriend.setFriends(friendsNewFriends);
-        userRepository.save(user);
-
-        return user;
+        return friendRequestRepository.findFriendRequestByRequesterUserAndRequestedUsers(newFriend, user);
     }
 
     @Override
@@ -112,11 +99,5 @@ public class FriendRequestServiceImpl implements FriendRequestService {
             throw new IllegalArgumentException("Request doesn't exist");
         }
         friendRequest.setStatus(FriendRequestStatus.ACCEPTED);
-    }
-
-    @Override
-    public Set<User> getFriends(User user) {
-
-        return user.getFriends();
     }
 }

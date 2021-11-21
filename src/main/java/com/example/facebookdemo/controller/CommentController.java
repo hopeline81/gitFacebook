@@ -4,7 +4,6 @@ import com.example.facebookdemo.dto.PostDTO;
 import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.service.contrack.CommentService;
-import com.example.facebookdemo.service.contrack.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

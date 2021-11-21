@@ -21,9 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Controller
@@ -58,7 +56,6 @@ public class ImageController extends BaseController {
             model.addAttribute("message", "There is a problem with upload, image too large");
             return send("message");
         }
-
         return redirect("/images");
     }
 

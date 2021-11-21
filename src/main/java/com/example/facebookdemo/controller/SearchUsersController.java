@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 public class SearchUsersController extends BaseController {
@@ -28,16 +30,21 @@ public class SearchUsersController extends BaseController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/search")
     public ModelAndView search() {
-        return send ("search");
+        return send("search");
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/search")
-    public ModelAndView searchUsers(@RequestParam("name") String name , Model model) {
+    public ModelAndView searchUsers(@AuthenticationPrincipal User user,
+                                    @RequestParam("name") String name, Model model) {
+        User user1 = userService.loadUserByUsername(user.getEmail());
         List<User> searchResult = userService.searchByNameAndSort(name, Sort.by(Sort.Direction.ASC, "firstName"));
+        List<User> resultWithoutCurrentUser = searchResult.stream()
+                .filter(u -> !Objects.equals(u.getEmail(), user1.getEmail()))
+                .collect(Collectors.toList());
 
         model.addAttribute("name", name);
         model.addAttribute("searchResult", searchResult);
-        return send ("search_result", "searchResult", searchResult);
+        return send("search_result", "searchResult", resultWithoutCurrentUser);
     }
 }

@@ -11,8 +11,7 @@ public interface FriendRequestService {
     FriendRequest sendFriendRequest(User requestedUser, String requestedId);
     List<FriendRequestDTO> findRequestToUser(User user);
     FriendRequest findRequest(User newFriend, User user);
-    User addNewFriend(User user, Long newFriendId);
     void changeRequestStatusFromPendingToAccept(User user, User newFriend);
-    Set<User> getFriends(User user);
     User findRequesterUserById(Long requesterUserId);
+    Set<FriendRequest> findAllRequestToUser(User user);
 }
