@@ -11,14 +11,11 @@
 
 <form method="post" action="/posts">
     <br/>
-
-    <br/>
-    <th><b>Posts</b></th>
-    <br/>
     <br/>
     <tr th:each="post : ${posts}">
-        <td th:text="${post.text}"><b></b>
+        <td th:text="${post.text}">
         </td>
+        <br/>
         <br/>
         <td></td>
         <th><b>Post date</b></th>

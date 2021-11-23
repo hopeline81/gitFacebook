@@ -110,9 +110,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void deleteUser(User user) {
         Set<FriendRequest> allUserRequest = friendRequestService.findAllRequestToUser(user);
         allUserRequest.clear();
-//        Set<User> allUserFriends  =  user1.getFriends();
-//        allUserFriends.clear();
-//        userRepository.save(user1);
         userRepository.deleteById(user.getId());
     }
 }
