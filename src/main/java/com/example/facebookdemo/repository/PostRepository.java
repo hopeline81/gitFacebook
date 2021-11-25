@@ -15,8 +15,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Override
     List<Post> findAll(Sort sort);
 
-    List<Post> findAllByUser(User user);
-
     Optional<Post> findFirstById(Long postId);
 
     Optional<Post> findById(Long postId);

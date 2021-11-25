@@ -11,6 +11,4 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
     @Override
     Optional<Profile> findById(Long aLong);
-
-    Profile findFirstByEmail(String email);
 }
