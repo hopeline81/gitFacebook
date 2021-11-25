@@ -1,15 +1,13 @@
 package com.example.facebookdemo.service.implementation;
 
 import com.example.facebookdemo.dto.ImageResponseDTO;
-import com.example.facebookdemo.dto.PostDTO;
 import com.example.facebookdemo.entity.Image;
-import com.example.facebookdemo.entity.Post;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.repository.ImageRepository;
 import com.example.facebookdemo.repository.UserRepository;
 import com.example.facebookdemo.service.contrack.ImageUploadService;
-import com.example.facebookdemo.service.implementation.util.FileUtil;
-import com.example.facebookdemo.service.implementation.util.FirebaseStorageCreateUtil;
+import com.example.facebookdemo.util.FileUtil;
+import com.example.facebookdemo.util.FirebaseStorageCreateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

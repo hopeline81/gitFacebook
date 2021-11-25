@@ -1,4 +1,4 @@
-package com.example.facebookdemo.service.implementation.util;
+package com.example.facebookdemo.util;
 
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;

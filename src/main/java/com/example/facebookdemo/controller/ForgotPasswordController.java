@@ -4,7 +4,7 @@ import com.example.facebookdemo.dto.UserDTO;
 import com.example.facebookdemo.entity.User;
 import com.example.facebookdemo.service.contrack.ForgotPasswordService;
 import com.example.facebookdemo.service.contrack.UserService;
-import com.example.facebookdemo.service.implementation.util.GetURLUtil;
+import com.example.facebookdemo.util.GetURLUtil;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
