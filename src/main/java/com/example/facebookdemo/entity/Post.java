@@ -30,7 +30,7 @@ public class Post {
     @Column(name = "number_of_likes")
     private Integer numberOfLikes;
 
-    @ManyToOne(targetEntity = User.class, optional = false)
+    @ManyToOne(targetEntity = User.class, optional = false, fetch = FetchType.EAGER )
     private User user;
 
     @ManyToMany(targetEntity = User.class, fetch = FetchType.EAGER)
