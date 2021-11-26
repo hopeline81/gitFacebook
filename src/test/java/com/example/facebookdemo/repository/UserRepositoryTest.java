@@ -47,7 +47,6 @@ class UserRepositoryTest {
         userRepositoryUnderTest.save(user);
     }
 
-
     @Test
     void isFindsUserByEmail() {
         String email = user.getEmail();

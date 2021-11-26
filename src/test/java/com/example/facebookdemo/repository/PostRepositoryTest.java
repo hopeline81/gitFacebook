@@ -41,7 +41,6 @@ class PostRepositoryTest {
         user.setAge(Integer.valueOf("40"));
         user.setRegisterDate(LocalDateTime.parse("2021-11-22T14:23:14"));
 
-
         Profile profile = new Profile();
         profile.setAge("40");
         profile.setAddress("Vratitsa 36A");
