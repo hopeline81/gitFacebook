@@ -56,10 +56,6 @@ class UserRepositoryTest {
     }
 
     @Test
-    void isFindsUserByResetPasswordToken() {
-    }
-
-    @Test
     void isFindsUserById() {
         Long id = user.getId();
         User expectedUser = userRepositoryUnderTest.findUserById(id).get();
@@ -73,9 +69,5 @@ class UserRepositoryTest {
         User expectedUser = userRepositoryUnderTest.findByVerificationCode(verificationCode);
 
         assertThat(expectedUser).isNotNull();
-    }
-
-    @Test
-    void searchByNameAndSort() {
     }
 }

@@ -10,6 +10,7 @@ import com.example.facebookdemo.repository.UserRepository;
 import com.example.facebookdemo.service.contrack.FriendRequestService;
 import com.example.facebookdemo.service.contrack.UserService;
 import net.bytebuddy.utility.RandomString;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -31,15 +32,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final RoleServiceImpl roleService;
     private final ProfileServiceImpl profileService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final FriendRequestService friendRequestService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleServiceImpl roleService, ProfileServiceImpl profileService, BCryptPasswordEncoder bCryptPasswordEncoder, FriendRequestService friendRequestService) {
+    public UserServiceImpl(UserRepository userRepository, RoleServiceImpl roleService, ProfileServiceImpl profileService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.profileService = profileService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.friendRequestService = friendRequestService;
     }
 
     @Override
@@ -71,7 +70,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         roles.add(roleService.getUserRole());
         user.setRoles(roles);
         userRepository.save(user);
-
     }
 
     @Override
@@ -98,7 +96,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
 
         return userRepository.findFirstByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
 
     public List<User> searchByNameAndSort(String name, Sort sort) {
@@ -108,8 +106,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void deleteUser(User user) {
-        Set<FriendRequest> allUserRequest = friendRequestService.findAllRequestToUser(user);
-        allUserRequest.clear();
         userRepository.deleteById(user.getId());
     }
 }
