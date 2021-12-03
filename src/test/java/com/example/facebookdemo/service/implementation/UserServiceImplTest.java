@@ -20,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -37,21 +38,16 @@ import static org.mockito.Mockito.*;
 @ExtendWith(SpringExtension.class)
 class UserServiceImplTest {
 
-    @Mock
-    private UserRepository userRepository;
-    @Mock
-    private RoleServiceImpl roleService;
-    @Mock
-    private ProfileServiceImpl profileService;
-    @Mock
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Mock private UserRepository userRepository;
+    @Mock private RoleServiceImpl roleService;
+    @Mock private ProfileServiceImpl profileService;
+    @Mock private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private UserServiceImpl userServiceImplUnderTest;
 
     private UserDTO userDTO;
 
     private User user;
-
 
     @BeforeEach
     void setUp() {
@@ -126,6 +122,13 @@ class UserServiceImplTest {
         assertThrows(IllegalArgumentException.class, () -> userServiceImplUnderTest.register(userDTO));
     }
 
+    @Test
+    void IsThrowUsernameNotFoundExceptionWhenUserDidNotLoad() throws UsernameNotFoundException {
+       userServiceImplUnderTest.loadUserByUsername("hope@mail.bg");
+
+        assertThrows(UsernameNotFoundException.class,
+                () -> userServiceImplUnderTest.loadUserByUsername(user.getEmail()));
+    }
     @Test
     void canUpdatePassword() {
         userServiceImplUnderTest.updatePassword(user, "sssss");
