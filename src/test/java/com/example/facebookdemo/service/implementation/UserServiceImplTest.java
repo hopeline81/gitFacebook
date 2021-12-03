@@ -25,9 +25,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -95,10 +93,9 @@ class UserServiceImplTest {
 
     @Test
     void canRegisterNewUser() throws InvalidPasswordException, InvalidEmailException {
-
         userServiceImplUnderTest.register(userDTO);
-
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+
         verify(userRepository).save(userArgumentCaptor.capture());
     }
 
@@ -147,9 +144,11 @@ class UserServiceImplTest {
     }
 
     @Test
-    @Disabled
     void searchByNameAndSort() {
-        userServiceImplUnderTest.searchByNameAndSort("Nadezhda", Sort.by(Sort.Direction.ASC, "firstName"));
+        List<User> actualUsers = userRepository.searchByNameAndSort("na", Sort.by(Sort.Direction.ASC, "firstName"));
+        List<User> sortedUsers = userServiceImplUnderTest.searchByNameAndSort("na", Sort.by(Sort.Direction.ASC, "firstName"));
+
+        assertEquals(sortedUsers.size(),actualUsers.size());
     }
 
     @Test
