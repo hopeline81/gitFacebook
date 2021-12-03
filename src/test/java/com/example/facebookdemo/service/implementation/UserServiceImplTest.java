@@ -15,10 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +26,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(SpringExtension.class)
@@ -47,7 +47,12 @@ class UserServiceImplTest {
     private ProfileServiceImpl profileService;
     @Mock
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     private UserServiceImpl userServiceImplUnderTest;
+
+    private UserDTO userDTO;
+
+    private User user;
 
 
     @BeforeEach
@@ -58,9 +63,9 @@ class UserServiceImplTest {
                 bCryptPasswordEncoder);
     }
 
-    @Test
-    void canRegisterNewUser() throws InvalidPasswordException, InvalidEmailException {
-        UserDTO userDTO = new UserDTO();
+    @BeforeEach
+    private void getUserDTO() {
+        this.userDTO = new UserDTO();
         String email = "hopeliness@yahoo.com";
         userDTO.setFirstName("Nadezhda");
         userDTO.setLastName("Vacheva");
@@ -69,7 +74,8 @@ class UserServiceImplTest {
         userDTO.setPasswordRepeat("aaaaa");
         userDTO.setAge(Integer.valueOf("40"));
 
-        User user = new User();
+        this.user = new User();
+        user.setId(1L);
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setUsername(userDTO.getFirstName(), userDTO.getLastName());
@@ -85,6 +91,10 @@ class UserServiceImplTest {
         Set<Role> roles = new HashSet<>();
         roles.add(roleService.getUserRole());
         user.setRoles(roles);
+    }
+
+    @Test
+    void canRegisterNewUser() throws InvalidPasswordException, InvalidEmailException {
 
         userServiceImplUnderTest.register(userDTO);
 
@@ -92,17 +102,48 @@ class UserServiceImplTest {
         verify(userRepository).save(userArgumentCaptor.capture());
     }
 
-    @Test
-    @Disabled
-    void updatePassword() {
+    @Test()
+    void isThrowInvalidEmailExceptionWhenEmailNotProvided() throws InvalidPasswordException, InvalidEmailException {
+        userServiceImplUnderTest.register(userDTO);
+        userDTO.setEmail(null);
+        user.setEmail(null);
+
+        assertThrows(InvalidEmailException.class, () -> userServiceImplUnderTest.register(userDTO));
+    }
+
+    @Test()
+    void isThrowInvalidPasswordExceptionWhenPasswordNotProvided() throws InvalidPasswordException, InvalidEmailException {
+        userServiceImplUnderTest.register(userDTO);
+        userDTO.setPassword(null);
+        user.setPassword(null);
+
+        assertThrows(InvalidPasswordException.class, () -> userServiceImplUnderTest.register(userDTO));
     }
 
     @Test
-    @Disabled
+    void isThrowIllegalArgumentExceptionWhenPasswordDoesNotMatch() throws InvalidPasswordException, InvalidEmailException {
+        userServiceImplUnderTest.register(userDTO);
+        userDTO.setPassword("bbbbb");
+        user.setPassword("bbbbb");
+
+        assertThrows(IllegalArgumentException.class, () -> userServiceImplUnderTest.register(userDTO));
+    }
+
+    @Test
+    void canUpdatePassword() {
+        userServiceImplUnderTest.updatePassword(user, "sssss");
+        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+
+        verify(userRepository).save(userArgumentCaptor.capture());
+    }
+
+    @Test
     void canLoadUserByUsername() {
-        String debug = "";
-        userServiceImplUnderTest.loadUserByUsername("hopeliness@yahoo.com");
-        verify(userRepository).findFirstByEmail("hopeliness@yahoo.com");
+        Optional<User> optionalUser = Optional.of(user);
+        Mockito.when(userRepository.findFirstByEmail("hopeliness@yahoo.com")).thenReturn(optionalUser);
+        userServiceImplUnderTest.loadUserByUsername(optionalUser.get().getEmail());
+
+        assertEquals(optionalUser.get().getEmail(), user.getEmail());
     }
 
     @Test
@@ -112,7 +153,10 @@ class UserServiceImplTest {
     }
 
     @Test
-    @Disabled
     void deleteUser() {
+        Optional<User> optionalUser = Optional.of(user);
+        userServiceImplUnderTest.deleteUser(optionalUser.get());
+
+        verify(userRepository, times(1)).deleteById(optionalUser.get().getId());
     }
 }
