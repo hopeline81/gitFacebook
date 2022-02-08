@@ -65,7 +65,7 @@ class UpdateProfileServiceImplTest {
     @Test
     void updateProfileDetails() {
 
-        
+
     }
 
     @Test
