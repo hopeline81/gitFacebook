@@ -67,8 +67,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         String randomCode = RandomString.make(32);
         user.setVerificationCode(randomCode);
 
+        Role userRole = roleService.getUserRole();
         Set<Role> roles = new HashSet<>();
-        roles.add(roleService.getUserRole());
+        roles.add(userRole);
         user.setRoles(roles);
         userRepository.save(user);
 

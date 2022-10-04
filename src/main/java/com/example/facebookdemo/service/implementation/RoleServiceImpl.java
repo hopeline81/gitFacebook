@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RoleServiceImpl {
+
     private final RoleRepository roleRepository;
 
     @Autowired
@@ -14,9 +15,16 @@ public class RoleServiceImpl {
         this.roleRepository = roleRepository;
     }
 
-    public Role getUserRole(){
+    public Role createUserRole() {
+        Role userRole = new Role();
+        userRole.setAuthority("ROLE_USER");
+        roleRepository.save(userRole);
+        return userRole;
+    }
+
+    public Role getUserRole() {
         Role userRole = roleRepository.findFirstByAuthority("ROLE_USER")
-                .orElseThrow(()-> new IllegalStateException("User role not found"));
+                .orElseThrow(() -> new IllegalStateException("User role not found"));
 
         return userRole;
     }
