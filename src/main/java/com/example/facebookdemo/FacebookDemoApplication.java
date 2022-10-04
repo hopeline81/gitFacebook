@@ -14,12 +14,16 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventAttendee;
+import com.google.api.services.calendar.model.EventDateTime;
+import com.google.api.services.calendar.model.EventReminder;
 import com.google.api.services.calendar.model.Events;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.springframework.boot.SpringApplication;
@@ -87,6 +91,45 @@ public class FacebookDemoApplication {
 
 		// List the next 10 events from the primary calendar.
 		DateTime now = new DateTime(System.currentTimeMillis());
+
+// insert event
+		Event event1 = new Event();
+
+		DateTime startDateTime = new DateTime("2022-10-04T17:30:00.000+03:00");
+		EventDateTime start = new EventDateTime()
+				.setDateTime(startDateTime)
+				.setTimeZone("America/Los_Angeles");
+		event1.setStart(start);
+
+		DateTime endDateTime = new DateTime("2022-10-04T18:00:00.000+03:00");
+		EventDateTime end = new EventDateTime()
+				.setDateTime(endDateTime)
+				.setTimeZone("America/Los_Angeles");
+		event1.setEnd(end);
+
+		String[] recurrence = new String[] {"RRULE:FREQ=DAILY;COUNT=2"};
+		event1.setRecurrence(Arrays.asList(recurrence));
+
+		EventAttendee[] attendees = new EventAttendee[] {
+				new EventAttendee().setEmail("hopelinesss@gmail.com")
+		};
+		event1.setAttendees(Arrays.asList(attendees));
+
+		EventReminder[] reminderOverrides = new EventReminder[] {
+				new EventReminder().setMethod("email").setMinutes(24 * 60),
+				new EventReminder().setMethod("popup").setMinutes(10),
+		};
+		Event.Reminders reminders = new Event.Reminders()
+				.setUseDefault(false)
+				.setOverrides(Arrays.asList(reminderOverrides));
+		event1.setReminders(reminders);
+
+		String calendarId = "primary";
+		event1 = service.events().insert(calendarId, event1).execute();
+		System.out.printf("Event created: %s\n", event1.getHtmlLink());
+
+
+		//find events
 		Events events = service.events().list("primary")
 				.setMaxResults(10)
 				.setTimeMin(now)
@@ -99,11 +142,11 @@ public class FacebookDemoApplication {
 		} else {
 			System.out.println("Upcoming events");
 			for (Event event : items) {
-				DateTime start = event.getStart().getDateTime();
+				DateTime startEvent = event.getStart().getDateTime();
 				if (start == null) {
-					start = event.getStart().getDate();
+					startEvent = event.getStart().getDate();
 				}
-				System.out.printf("%s (%s)\n", event.getSummary(), start);
+				System.out.printf("%s (%s)\n", event.getSummary(), startEvent);
 			}
 		}
 	}
