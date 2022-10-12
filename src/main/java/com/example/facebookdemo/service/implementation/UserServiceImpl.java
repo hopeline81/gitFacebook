@@ -72,7 +72,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         roles.add(userRole);
         user.setRoles(roles);
         userRepository.save(user);
-
     }
 
     @Override

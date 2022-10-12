@@ -1,5 +1,6 @@
 package com.example.facebookdemo.config;
 
+import com.example.facebookdemo.service.CustomOAuth2UserService;
 import com.example.facebookdemo.service.implementation.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -14,26 +15,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserServiceImpl userService;
+    private CustomOAuth2UserService oauthUserService;
 
     @Autowired
-    public WebSecurityConfig(UserServiceImpl userService) {
+    public WebSecurityConfig(UserServiceImpl userService, CustomOAuth2UserService customOAuth2UserService) {
         this.userService = userService;
+        this.oauthUserService = customOAuth2UserService;
     }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-//                .csrf()
-//                .disable()
-//                .antMatcher("/**")
-//                .authorizeRequests()
-//                .antMatchers("/", "/index.html")
-//                .permitAll()
-//                .anyRequest()
-//                .authenticated();
-
                 .authorizeRequests()
-                .antMatchers("/", "/register","/forgot_password","/reset_password", "/message", "/login", "/callback").permitAll()
+                .antMatchers("/", "/register","/forgot_password","/reset_password", "/message", "/login", "/callback", "/oauth2/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll()
@@ -50,6 +45,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .key("a31239e9-afbd-4a0f-9bac-43f532c12f55")
                 .userDetailsService(userService)
                 .rememberMeCookieName("rememberMe")
-                .tokenValiditySeconds(10000);
+                .tokenValiditySeconds(10000)
+                .and()
+                .oauth2Login(oauth2Login ->
+                        oauth2Login
+                                .loginPage("/login/oauth2")
+                    .authorizationEndpoint(authorizationEndpoint ->
+                authorizationEndpoint
+                        .baseUri("/login/oauth2/authorization")
+                    )
+            );
     }
 }

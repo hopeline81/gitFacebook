@@ -14,6 +14,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventAttachment;
 import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventReminder;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -31,34 +33,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class FacebookDemoApplication {
-	/**
-	 * Application name.
-	 */
-	private static final String APPLICATION_NAME = "Facebook Nadq";
-	/**
-	 * Global instance of the JSON factory.
-	 */
-	private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-	/**
-	 * Directory to store authorization tokens for this application.
-	 */
-	private static final String TOKENS_DIRECTORY_PATH = "tokens";
 
-	/**
-	 * Global instance of the scopes required by this quickstart.
-	 * If modifying these scopes, delete your previously saved tokens/ folder.
-	 */
+	private static final String APPLICATION_NAME = "Facebook Nadq";
+	private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
+	private static final String TOKENS_DIRECTORY_PATH = "tokens";
 	private static final List<String> SCOPES =
 			Collections.singletonList(CalendarScopes.CALENDAR_EVENTS);
 	private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
-	/**
-	 * Creates an authorized Credential object.
-	 *
-	 * @param HTTP_TRANSPORT The network HTTP Transport.
-	 * @return An authorized Credential object.
-	 * @throws IOException If the credentials.json file cannot be found.
-	 */
 	private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT)
 			throws IOException {
 		// Load client secrets.
@@ -82,7 +64,6 @@ public class FacebookDemoApplication {
 	}
 
 	public static void main(String[] args) throws IOException, GeneralSecurityException {
-		// Build a new authorized API client service.
 		final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
 		Calendar service =
 				new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
@@ -95,19 +76,21 @@ public class FacebookDemoApplication {
 // insert event
 		Event event1 = new Event();
 
-		DateTime startDateTime = new DateTime("2022-10-04T17:30:00.000+03:00");
+		String title = "Hello";
+		String videoCallUrl = "http://ne]o.com";
+		DateTime startDateTime = new DateTime("2022-10-12T12:30:00.000+03:00");
 		EventDateTime start = new EventDateTime()
 				.setDateTime(startDateTime)
-				.setTimeZone("America/Los_Angeles");
+				.setTimeZone("Europe/Sofia");
 		event1.setStart(start);
 
-		DateTime endDateTime = new DateTime("2022-10-04T18:00:00.000+03:00");
+		DateTime endDateTime = new DateTime("2022-10-12T15:00:00.000+03:00");
 		EventDateTime end = new EventDateTime()
 				.setDateTime(endDateTime)
-				.setTimeZone("America/Los_Angeles");
+				.setTimeZone("Europe/Sofia");
 		event1.setEnd(end);
 
-		String[] recurrence = new String[] {"RRULE:FREQ=DAILY;COUNT=2"};
+		String[] recurrence = new String[] {"RRULE:FREQ=DAILY;COUNT=1"};
 		event1.setRecurrence(Arrays.asList(recurrence));
 
 		EventAttendee[] attendees = new EventAttendee[] {
@@ -124,30 +107,19 @@ public class FacebookDemoApplication {
 				.setOverrides(Arrays.asList(reminderOverrides));
 		event1.setReminders(reminders);
 
+		List<EventAttachment> attachments = new ArrayList<>();
+		attachments.add(new EventAttachment()
+				.setTitle(title)
+				.setFileUrl(videoCallUrl));
+		event1.setAttachments(attachments);
+		event1.setSummary(title);
+
+
 		String calendarId = "primary";
 		event1 = service.events().insert(calendarId, event1).execute();
 		System.out.printf("Event created: %s\n", event1.getHtmlLink());
 
 
-		//find events
-		Events events = service.events().list("primary")
-				.setMaxResults(10)
-				.setTimeMin(now)
-				.setOrderBy("startTime")
-				.setSingleEvents(true)
-				.execute();
-		List<Event> items = events.getItems();
-		if (items.isEmpty()) {
-			System.out.println("No upcoming events found.");
-		} else {
-			System.out.println("Upcoming events");
-			for (Event event : items) {
-				DateTime startEvent = event.getStart().getDateTime();
-				if (start == null) {
-					startEvent = event.getStart().getDate();
-				}
-				System.out.printf("%s (%s)\n", event.getSummary(), startEvent);
-			}
-		}
+//		SpringApplication.run(FacebookDemoApplication.class, args);
 	}
 }
